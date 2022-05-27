@@ -1,0 +1,573 @@
+body.dark-only .nav-links .links a, body.dark-only section .info-section .top, body.dark-only .searching-rides .riders-list .rider, body.dark-only section .info-section, body.dark-only .photo-section .top, body.dark-only .user-profile .hovercard .info .ttl-info a, body.dark-only .user-profile .hovercard .info .title p, body.dark-only .user-profile .hovercard .info .title h5 {
+  color: #fff;
+}
+
+body.dark-only .search .fuzzy-search, body.dark-only .searching-rides, body.dark-only section .info-section, body.dark-only .profile, body.dark-only .photo-section, body.dark-only .video-section, body.dark-only .top-links {
+  background: #1d1e26;
+}
+
+body.dark-only .search .fuzzy-search a, body.dark-only .searching-rides a, body.dark-only section .info-section a, body.dark-only .profile a, body.dark-only .photo-section a, body.dark-only .video-section a, body.dark-only .top-links a {
+  color: #fff;
+}
+
+
+body.dark-only .profile .top-links .active, body.dark-only .details .top .active h5 {
+  color: #0d6efd;
+}
+
+/* .page-body {
+  padding: 35px 45px 35px 5px !important;
+} */
+
+.nav-links {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 75% 30%;
+      grid-template-columns: 75% 30%;
+}
+
+.nav-links .links {
+  text-align: end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.nav-links .links a {
+  color: #272727;
+  font-size: large;
+}
+
+.nav-links .links a svg {
+  height: 18px;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+}
+
+.search {
+  position: relative;
+}
+
+.search form {
+  position: absolute;
+  z-index: 2;
+  left: 32%;
+  background: #faf8f8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 30px;
+  border: 1px solid #b7b7b7;
+  padding: 1px 31px;
+}
+
+.search form input {
+  background: transparent;
+  outline: none;
+  border: none;
+  padding: 10px;
+  font-size: large;
+}
+
+.search form button {
+  outline: none;
+  border: none;
+}
+
+.search form button span {
+  color: #7e7d7d;
+}
+.search form button {
+  background-color: #faf8f8;
+}
+
+.search .fuzzy-search {
+  position: absolute;
+  z-index: 1;
+  top: 25px;
+  left: 32%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: #fff;
+  border-radius: 7px;
+  padding: 40px 20px;
+}
+
+.search .fuzzy-search a {
+  width: 100%;
+  padding: 10px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #b7b7b7;
+}
+
+.map {
+  margin-top: 10rem;
+  height: 400px;
+  width: 95%;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  opacity: .6;
+}
+
+body.map-location .search .fuzzy-search {
+  display: none;
+}
+
+body.map-location .map {
+  opacity: 1;
+}
+
+.searching-rides {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  top: 25%;
+  left: 35%;
+  background: #fff;
+  border-radius: 7px;
+  padding: 20px 50px;
+}
+
+.searching-rides .top {
+  padding: 10px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 1px solid #b7b7b7;
+}
+
+.searching-rides .top h5 {
+  color: #6090fd;
+}
+
+.searching-rides .top h6 {
+  display: none;
+}
+
+.searching-rides .bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.searching-rides .loading {
+  height: 5rem;
+  width: 5rem;
+  margin: 40px 0px;
+  border-radius: 50%;
+  border: 3px solid #7366ff;
+}
+
+.searching-rides .riders-list {
+  width: 100%;
+  display: none;
+}
+
+.searching-rides .riders-list .rider {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 10px 0px;
+  color: #535353;
+  border-bottom: 1px solid #cccccc;
+}
+
+.searching-rides .riders-list .rider p {
+  margin: 0px;
+}
+
+.searching-rides .confirm {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.searching-rides .confirm h3 {
+  margin-top: 15px;
+}
+
+.searching-rides .confirm h1 {
+  color: #6090fd;
+}
+
+.searching-rides .confirm .view-map, .searching-rides .confirm .wallet {
+  padding: 10px 15px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: 700;
+  /* background: #7366ff; */
+  margin-top: 15px;
+}
+
+.profile {
+  padding: 20px 0px;
+}
+
+.profile .top-links {
+  background: #fff;
+  border-radius: 7px 7px 0px 0px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px 15px;
+}
+
+.profile .top-links a {
+  color: #2a2a2a;
+  font-size: large;
+}
+
+.profile .top-links .active {
+  color: #0d6efd;
+}
+
+.profile .ratings {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.profile .ratings p {
+  margin: 0px;
+}
+
+.profile .ratings img {
+  height: 15px;
+}
+
+.user-profile .hovercard .cardheader {
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.041)), to(rgba(0, 0, 0, 0.452))), url("./2018-Toyota-Camry-Front_o.jpg");
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.041), rgba(0, 0, 0, 0.452)), url("./2018-Toyota-Camry-Front_o.jpg");
+}
+
+.user-profile .hovercard .info .title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.user-profile .hovercard .info .title h5, .user-profile .hovercard .info .title p {
+  margin: 0px;
+}
+
+section {
+  margin-top: 5rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+section .info-section {
+  background: #fff;
+  border-radius: 7px;
+}
+
+section .info-section .top, section .info-section .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+section .info-section .info-list {
+  padding: 20px;
+}
+
+section .info-section .top {
+  padding: 10px 20px;
+  color: #535353;
+  border-bottom: 1px solid #cccccc;
+}
+
+.photo-section, .video-section {
+  background: #fff;
+  border-radius: 7px;
+}
+
+.photo-section .top, .photo-section .photo-bottom, .photo-section .video-bottom, .video-section .top, .video-section .photo-bottom, .video-section .video-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.photo-section .photo-bottom, .video-section .photo-bottom {
+  padding: 5px 10px;
+}
+
+.photo-section .photo-bottom img, .video-section .photo-bottom img {
+  height: 20px;
+}
+
+.photo-section .photo-bottom p, .video-section .photo-bottom p {
+  margin: 0;
+}
+
+.photo-section .photo-bottom .fa, .video-section .photo-bottom .fa {
+  color: #8f8f8f;
+  -webkit-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+
+.photo-section .photo-bottom .fa:hover, .video-section .photo-bottom .fa:hover {
+  color: #eb0014;
+}
+
+.photo-section .photo-list, .video-section .photo-list {
+  padding: 20px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[4];
+      grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.photo-section .photo, .photo-section .video, .video-section .photo, .video-section .video {
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+.photo-section .photo-img img, .photo-section .video-img img, .video-section .photo-img img, .video-section .video-img img {
+  height: 85%;
+  width: 100%;
+}
+
+.photo-section .top, .video-section .top {
+  padding: 10px 20px;
+  color: #535353;
+  border-bottom: 1px solid #cccccc;
+}
+
+.photo-section .video-img, .video-section .video-img {
+  height: 20rem;
+  position: relative;
+}
+
+.photo-section .youtube-link, .video-section .youtube-link {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.photo-section .video-list, .video-section .video-list {
+  padding: 45px;
+}
+
+.photo-section .video-list .video, .video-section .video-list .video {
+  margin-bottom: 20px;
+}
+
+.photo-section .video-bottom, .video-section .video-bottom {
+  padding: 20px 10px;
+}
+
+.review {
+  margin-top: 30px;
+  padding: 10px;
+  border: 1px solid #7e7d7d;
+  border-radius: 7px;
+}
+
+.review-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.review-top .left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.review-top .left .dp {
+  height: 50px;
+  width: 50px;
+}
+
+.review-top .left .dp img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 1px solid #1d1e26;
+}
+
+.review-top .left h5, .review-top .left .ratings {
+  margin: 0px 0px 0px 10px;
+}
+
+.review-top .left .ratings {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.review-top .left .ratings img {
+  height: 20px;
+}
+
+body.search-rides .searching-rides {
+  display: block;
+}
+
+body.show-riders .searching-rides .bottom {
+  display: none;
+}
+
+body.show-riders .searching-rides .riders-list {
+  display: block;
+}
+
+body.rider-details .searching-rides .top h5 {
+  display: none;
+}
+
+body.rider-details .searching-rides .top h6 {
+  display: block;
+}
+
+body.rider-details .searching-rides .riders-list {
+  display: none;
+}
+
+body.rider-details .searching-rides .confirm {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 500px) {
+  /* .page-body {
+    margin: 97px 0px 0px 0px !important;
+  } */
+  .nav-links {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  .search .fuzzy-search, .search form {
+    left: 25%;
+  }
+  .search form {
+    padding: 4px 40px;
+  }
+  .search form input {
+    font-size: small;
+  }
+  .search form svg {
+    height: 20px;
+  }
+  section, .photo-section .photo-list {
+    -ms-grid-columns: (1fr)[1];
+        grid-template-columns: repeat(1, 1fr);
+  }
+  .photo-section .photo-img {
+    height: 10rem;
+  }
+  .video-section .video-list {
+    padding: 45px 0px;
+  }
+  .video-section .video-bottom {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .review-top .left h5, .review-top .left .ratings {
+    margin: 0;
+  }
+  .review-top .left .ratings img {
+    height: 12px;
+  }
+}
+
+@media (max-width: 350px) {
+  .review-top .left .dp {
+    height: 36px;
+  }
+}
+/*# sourceMappingURL=find-ride.css.map */

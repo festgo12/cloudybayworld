@@ -11,3 +11,7 @@ this is the official private repo of cloudbay development team.
 - [Festus](https://github.com/festgo12).
 - [Abbas ](https://github.com/).
 - [Cyril](https://github.com/).
+
+### To run the project
+-clone the project
+-

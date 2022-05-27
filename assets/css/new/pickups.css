@@ -1,0 +1,426 @@
+body.dark-only .nav-links .links a {
+  color: #fff;
+}
+
+
+
+body.dark-only table {
+  color: #fff;
+}
+
+body.dark-only table td, body.dark-only table thead th, body.dark-only table .name, body.dark-only table select {
+  color: #fff;
+}
+
+body.dark-only .popup, body.dark-only .thank-message, body.dark-only select {
+  background: #1d1e26;
+}
+
+body.dark-only .popup, body.dark-only .container .profile .top, body.dark-only .container .bottom .details, body.dark-only .container .profile .bottom .distance, body.dark-only .thank-message {
+  color: #fff;
+}
+
+/* .page-body {
+  padding: 35px 45px 35px 5px !important;
+  position: relative;
+} */
+
+.nav-links {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 75% 30%;
+      grid-template-columns: 75% 30%;
+}
+
+.nav-links .links {
+  text-align: end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.nav-links .links a {
+  color: #272727;
+  font-size: large;
+}
+
+.nav-links .links a svg {
+  height: 18px;
+}
+
+
+.pickup .table thead th, .table .name {
+  font-weight: 700;
+}
+
+.pickup .table .name {
+  color: #6e6e6e;
+}
+
+.pickup .table .distance {
+  cursor: pointer;
+}
+
+.pickup .table select {
+  padding: 7px 10px;
+  outline: none;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+.popup {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  z-index: 2;
+  top: 30%;
+  right: 50%;
+  -webkit-transform: translate(50%, -50%);
+          transform: translate(50%, -50%);
+  background: #fff;
+  padding: 33px 50px;
+  color: #424242;
+}
+
+.popup .top {
+  border-bottom: 1px solid #b7b7b7;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.popup .top p {
+  margin-bottom: 5px;
+}
+
+.popup .top span {
+  cursor: pointer;
+}
+
+.popup h3 {
+  margin-top: 15px;
+  color: #6090fd;
+}
+
+.popup .dist {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.popup .dist p {
+  margin-left: 10px;
+}
+
+.popup .view-map, .popup .wallet {
+  padding: 10px 15px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: 700;
+  background: #7366ff;
+  margin-top: 15px;
+}
+
+.popup .wallet {
+  background: #06d617;
+  margin-bottom: 20px;
+}
+
+.thank-message {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  z-index: 2;
+  top: 30%;
+  right: 50%;
+  -webkit-transform: translate(50%, -50%);
+          transform: translate(50%, -50%);
+  background: #fff;
+  padding: 30px 45px;
+  color: #424242;
+}
+
+.thank-message .thank-you, .thank-message .name-rating, .thank-message form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.thank-message h2 {
+  margin: 25px 0px;
+}
+
+.thank-message .ratings {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.thank-message .ratings img {
+  height: 15px;
+}
+
+.thank-message form {
+  margin: 10px 0px;
+}
+
+.thank-message form h6 {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  margin-bottom: 10px;
+}
+
+.thank-message .submit {
+  padding: 10px 15px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: 700;
+  background: #7366ff;
+  margin-top: 15px;
+}
+
+body.alert .table-responsive, body.alert .container {
+  opacity: .4;
+  background: #020516;
+}
+
+body.alert .popup {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+body.show-thank-message .table-responsive, body.show-thank-message .container {
+  opacity: .4;
+  background: #020516;
+}
+
+body.show-thank-message .popup {
+  display: none;
+}
+
+body.show-thank-message .thank-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container .profile {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.container .profile .top {
+  width: 100%;
+  padding: 10px;
+  width: 100%;
+  color: #000;
+  border-bottom: 1px solid #b7b7b7;
+}
+
+.container .profile .top h5 {
+  text-align: center;
+}
+
+.container .profile .bottom {
+  padding: 35px 45px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container .profile .bottom .details {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 10rem;
+  color: #000;
+}
+
+.container .profile .bottom .details .profile-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container .profile .bottom .details .profile-details .img {
+  height: 100px;
+  width: 100px;
+  margin-right: 15px;
+}
+
+.container .profile .bottom .details .profile-details .img img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.container .profile .bottom .details .profile-details .name {
+  position: relative;
+}
+
+.container .profile .bottom .details .profile-details .name::before {
+  position: absolute;
+  content: "";
+  display: block;
+  height: 10px;
+  width: 10px;
+  z-index: 2;
+  background-color: #06d617;
+  border-radius: 50%;
+  right: -2em;
+  top: 8px;
+}
+
+.container .profile .bottom .details .profile-details .name .ratings img {
+  height: 15px;
+}
+
+.container .profile .bottom .details .route p {
+  margin-bottom: 5px;
+}
+
+.container .profile .bottom .details .route:first-child {
+  margin-bottom: 10px;
+}
+
+.container .profile .bottom .price {
+  color: #7366ff;
+  margin-top: 45px;
+}
+
+.container .profile .bottom .distance {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.container .profile .bottom .distance h2 {
+  margin-right: 10px;
+}
+
+.container .profile .bottom .options {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.container .profile .bottom .options a {
+  padding: 10px 30px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: 700;
+  background: #06d617;
+  margin-top: 15px;
+}
+
+.container .profile .bottom .options a:last-child {
+  background: #d60606;
+}
+
+.container .map {
+  margin-top: 30px;
+  height: 400px;
+  width: 95%;
+}
+
+@media (max-width: 500px) {
+  /* .page-body {
+    margin: 97px 0px 0px 0px !important;
+  } */
+  .container .profile .bottom .details .profile-details .name .ratings img {
+    height: 10px;
+  }
+  .empty {
+    display: none;
+  }
+  .table > thead {
+    font-size: smaller;
+  }
+  .table td {
+    font-size: x-small;
+  }
+  .table .delete-data {
+    padding: 15px 0.75em;
+  }
+  .table th, .table td {
+    padding: 0.75em 0.25em;
+  }
+  .table-responsive {
+    margin: 35px 5px 5px;
+    padding: 5px;
+  }
+  .pop-up, .thank-message {
+    top: 21%;
+  }
+  .container .profile .bottom .details {
+    display: block;
+  }
+}
+/*# sourceMappingURL=pickups.css.map */
