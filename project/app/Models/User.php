@@ -17,10 +17,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'username',
-        'isVendor',
+        'is_vendor',
         'password',
     ];
 
@@ -42,4 +43,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function IsVendor(){
+        if ($this->is_vendor == 1) {
+           return true;
+        }
+        return false;
+    }
+
+
+
+
+
 }

@@ -55,26 +55,13 @@
         <div class="container-fluid">
           <div class="sticky-header">
             <header>                       
-              <nav class="navbar navbar-b navbar-trans navbar-expand-xl fixed-top nav-padding" id="sidebar-menu"><a class="navbar-brand p-0" href="#"><img class="img-fluid" src="./assets/images/logo/login.png" alt=""></a>
+              <nav class="navbar navbar-b navbar-trans navbar-expand-xl fixed-top nav-padding" id="sidebar-menu"><a class="navbar-brand p-0" href="{{ route('home') }}"><img class="img-fluid" src="./assets/images/logo/login.png" alt=""></a>
                 <button class="navbar-toggler navabr_btn-set custom_nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
                 <div class="navbar-collapse justify-content-end collapse hidenav" id="navbarDefault">
                   <ul class="navbar-nav navbar_nav_modify" id="scroll-spy">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-{{--                    
-                        @if (Route::has('login'))
-                    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                        @auth
-                            <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                @endif --}}
-                    <a href="sign-up.html"><button class="btn btn-info-gradien " type="submit" title="">Sign Up</button></a>
+                    <a href="{{ route('register') }}"><button class="btn btn-info " type="submit" title="">Sign Up</button></a>
                   </ul>
                 </div>
               </nav>
@@ -97,27 +84,42 @@
               <div class="login-card login1">
                 <div>
                   <div class="login-main"> 
-                    <form class="theme-form">
+                    
+                    <form class="theme-form" method="POST" action="{{ route('login') }}">
+                      @csrf
                       <h4>Sign in to account</h4>
                       <p>Enter your email & password to login</p>
                       <div class="form-group">
                         <label class="col-form-label">Email Address</label>
-                        <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                        <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" required="" placeholder="Test@gmail.com" value="{{ old('email') }}" autocomplete="email" autofocus>
+    
+                        @error('email')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
                       </div>
                       <div class="form-group">
                         <label class="col-form-label">Password</label>
                         <div class="form-input position-relative">
-                          <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
+                          <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" required="" placeholder="*********" autocomplete="current-password">
                           <div class="show-hide"><span class="show">                         </span></div>
+    
+                          @error('password')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
                         </div>
                       </div>
                       <div class="form-group mb-0">
                         <div class="checkbox p-0">
-                          <input id="checkbox1" type="checkbox">
+                          {{-- <input id="checkbox1" type="checkbox"> --}}
+                          <input class="form-check-input" type="checkbox" name="remember" id="checkbox1" {{ old('remember') ? 'checked' : '' }}>
                           <label class="text-muted" for="checkbox1">Remember password</label>
                         </div><a class="link" href="forget-password.html">Forgot password?</a>
                         <div class="text-end mt-3">
-                          <button class="btn btn-info-gradien btn-block w-100" type="submit">Sign in</button>
+                          <button class="btn btn-info btn-block w-100" type="submit">Sign in</button>
                         </div>
                       </div>
                       <h6 class="text-muted mt-4 or">Or Sign in with</h6>

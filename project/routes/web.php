@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,29 +15,65 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('landing');
-});
-Route::get('/index', function () {
-    return view('index');
-});
-Route::get('/login2', function () {
-    return view('auth.login2');
-});
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+Route::group(['middleware'=>'auth'],function(){
+    
+    //------------ User SECTION ------------
+    // Route::get('/profile', function(){
+    //     dd('user routes');
+    // });
+    
+
+
+
+
+
+    
+    //------------ Shop SECTION ------------
+    
+    
+    //------------ Products SECTION ------------
+    
+
+
+
+
+    Route::group(['middleware'=>'vendor'],function(){
+    //------------ Vendor SECTION ------------
+       
+        // Route::get('/vendor', function(){
+        //     dd('vendor routes');
+        // });
 
 
 
 
 
 
-  //------------ User SECTION ------------
+    
+
+
+    });
+ 
+    
+
+});
 
 
 
-  //------------ Shop Vendor SECTION ------------
-  //------------ Products SECTION ------------
-  //------------ ADMIN SECTION ------------
+
+
+Route::group(['middleware'=>'auth:admin'],function(){
+    //------------ ADMIN SECTION ------------
+   
+    
+    
+
+});
