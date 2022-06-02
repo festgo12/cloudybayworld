@@ -14,9 +14,8 @@ this is the official private repo of cloudbay development team.
 
 ### Team members (dev)
 - [Festus](https://github.com/festgo12).
-- [Abbas ](https://github.com/).
-- [petec ](https://github.com/).
-- [Cyril](https://github.com/).
+- [Abbas ](https://github.com/Abbasumaru).
+- [Cyril](https://github.com/Cyril17-cyber).
 
 ### To run the project
 
