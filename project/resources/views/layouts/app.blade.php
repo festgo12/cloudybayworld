@@ -238,8 +238,8 @@
                     </div>
                   </div>
                   <ul class="profile-dropdown onhover-show-div">
-                    <li><a href="user-profile.html"><i data-feather="user"></i><span>Account </span></a></li>
-                    <li><a href="settings.html"><i data-feather="settings"></i><span>Settings</span></a></li>
+                    <li><a href="{{ route('profile') }}"><i data-feather="user"></i><span>Account </span></a></li>
+                    <li><a href="{{ route('editProfile') }}"><i data-feather="settings"></i><span>Settings</span></a></li>
                     <li>
                         <a class="" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -293,8 +293,8 @@
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="feed.html"><i data-feather="list"> </i><span>Feeds</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="messaging.html"><i data-feather="message-circle" > </i><span class="msg-circle">Massaging</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="user-profile.html"><i data-feather="user"> </i><span>Profile</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="settings.html"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('profile') }}"><i data-feather="user"> </i><span>Profile</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('editProfile') }}"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
                   <li class="mega-menu"><a class="sidebar-link sidebar-title" href="#"><i data-feather="layers"></i><span>Pages</span></a>
                     <div class="mega-menu-container menu-content">
                       <div class="container-fluid">

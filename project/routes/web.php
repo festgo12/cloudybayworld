@@ -26,9 +26,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::group(['middleware'=>'auth'],function(){
     
     //------------ User SECTION ------------
-    // Route::get('/profile', function(){
-    //     dd('user routes');
-    // });
+    Route::get('/profile', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');
+    Route::get('/editProfile', [App\Http\Controllers\UserProfileController::class, 'editProfile'])->name('editProfile');
     
 
 
