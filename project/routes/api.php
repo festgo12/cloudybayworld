@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+//------------ User SECTION ------------
+Route::get('/profile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiGetProfile']);
+Route::post('/editProfile/{id}', [App\Http\Controllers\UserProfileController::class, 'apiEditProfile']);

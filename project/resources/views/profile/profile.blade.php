@@ -10,7 +10,7 @@
                 <div class="col-6">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html"> <i data-feather="home"></i></a></li>
-                        <li class="breadcrumb-item active"> ada-joy</li>
+                        <li class="breadcrumb-item active"> {{ $user->username }}</li>
                     </ol>
                 </div>
             </div>
@@ -34,12 +34,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-envelope"></i>   Email</h6><span>ada@gmail.com</span>
+                                                <h6><i class="fa fa-envelope"></i>   Email</h6><span>{{ $user->email }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-calendar"></i>   BOD</h6><span>02 January 1988</span>
+                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del>02 January 1988</del>
                                             </div>
                                         </div>
                                     </div>
@@ -54,12 +54,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>+234 810-456-7890</span>
+                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>{{ $user->contactNo }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>B69 Presidenal road, Enugu</span>
+                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>{{ $user->homeAddress }}</span>
                                             </div>
                                         </div>
                                     </div>
