@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class Order extends Model
 {
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -47,23 +49,15 @@ class Order extends Model
          'user_id',   'cart',   'method',   'shipping',   'pickup_location',   'totalQty',   'pay_amount',   'txnid',   'charge_id',   'order_number',   'payment_status',   'customer_email',   'customer_name',   'customer_country',   'customer_phone',   'customer_address',   'customer_city',   'customer_zip',   'shipping_name',   'shipping_country',   'shipping_email',   'shipping_phone',   'shipping_address',   'shipping_city',   'shipping_zip',   'order_note',   'coupon_code',   'coupon_discount',   'status',   'shipping_cost',   'pay_id',   'vendor_shipping_id',   'tax',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
+    public function vendororders()
+    {
+        return $this->hasMany('App\Models\VendorOrder');
+    }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function tracks()
+    {
+        return $this->hasMany('App\Models\OrderTrack','order_id');
+    }
 
   
 

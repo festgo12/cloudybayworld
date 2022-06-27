@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,8 +30,10 @@ class HomeController extends Controller
             return view('landing');
         }
 
+        $products = Product::take(20)->get();
+        $cats = Category::where('is_featured', 1)->get();
+        // dd($products);
 
-
-        return view('home');
+        return view('home', compact('products','cats'));
     }
 }

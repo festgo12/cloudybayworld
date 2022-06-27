@@ -47,23 +47,15 @@ class OrderTrack extends Model
          'order_id',   'title',   'text',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order','order_id')->withDefault(function ($data) {
+			foreach($data->getFillable() as $dt){
+				$data[$dt] = __('Deleted');
+			}
+		});
+    }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
 
   
 

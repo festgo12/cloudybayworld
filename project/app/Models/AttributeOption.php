@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class AttributeOption extends Model
-{
+{ 
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -44,26 +46,16 @@ class AttributeOption extends Model
      * @var array
      */
     protected $fillable = [
-         'attribute_id',   'name',  
+         'attribute_id',   'name'  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function attribute() {
+        return $this->belongsTo('App\Models\Attribute')->withDefault(function ($data) {
+                foreach($data->getFillable() as $dt){
+                    $data[$dt] = __('Deleted');
+                }
+            });
+      }
 
   
 

@@ -51,8 +51,44 @@ class User extends Authenticatable
         return false;
     }
 
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
 
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
 
+    public function wishlists()
+    {
+        return $this->hasMany('App\Models\Wishlist');
+    }
+
+    // Multi Vendor
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    public function vendororders()
+    {
+        return $this->hasMany('App\Models\VendorOrder','user_id');
+    }
+
+    public function shippings()
+    {
+        return $this->hasMany('App\Models\Shipping','user_id');
+    }
+
+    public function wishlistCount()
+    {
+        return \App\Models\Wishlist::where('user_id','=',$this->id)->with(['product'])->whereHas('product', function($query) {
+                    $query->where('status', '=', 1);
+                 })->count();
+    }
 
 
 }

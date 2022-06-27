@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class Category extends Model
 {
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -47,23 +49,26 @@ class Category extends Model
          'name',   'slug',   'status',   'photo',   'is_featured',   'image',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
+   
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function subs()
+    {
+    	return $this->hasMany('App\Models\Subcategory')->where('status','=',1);
+    }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = str_replace(' ', '-', $value);
+    }
+
+    public function attributes() {
+        return $this->morphMany('App\Models\Attribute', 'attributable');
+    }
 
   
 

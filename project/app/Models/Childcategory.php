@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class Childcategory extends Model
 {
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -36,7 +38,7 @@ class Childcategory extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -47,23 +49,29 @@ class Childcategory extends Model
          'subcategory_id',   'name',   'slug',   'status',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
+   
+    public function subcategory()
+    {
+    	return $this->belongsTo('App\Models\Subcategory')->withDefault(function ($data) {
+			foreach($data->getFillable() as $dt){
+				$data[$dt] = __('Deleted');
+			}
+		});
+    }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = str_replace(' ', '-', $value);
+    }
+
+    public function attributes() {
+        return $this->morphMany('App\Models\Attribute', 'attributable');
+    }
 
   
 

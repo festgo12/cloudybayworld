@@ -47,23 +47,14 @@ class ProductClick extends Model
          'product_id',   'date',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product')->withDefault(function ($data) {
+			foreach($data->getFillable() as $dt){
+				$data[$dt] = __('Deleted');
+			}
+		});
+    }
 
   
 

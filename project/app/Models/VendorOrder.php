@@ -47,23 +47,22 @@ class VendorOrder extends Model
          'user_id',   'order_id',   'qty',   'price',   'order_number',   'status',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User')->withDefault(function ($data) {
+			foreach($data->getFillable() as $dt){
+				$data[$dt] = __('Deleted');
+			}
+		});
+    }
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order')->withDefault(function ($data) {
+        foreach($data->getFillable() as $dt){
+          $data[$dt] = __('Deleted');
+        }
+      });
+    }
 
   
 

@@ -46,6 +46,7 @@ class CreateOrdersTable extends Migration
              $table->enum('status', ['pending', 'processing' ,'completed','declined', 'on delivery'])->default('pending');
              $table->decimal('shipping_cost');
              $table->text('pay_id')->nullable();
+             $table->integer('dp')->default(0);
              $table->integer('vendor_shipping_id');
              $table->integer('tax');
              $table->timestamp('created_at')->nullable();

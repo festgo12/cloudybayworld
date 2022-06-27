@@ -83,12 +83,10 @@
                   </div>
                   <div class="drop-left dropdown-content f-menu p-b-10">
                     <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> Clothing</a>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-headphone-alt m-r-10"></i> Accessories</a>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-foot-print m-r-10"></i> Shoes</a>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-ui-touch-phone m-r-10"></i> Phones</a>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-apple-watch m-r-10"></i> Watch & jewelries</a>
-                    <a href="product.html" data-bs-original-title="" title=""><i class="icofont icofont-tools-alt-2 m-r-10"></i> Tools & wears</a>
+                      @foreach( $cats as $cat)
+
+                        <a href="{{ route('product.index', $cat->slug) }}" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> {{ $cat->name }}</a>
+                      @endforeach
                   </div>
                 </div>
               </div>
@@ -184,25 +182,25 @@
               <div class="owl-carousel owl-theme" id="carousel-profile">
                
                 <div class="item profile d-inline-block">
-                  <a href="#"><img src="./assets/images/avatar/11.jpg" alt="" srcset=""></a>
+                  <a href="#"><img src="assets/images/avatar/11.jpg" alt="" srcset=""></a>
                 </div>
                 <div class="item profile p-late d-inline-block">
-                  <img src="./assets/images/avatar/16.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/16.jpg" alt="" srcset="">
                 </div>
                 <div class="item profile d-inline-block">
-                  <img src="./assets/images/avatar/3.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
                 </div>
                 <div class="item profile p-late d-inline-block">
-                  <img src="./assets/images/avatar/4.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/4.jpg" alt="" srcset="">
                 </div>
                 <div class="item profile d-inline-block">
-                  <img src="./assets/images/avatar/7.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/7.jpg" alt="" srcset="">
                 </div>
                 <div class="item profile p-late d-inline-block">
-                  <img src="./assets/images/avatar/8.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/8.jpg" alt="" srcset="">
                 </div>
                 <div class="item profile d-inline-block">
-                  <img src="./assets/images/avatar/3.jpg" alt="" srcset="">
+                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
                 </div>
 
               </div>
@@ -235,7 +233,7 @@
                                 </div>
                               </div>
                               <div class="col-xl-4 col-md-12">
-                                <div class="center-img"><img class="img-fluid" src="./assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
+                                <div class="center-img"><img class="img-fluid" src="assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
                               </div>
                               <div class="col-xl-4 col-md-6">
                                 <div class="d-flex">
@@ -258,7 +256,7 @@
                                 </div>
                               </div>
                               <div class="col-xl-4 col-md-12">
-                                <div class="center-img"><img class="img-fluid" src="./assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
+                                <div class="center-img"><img class="img-fluid" src="assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
                               </div>
                               <div class="col-xl-4 col-md-6">
                                 <div class="d-flex">
@@ -281,7 +279,7 @@
                                 </div>
                               </div>
                               <div class="col-xl-4 col-md-12">
-                                <div class="center-img"><img class="img-fluid" src="./assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
+                                <div class="center-img"><img class="img-fluid" src="assets/images/dashboard/offer-shoes-3.png" alt="..."></div>
                               </div>
                               <div class="col-xl-4 col-md-6">
                                 <div class="d-flex">
@@ -313,7 +311,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -333,7 +331,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -358,11 +356,12 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
+                                          
                                           <div class="addcart-btn">
                                             <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
                                             <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
@@ -390,7 +389,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="product-img">
-                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt="">
+                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -410,7 +409,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -435,9 +434,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -466,7 +465,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -486,7 +485,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Man T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -511,9 +510,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -543,7 +542,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="product-img">
-                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="./assets/images/ecommerce/04.jpg" alt="">
+                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -563,7 +562,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/04.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -588,9 +587,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -619,7 +618,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -639,7 +638,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -664,9 +663,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -695,7 +694,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="ribbon ribbon-secondary ribbon-vertical-left"><i class="icon-gift"></i></div>
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -715,7 +714,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -740,9 +739,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -821,7 +820,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -841,7 +840,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -866,9 +865,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -898,7 +897,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="product-img">
-                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt="">
+                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -918,7 +917,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -943,9 +942,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -974,7 +973,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -994,7 +993,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1019,9 +1018,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1051,7 +1050,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="product-img">
-                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="./assets/images/ecommerce/04.jpg" alt="">
+                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1071,7 +1070,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/04.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1096,9 +1095,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1127,7 +1126,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1147,7 +1146,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/02.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1172,9 +1171,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1203,7 +1202,7 @@
                         <div class="card">
                           <div class="product-box">
                             <div class="ribbon ribbon-secondary ribbon-vertical-left"><i class="icon-gift"></i></div>
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1223,7 +1222,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1248,9 +1247,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1277,7 +1276,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1297,7 +1296,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/01.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1322,9 +1321,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1351,7 +1350,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1371,7 +1370,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/03.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1396,9 +1395,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1427,7 +1426,7 @@
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="./assets/images/ecommerce/12.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/12.jpg" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
@@ -1447,7 +1446,7 @@
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="./assets/images/ecommerce/12.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/12.jpg" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
                                         <h4>Woman T-shirt</h4>
                                         <div class="product-price">₦5600.00
@@ -1472,9 +1471,9 @@
                                         </div>
                                         <div class="product-qnty">
                                           <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                            <div class="input-group bootstrap-touchspin">
-                                              <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
+                                          <fieldset class="qty-box">
+                                            <div class="input-group">
+                                              <input class="touchspin text-center" type="text" value="5">
                                             </div>
                                           </fieldset>
                                           <div class="addcart-btn">
@@ -1521,11 +1520,11 @@
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-1">
-                  <div class="item"><img src="./assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-26.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-29.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-30.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-26.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-29.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-30.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
        
                 </div>
               </div>
@@ -1544,11 +1543,11 @@
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-2">
-                  <div class="item"><img src="./assets/images/social-app/post-25.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-29.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-25.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-29.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
 
                 </div>
               </div>
@@ -1567,9 +1566,9 @@
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-3">
-                  <div class="item"><img src="./assets/images/social-app/post-31.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-31.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
 
                 </div>
               </div>
@@ -1589,9 +1588,9 @@
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-4">
-                  <div class="item"><img src="./assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="./assets/images/social-app/post-26.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-27.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                  <div class="item"><img src="assets/images/social-app/post-26.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
 
                 </div>
               </div>
@@ -1601,4 +1600,80 @@
     </div>
     <!-- Container-fluid Ends-->
   </div>
+@endsection
+
+@section('script')
+{{-- <script src="{{ asset('./assets/js/tooltip-init.js') }}"></script> --}}
+<script>
+  // let products = {!! $products->toJson() !!};
+  let products = {!! json_encode($products) !!};
+  console.log(products);
+
+
+
+/**
+	* On page load, fetch products from the server 
+	*/
+	// send a get request to the server to fetch list items
+
+// const products = ()=>{
+
+//   (async () => {
+// 		const res = await fetch('/api/user', {
+// 			method: 'GET',
+// 		});
+// 		const data = await res.json();
+// 		const status = res.status;
+// 		console.log(data);
+// 		// update shopping list
+// 		// var shopping_list = document.getElementById('shopping_list');
+// 		// var list_items = data;
+// 		// var items = '';
+// 		// await list_items.map(item => {
+// 		// 	items += `
+// 		// 		<div class="flex justify-between py-2">
+// 		// 		<div id="item-image-${item.id}" class="col-span-2 sm:col-span-1 xl:col-span-1 ${item.checked ? 'opacity-20': ''}">
+// 		// 		  <img
+// 		// 			alt="..."
+// 		// 			src="${item.category.img_path}"
+// 		// 			class="h-24 w-24 rounded  mx-auto"
+// 		// 		  />
+// 		// 		</div>
+// 		// 		<div id="item-dec-${item.id}" class="flex-1 p-4 col-span-2 sm:col-span-4 xl:col-span-4 ${item.checked ? 'opacity-20': ''}">
+// 		// 		  <h3 class="font-semibold text-black">${item.name}</h3>
+// 		// 		  <p>
+// 		// 			${item.description}
+// 		// 		  </p>
+// 		// 		  <p>₦${item.price}</p>
+// 		// 		</div>
+// 		// 		<div class="flex flex-row justify-center">
+// 		// 			<input onchange="markChecked(${item.id})" type="checkbox" class="self-center p-2" style="width:20%; height:auto; transform: scale(2.0);" ${item.checked ? 'checked': ''}>
+// 		// 			<i onclick="deleteItem(${item.id})" class="fa fa-trash text-red-500 text-3xl self-center p-2"></i>
+// 		// 		</div>
+// 		// 		</div>
+// 		// 	`;
+// 		// });
+		
+// 		// // if server retured no item show a different message
+// 		// if(list_items.length == 0){
+// 		// 	items = `
+// 		// 		<h3 class="text-center text-gray-600 p-4 text-lg">Your items will appear here</h3>
+//     //             <div class="flex justify-center">
+//     //                 <img className="self-center mx-auto" src="img/waiting-for-customer.svg" alt="illustration" />
+//     //             </div>
+// 		// 	`;
+// 		// }
+		
+// 		// shopping_list.innerHTML = items;
+// 	})();
+// }
+
+// products();
+
+
+
+
+
+
+</script>
 @endsection

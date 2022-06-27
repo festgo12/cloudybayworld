@@ -158,7 +158,7 @@
 
 })(jQuery);
 
-$('.loader-wrapper').fadeOut('slow', function () {
+$('.loader-wrapper').fadeOut('fast', function () {
     $(this).remove();
 });
 
@@ -380,4 +380,109 @@ $("#flip-btn").click(function(){
 
 $("#flip-back").click(function(){
     $(".flip-card-inner").removeClass("flipped")
+});
+
+// Notifier
+
+const notice = ( message,type= 'info')=>{
+    $.notify({
+        message: message
+     },
+     {
+        type: type,
+        allow_dismiss:true,
+        newest_on_top:true ,
+        mouse_over:false,
+        showProgressbar:true,
+        spacing:20,
+        timer:200,
+        placement:{
+          from:'top',
+          align:'right'
+        },
+        offset:{
+          x:31,
+          y:30
+        },
+        delay:100 ,
+        z_index:1000,
+        animate:{
+          enter:'animated flash',
+          exit:'animated bounce'
+      }
+    });
+}
+
+
+
+// add to cart
+$(document).on("click", ".addtocart" , function(e){
+
+    e.preventDefault();
+  window.location = $(this).data('href');
+  notice('added to cart');
+
+    
+});
+
+
+// add to cart ajax
+$(document).on("click", ".addcart" , function(){
+
+    $.get( $(this).data('href') , function( data ) {
+        if(data == 'digital') {
+        }
+        else if(data == 0) {
+          }
+          else {
+            console.log('success');
+            $("#cart-count").html(data[0]);
+            // console.log(data);
+          $("#cart-items").load(mainurl+'/carts/view');
+          notice('added to cart');
+          }
+    });
+                return false;
+});
+
+// romove from  cart
+$(document).on('click', '.cart-remove', function(){
+    var $selector = $(this).data('class');
+    $('.'+$selector).hide();
+    // $(this).hide();
+      $.get( $(this).data('href') , function( data ) {
+        notice('Item removed');
+
+          if(data == 0) {
+              $("#cart-count").html(data);
+             $('.cart-table').html('<center class="">Your cart is Empty</center>');
+              $('#cart-items').html('<p class="mt-1 pl-3 text-left">Cart is empty.</p>');
+              $('.cartpage .col-lg-4').html('');
+            }
+          else {
+            //  $('.cart-quantity').html(data[1]);
+             $('.cart-quantity').val(data[1]);
+             $('.cart-total').html(data[0]);
+            //  $('.coupon-total').val(data[0]);
+             $('.main-total').html(data[3]);
+            }
+            
+
+      });
+  });
+
+
+  // add to wishlist
+$(document).on("click", ".addwish" , function(){
+   
+
+
+    notice('Wish added');
+    
+    
+});
+
+$('#u-rating-fontawesome').on('change', ()=>{
+    // alert('rating');
 })
+

@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
              $table->string('name');
              $table->string('slug')->nullable();
              $table->string('image');
+             $table->string('file')->nullable();
              $table->string('thumbnail')->nullable();
              $table->string('size')->nullable();
              $table->string('size_qty')->nullable();
@@ -51,7 +52,7 @@ class CreateProductsTable extends Migration
              $table->text('license_qty')->nullable();
              $table->text('link')->nullable();
              $table->string('platform')->nullable();
-             $table->string('licence_type');
+             $table->string('licence_type')->nullable();
              $table->integer('festured')->default(0);
              $table->integer('best')->default(0);
              $table->integer('top')->default(0);
@@ -69,7 +70,6 @@ class CreateProductsTable extends Migration
              $table->integer('catalog_id')->default(0);
             
              $table->index(['name']);
-             $table->index(['attributes']);
              $table->unique(['sku']);
             
         });

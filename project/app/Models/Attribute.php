@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Attribute extends Model
 {
+  use HasFactory;
 
     /**
      * The table associated with the model.
@@ -47,24 +49,13 @@ class Attribute extends Model
          'attributable_id',   'attributable_type',   'name',   'input_name',   'price_status',   'details_status',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
-
+    public function attributable() {
+        return $this->morphTo();
+      }
+  
+      public function attribute_options() {
+        return $this->hasMany('App\Models\AttributeOption');
+      }
   
 
 

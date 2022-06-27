@@ -36,7 +36,7 @@ class Coupon extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -47,23 +47,7 @@ class Coupon extends Model
          'code',   'type',   'price',   'times',   'used',   'status',   'start_date',   'end_date',  
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      
-    ];
+   
 
   
 

@@ -18,7 +18,6 @@
     <!-- ico-font-->
     <link rel="stylesheet" type="text/css" href="./assets/css/vendors/icofont.css">
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="./assets/css/vendors/themify.css">
     <!-- Flag icon-->
     <link rel="stylesheet" type="text/css" href="./assets/css/vendors/flag-icon.css">
     <!-- Feather icon-->
