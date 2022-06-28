@@ -36,7 +36,7 @@
                                 <div class="row mb-2">
                                     <div class="profile-title">
                                         <div class="media"> <img class="img-70 rounded-circle" alt=""
-                                                src="{{ ($user->attachments) ? $user->attachments['avatar'] : './assets/images/avatar/default.jpg' }}">
+                                                src="{{ ($user->attachments) ? $user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
                                             <div class="media-body">
                                                 <h5 class="mb-1">{{ $user->firstname }} {{ $user->lastname }}</h5>
                                                 <p>DESIGNER</p>

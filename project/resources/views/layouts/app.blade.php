@@ -290,7 +290,7 @@
                   </li>
                  
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('home') }}"><i data-feather="home"> </i><span>Home</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="feed.html"><i data-feather="list"> </i><span>Feeds</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('feeds') }}"><i data-feather="list"> </i><span>Feeds</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="messaging.html"><i data-feather="message-circle" > </i><span class="msg-circle">Massaging</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('profile') }}"><i data-feather="user"> </i><span>Profile</span></a></li>

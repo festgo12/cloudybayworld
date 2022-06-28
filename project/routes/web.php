@@ -28,10 +28,10 @@ Route::group(['middleware'=>'auth'],function(){
     //------------ User SECTION ------------
     Route::get('/profile', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');
     Route::get('/editProfile', [App\Http\Controllers\UserProfileController::class, 'editProfile'])->name('editProfile');
-    
 
 
-
+    //------------ Feeds SECTION ------------
+    Route::get('/feeds', [App\Http\Controllers\FeedsController::class, 'getFeeds'])->name('feeds');
 
 
     

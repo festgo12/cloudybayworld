@@ -51,8 +51,10 @@ class User extends Authenticatable
         return false;
     }
 
-
-
+    public function feeds()
+    {
+        return $this->hasMany(Feed::class);
+    }
 
 
 }
