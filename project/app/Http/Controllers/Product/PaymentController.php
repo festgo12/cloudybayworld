@@ -21,17 +21,18 @@ class PaymentController extends Controller
      public function payreturn(){
          //return success payment
 
-        if(Session::has('temporder_id')){
-            $order_id = Session::get('temporder_id');
-            $order = Order::find($order_id);
-            $tempcart = unserialize(bzdecompress(utf8_decode($order['cart'])));
-        }
-        else{
-            $tempcart = '';
-            return redirect()->back();
-        }
+        // if(Session::has('temporder_id')){
+        //     $order_id = Session::get('temporder_id');
+        //     $order = Order::find($order_id);
+        //     $tempcart = unserialize(bzdecompress(utf8_decode($order['cart'])));
+        // }
+        // else{
+        //     $tempcart = '';
+        //     return redirect()->back();
+        // }
 
-         return view('front.success',compact('tempcart','order'));
+         return view('front.product.order.success');
+        //  return view('front.product.order.success',compact('tempcart','order'));
      }
 
 

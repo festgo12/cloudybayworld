@@ -16,7 +16,7 @@
         </div>
         <div class="col-6">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">                                       <i data-feather="home"></i></a></li>
+            <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
             <li class="breadcrumb-item active">Checkout</li>
           </ol>
         </div>
@@ -127,7 +127,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="order-place"><a class="btn btn-info" href="#">Place Order  </a></div>
+                <div class="order-place"><a class="btn btn-info" href="{{ route('payment.return') }}">Place Order  </a></div>
               </div>
             </div>
           </div>

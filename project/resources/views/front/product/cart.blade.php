@@ -108,8 +108,8 @@
                               }} </span></td> --}}
                             </tr>
                             <tr>
-                              <td class="text-end" colspan="5"><a class="btn btn-secondary cart-btn-transform" href="#">continue shopping</a></td>
-                              <td><a class="btn btn-success cart-btn-transform" href="#">check out</a></td>
+                              <td class="text-end" colspan="5"><a class="btn btn-secondary cart-btn-transform" href="{{ route('product.index') }}">continue shopping</a></td>
+                              <td><a class="btn btn-success cart-btn-transform" href="{{ route('product.checkout') }}">check out</a></td>
                             </tr>
                             
                           </tbody>
