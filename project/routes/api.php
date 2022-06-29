@@ -24,5 +24,6 @@ Route::get('/profile/{userId}', [App\Http\Controllers\UserProfileController::cla
 Route::post('/editProfile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiEditProfile']);
 
 //------------ Feeds SECTION ------------
-Route::post('/feed/{userId}', [App\Http\Controllers\FeedsController::class, 'postFeeds']);
+Route::post('/feed/{userId}', [App\Http\Controllers\FeedsController::class, 'postFeed']);
 Route::get('/feeds/{userId}', [App\Http\Controllers\FeedsController::class, 'apiGetFeeds']);
+Route::get('/feed-like/{userId}/{feedId}', [App\Http\Controllers\FeedsController::class, 'likeFeed']);

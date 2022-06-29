@@ -15,4 +15,27 @@ class Feed extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function like($userId)
+    {
+        $attributes = ['user_id' => $userId];
+
+        if (! $this->likes()->where($attributes)->exists()) {
+            return $this->likes()->create($attributes);
+        }else{
+            return $this->likes()->where($attributes)->delete();
+        }
+    }
+
+    public function isLikedBy()
+    {
+        return $this->hasMany(Like::class, 'feed_id');
+    }
+
+
 }

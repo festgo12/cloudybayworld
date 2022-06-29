@@ -12,16 +12,24 @@ class FeedsController extends Controller
     public function getFeeds()
     {
         $user = Auth::user();
-        return view('feeds.feeds')->with('user', $user);;
+        return view('feeds.feeds')->with('user', $user);
+        ;
     }
 
     public function apiGetFeeds($userId)
     {
-        $feeds = Feed::where('user_id', $userId)->with('user')->orderByDesc('id')->get();
+        $feeds = Feed::where('user_id', $userId)
+            ->with('user')
+            ->with('likes')
+            ->with(['isLikedBy' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }])
+            ->orderByDesc('id')
+            ->get();
         return $feeds;
     }
 
-    public function postFeeds(Request $request, $userId)
+    public function postFeed(Request $request, $userId)
     {
         // response array object containing message and error indicator
         $response = array('message' => '', 'error' => false);
@@ -70,5 +78,11 @@ class FeedsController extends Controller
         $response['data'] = $feed;
 
         return $response;
+    }
+
+    public function likeFeed($userId, $feedId)
+    {
+        $feed = Feed::find($feedId);
+        return $feed->like($userId);
     }
 }

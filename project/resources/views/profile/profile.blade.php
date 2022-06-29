@@ -91,66 +91,13 @@
                             <div class="feed-title">
                                 <h4>Feed Update</h4>
                             </div>
-                            <!-- user profile second-style start-->
-                            @foreach($user->feeds->sortByDesc('created_at') as $feed)
-                            <div class="col-sm-12 ">
-                                <div class="card">
-                                    <div class="profile-img-style">
-                                        <div class="post-border">
-                                        <div class="row">
-                                        <div class="col-sm-8">
-                                            <div class="media"><img class="img-thumbnail rounded-circle me-3" src="{{ ($feed->user['attachments']) ? './assets/uploads/avatar/' . $user->attachments['path'] : './assets/images/avatar/default.jpg' }}" alt="Generic placeholder image">
-                                            <div class="media-body align-self-center">
-                                                <h5 class="mt-0 user-name">{{ $feed->user['firstname'] }} {{ $feed->user['lastname'] }}</h5>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4 align-self-center">
-                                            <div class="float-sm-end"><small>{{ $feed->created_at->diffForHumans()}}</small></div>
-                                        </div>
-                                        </div>
-                                        <hr>
-                    
-                                        {!!
-                                            $feed->attachments ? (
-                                                (count($feed->attachments) > 1) ? (
-                                                    '<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
-                                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/'.$feed->attachments[0]['path'].'" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/'.$feed->attachments[0]['path'].'" itemprop="thumbnail" alt="gallery"></a>
-                                                        </figure>
-                                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/'.$feed->attachments[1]['path'].'" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/'.$feed->attachments[1]['path'].'" itemprop="thumbnail" alt="gallery"></a>
-                                                        </figure>
-                                                    </div>'
-                                                ) : (
-                                                    '<div class="img-container">
-                                                        <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
-                                                            <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/'.$feed->attachments[0]['path'].'" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/'.$feed->attachments[0]['path'].'" itemprop="thumbnail" alt="gallery"></a>
-                                                            </figure>
-                                                        </div>
-                                                    </div>'
-                                                )
-                                            ) : (
-                                                '' 
-                                            )
-                                        !!}
-                                        <p>{{ $feed->content }}</p>
-                                        
-                                        <div class="like-comment">
-                                        <ul class="list-inline">
-                                            <li class="list-inline-item border-right pe-3">
-                                            <label class="m-0"><a href="#"><i class="fa fa-heart"></i></a>  Like</label><span class="ms-2 counter">2659</span>
-                                            </li>
-                                            <li class="list-inline-item ms-2">
-                                            <label class="m-0"><a href="#"><i class="fa fa-comment"></i></a>  Comment</label><span class="ms-2 counter">569</span>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                        <hr>
-                                        
-                                    </div>
-                                    </div>
+                            <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                            <div class="d-flex justify-content-center">
+                                <div id="waitSpinner" class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
                                 </div>
-                            </div>
-                            @endforeach
+                            </div> 
+                            <div id="feedContainer"></div>
                             
                             <div class="col-sm-12 ">
                                 <div class="card">
@@ -251,5 +198,6 @@
         </div>
     </div>
     <!-- Container-fluid Ends-->
+    <script src="{{ asset('./assets/js/dashboard/profile.js') }}"></script>
 </div>
 @endsection

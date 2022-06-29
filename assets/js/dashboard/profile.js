@@ -1,62 +1,8 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
-const waitSpinner = document.querySelector('#waitSpinner');
 const feedContainer = document.querySelector('#feedContainer');
-// Get all the form input elements using a query selector
-const postInput = document.querySelector('#postInput');
-const fileInput = document.querySelector('#fileInput');
-const postButton = document.querySelector('#postButton');
 const userId = document.querySelector('#userId');
-
-// create formData object
-const formData = new FormData();
-
-const handleSelectImages = (event) => {
-    let files = event.target.files;
-    // append the post files to the form data
-    [...files].map((file, i) => formData.append('fileInput[]', file, `fileInput${i}`));
-    // formData.append('fileInput', files[0], 'fileInput');
-}
-
-const handleSavePost = (event) => {
-    event.preventDefault();
-    // do nothing if input is empty
-    if(!postInput.value){
-        return;
-    }
-    // show the spinner while the request is being processed
-    waitSpinner.style.display = 'block';
-    // append the post content to the form data
-    formData.append('postInput', postInput.value);
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {
-            method: 'POST',
-            body: formData
-        });
-        const content = await rawResponse.json();
-        // reset the input fields
-        fileInput.value = '';
-        postInput.value = '';
-        // re-render the feeds block
-        loadFeeds();
-        // hide the spinner after processing the request
-        waitSpinner.style.display = 'none';
-    })();
-}
-/**
- * listen for postButton Onclick event and call 
- * the 'handlePost' function when clicked
- * */
-postButton.addEventListener('click', handleSavePost);
-
-/**
- * listen for fileInput onChange event and call 
- * the 'handleSelectImages' function when changed
- * */
-fileInput.addEventListener('change', handleSelectImages);
-
 
 /**
  * This function sends a post request to 
@@ -75,11 +21,12 @@ fileInput.addEventListener('change', handleSelectImages);
     })();
 }
 
+
 /**
  * This function formats date properly
  * similar to diffForHumans() function in Laravel
  */
-const getTimeAgo = (date) => {
+ const getTimeAgo = (date) => {
     const MINUTE = 60,
         HOUR = MINUTE * 60,
         DAY = HOUR * 24,
@@ -111,18 +58,16 @@ const getTimeAgo = (date) => {
     return `${count} ${unit}${(count > 1) ? 's' : ''} ago`
 }
 
-
 /**
  *  This function gets feeds tailored forna particular user
  */
-const loadFeeds = () => {
+ const loadFeeds = () => {
     // send a get request to the server to fetch feeds
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/feeds/${userId.value}`, {
             method: 'GET',
         });
         const content = await rawResponse.json();
-        console.log(content);
         let feedBlocks = '';
         content.map(feed => {
             return feedBlocks += `
