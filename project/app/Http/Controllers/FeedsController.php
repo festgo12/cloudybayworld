@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Feed;
+use App\Models\User;
 
 class FeedsController extends Controller
 {
@@ -18,7 +19,10 @@ class FeedsController extends Controller
 
     public function apiGetFeeds($userId)
     {
-        $feeds = Feed::where('user_id', $userId)
+        $user = User::find($userId);
+
+        $feeds = Feed::whereIn('user_id', $user->following->pluck('id'))
+            ->orWhere('user_id', $userId)
             ->with('user')
             ->with('likes')
             ->with(['isLikedBy' => function ($query) use ($userId) {
@@ -80,9 +84,9 @@ class FeedsController extends Controller
         return $response;
     }
 
-    public function likeFeed($userId, $feedId)
+    public function likeFeed(Request $request)
     {
-        $feed = Feed::find($feedId);
-        return $feed->like($userId);
+        $feed = Feed::find($request->post('feedId'));
+        return $feed->like($request->post('userId'));
     }
 }

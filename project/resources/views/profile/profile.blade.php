@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<base href="../">
 <div class="page-body">
     <div class="container-fluid">
         <div class="page-title">
@@ -31,6 +32,7 @@
                             <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
                         </div>
                         <div class="info">
+                            <input id="usernameHolder" type="hidden" name="username" value="{{ $user->username }}" />
                             <div class="row">
                                 <div class="col-sm-6 col-lg-4 order-sm-1 order-xl-0">
                                     <div class="row">
@@ -69,17 +71,17 @@
                             </div>
                             <hr>
                             <div class="social-media">
-                                <button class="btn mrl5 btn-lg btn-info default-view"> Follow</button>
+                                <button id="followButton" onclick="handleFollowUser('{{ $user->username }}')" class="btn mrl5 btn-lg btn-info default-view"> Follow</button>
                                 <button class="btn mrl5 btn-lg btn-info default-view"> Message</button>
                                 <!-- <a class="btn mrl5 btn-lg btn-info-gradien default-view" target="_blank" href="index.html" data-bs-original-title="" title="">Check Now</a> -->
                             </div>
                             <div class="follow">
                                 <div class="row">
                                     <div class="col-6 text-md-end border-right">
-                                        <div class="follow-num counter">25869</div><span>Follower</span>
+                                        <div id="followersCountEl" class="follow-num counter">0</div><span>Follower</span>
                                     </div>
                                     <div class="col-6 text-md-start">
-                                        <div class="follow-num counter">659887</div><span>Following</span>
+                                        <div id="followingCountEl" class="follow-num counter">0</div><span>Following</span>
                                     </div>
                                 </div>
                             </div>

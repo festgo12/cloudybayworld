@@ -6,20 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Follow;
 
 class UserProfileController extends Controller
 {
-    public function profile()
+    public function profile($username)
     {
-        $user = Auth::user();
+        $user = User::where('username', $username)->first();
         /**
          * Redirect user to update 
          * profile if the required 
          * data is missing.
          */
-        if (!($user->homeAddress) || !($user->contactNo)) {
-            return redirect('/editProfile?force=1');
-        }
+        // if (!($user->homeAddress) || !($user->contactNo)) {
+        //     return redirect('/editProfile?force=1');
+        // }
         return view('profile.profile')->with('user', $user);
     }
 
@@ -121,5 +122,56 @@ class UserProfileController extends Controller
         }
 
         return $response;
+    }
+
+    public function follow(Request $request)
+    {
+        $user = User::find($request->post('userId'));
+        $follower = User::where('username', $request->post('followerUsername'))->first();
+        
+        // do not allow user follow him/her self
+        if($user->id == $follower->id){
+            return 0;
+        }
+        // follow only the user have not been followed before
+        if(!$user->following()->where('following_user_id', $follower->id)->exists()){
+            return $user->follow($follower);
+        }else{
+            // unfollow user if already following
+            $follow = Follow::where([
+                ['following_user_id', '=', $follower->id],
+                ['user_id', '=', $user->id]
+                ])->first()
+                ->delete();
+            return 0;
+        }
+    }
+
+    public function isFollowing($userId, $username)
+    {
+        $authUser = User::find($userId);
+        $viewUser = User::where('username', $username)->first();
+
+        return $authUser->following()->where('following_user_id', $viewUser->id)->count();
+    }
+
+    /**
+     * This function returns the number of 
+     * followers a user has
+     */
+    public function followers($username)
+    {
+        $user = User::where('username', $username)->first();
+        return $user->followers->count();
+    }
+
+    /**
+     * This function returns the number of 
+     * people following a user
+     */
+    public function following($username)
+    {
+        $user = User::where('username', $username)->first();
+        return $user->following->count();
     }
 }

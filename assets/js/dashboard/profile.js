@@ -8,6 +8,7 @@ const saveButton = document.querySelector('#saveButton');
 
 const feedContainer = document.querySelector('#feedContainer');
 const userId = document.querySelector('#userId');
+const usernameHolder = document.querySelector('#usernameHolder');
 
 
 // create formData object
@@ -61,8 +62,16 @@ avatarInput.addEventListener('change', handleSelectImage);
  const likeFeed = (feedId) => {
     // send a post request to the server with the form data
     (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/feed-like/${userId.value}/${feedId}`, {
-            method: 'GET',
+        const rawResponse = await fetch(`${baseUrl}/api/feed-like`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId.value,
+                feedId: feedId
+            })
         });
         const content = await rawResponse.json();
 
@@ -120,7 +129,6 @@ avatarInput.addEventListener('change', handleSelectImage);
         const content = await rawResponse.json();
         let feedBlocks = '';
         content.map(feed => {
-            console.log(feed.user.attachments.path);
             return feedBlocks += `
                 <div class="col-sm-12 ">
                     <div class="card">
@@ -188,3 +196,81 @@ avatarInput.addEventListener('change', handleSelectImage);
 }
 
 loadFeeds();
+
+/**
+ * This function gets the number of the 
+ * current user from the server
+ */
+const followersCount = () => {
+    const followersCountEl = document.querySelector('#followersCountEl');
+    // send a get request to the server
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/followers/${usernameHolder.value}`, {
+            method: 'GET',
+        });
+        const content = await rawResponse.json();
+        followersCountEl.innerHTML = content;
+    })();
+}
+followersCount();
+
+/**
+ * This function gets the number of 
+ * persons the current user is following from the server
+ */
+const followingCount = () => {
+    const followingCountEl = document.querySelector('#followingCountEl');
+    // send a get request to the server
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/following/${usernameHolder.value}`, {
+            method: 'GET',
+        });
+        const content = await rawResponse.json();
+        followingCountEl.innerHTML = content;
+    })();
+}
+followingCount();
+
+/**
+ * This function gets the number of 
+ * persons the current user is following from the server
+ */
+ const isFollowingCheck = () => {
+    const followButton = document.querySelector('#followButton');
+    // send a get request to the server
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/isFollowing/${userId.value}/${usernameHolder.value}`, {
+            method: 'GET',
+        });
+        const content = await rawResponse.json();
+        if(content){
+            followButton.innerHTML = 'Following';
+        }else{
+            followButton.innerHTML = 'Follow';
+        }
+    })();
+}
+isFollowingCheck();
+
+const handleFollowUser = (username) => {
+    // send a post request to the server with the form data
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/follow`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId.value,
+                followerUsername: username
+            })
+        });
+        const content = await rawResponse.json();
+        console.log(content);
+        // re-render the following count
+        followingCount();
+        // re-render the followButton
+        isFollowingCheck();
+    })();
+}

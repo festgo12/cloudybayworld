@@ -65,8 +65,16 @@ fileInput.addEventListener('change', handleSelectImages);
  const likeFeed = (feedId) => {
     // send a post request to the server with the form data
     (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/feed-like/${userId.value}/${feedId}`, {
-            method: 'GET',
+        const rawResponse = await fetch(`${baseUrl}/api/feed-like`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId.value,
+                feedId: feedId
+            })
         });
         const content = await rawResponse.json();
 
