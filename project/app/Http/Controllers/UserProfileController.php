@@ -78,4 +78,48 @@ class UserProfileController extends Controller
 
         return $response;
     }
+
+    public function updateAvatar(Request $request, $userId)
+    {
+        // response array object containing message and error indicator
+        $response = array('message' => '', 'error' => false);
+
+        $validator = Validator::make($request->all(), [
+            'avatarInput' => 'required|image|max:2048',
+        ]);
+
+        /**
+         * Set error true if the rules are not followed 
+         * Set the error message from the validator to the response object
+         */
+        if ($validator->fails()) {
+            $response['message'] = implode("<br>",$validator->messages()->all());
+            $response['error'] = true;        
+        }else {        
+            //process the request   
+            $user = User::find($userId);
+            
+            // check if an image was uploaded        
+            if ($request->hasfile('avatarInput')) {
+                $file = $request->file('avatarInput');
+
+                $path = $file->store('/avatar', 'uploads');
+                $name = $file->getClientOriginalName();
+                // store the image path, name and type on the DB
+                $attachments = [
+                    'path' => $path,
+                    'name' => $name
+                ];
+                
+                $user->attachments = $attachments;
+            }
+            
+
+            $user->save();
+            // set response message to success
+            $response['message'] = "Profile photo updated!";     
+        }
+
+        return $response;
+    }
 }

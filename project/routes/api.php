@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //------------ User SECTION ------------
 Route::get('/profile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiGetProfile']);
 Route::post('/editProfile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiEditProfile']);
+Route::post('/updateAvatar/{userId}', [App\Http\Controllers\UserProfileController::class, 'updateAvatar']);
 
 //------------ Feeds SECTION ------------
 Route::post('/feed/{userId}', [App\Http\Controllers\FeedsController::class, 'postFeed']);

@@ -25,8 +25,10 @@
                     <div class="card hovercard text-center">
                         <div class="cardheader"></div>
                         <div class="user-image">
-                            <div class="avatar"><img alt="" src="./assets/images/avatar/11.jpg"></div>
-                            <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+                            <div class="avatar">
+                                <img id="realAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                            </div>
+                            <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
                         </div>
                         <div class="info">
                             <div class="row">
@@ -196,6 +198,36 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- The updateAvatar Modal -->
+    <div class="modal" id="updateAvatarModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h6 class="modal-title">Add photo</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input id="avatarInput" class="form-control form-control-sm" id="formFileSm" type="file">
+                <div class="avatar d-flex justify-content-center mt-2">
+                    <img id="tempAvatar" style="display:none" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="saveButton" data-bs-dismiss="modal" type="submit" class="btn btn-primary pull-right my-2">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </div>
     </div>
     <!-- Container-fluid Ends-->
     <script src="{{ asset('./assets/js/dashboard/profile.js') }}"></script>

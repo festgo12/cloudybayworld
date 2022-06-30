@@ -1,8 +1,58 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
+const tempAvatar = document.querySelector('#tempAvatar');
+const realAvatar = document.querySelector('#realAvatar');
+const avatarInput = document.querySelector('#avatarInput');
+const saveButton = document.querySelector('#saveButton');
+
 const feedContainer = document.querySelector('#feedContainer');
 const userId = document.querySelector('#userId');
+
+
+// create formData object
+const formData = new FormData();
+let file;
+
+const handleSelectImage = (event) => {
+    file = event.target.files[0];
+    // display the uploaded image to tempAvatar element
+    tempAvatar.src = URL.createObjectURL(file);
+    tempAvatar.style.display = 'block';
+    // append the post files to the form data
+    formData.append('avatarInput', file, `Avatar-${userId.value}`)
+}
+
+const handleSaveAvatar = (event) => {
+    event.preventDefault();
+    // do nothing if input is empty
+    if(!avatarInput.value){
+        return;
+    }
+    realAvatar.src = URL.createObjectURL(file);
+    // send a post request to the server with the form data
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
+            method: 'POST',
+            body: formData
+        });
+        const content = await rawResponse.json();
+        console.log(content);
+    })();
+}
+
+/**
+ * listen for saveButton Onclick event and call 
+ * the 'handleSaveAvatar' function when clicked
+ * */
+saveButton.addEventListener('click', handleSaveAvatar);
+
+ /**
+  * listen for avatarInput onChange event and call 
+  * the 'handleSelectImages' function when changed
+  * */
+avatarInput.addEventListener('change', handleSelectImage);
+
 
 /**
  * This function sends a post request to 
@@ -70,6 +120,7 @@ const userId = document.querySelector('#userId');
         const content = await rawResponse.json();
         let feedBlocks = '';
         content.map(feed => {
+            console.log(feed.user.attachments.path);
             return feedBlocks += `
                 <div class="col-sm-12 ">
                     <div class="card">
@@ -77,7 +128,7 @@ const userId = document.querySelector('#userId');
                             <div class="post-border">
                             <div class="row">
                             <div class="col-sm-8">
-                                <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/avatar/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
                                 <div class="media-body align-self-center">
                                     <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
                                 </div>
