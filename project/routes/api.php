@@ -33,3 +33,4 @@ Route::get('/isFollowing/{userId}/{username}', [App\Http\Controllers\UserProfile
 Route::post('/feed/{userId}', [App\Http\Controllers\FeedsController::class, 'postFeed']);
 Route::get('/feeds/{userId}', [App\Http\Controllers\FeedsController::class, 'apiGetFeeds']);
 Route::post('/feed-like', [App\Http\Controllers\FeedsController::class, 'likeFeed']);
+Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);

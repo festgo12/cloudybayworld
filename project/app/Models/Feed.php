@@ -37,5 +37,9 @@ class Feed extends Model
         return $this->hasMany(Like::class, 'feed_id');
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
+    }
 
 }

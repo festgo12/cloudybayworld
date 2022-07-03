@@ -8,6 +8,10 @@ const postInput = document.querySelector('#postInput');
 const fileInput = document.querySelector('#fileInput');
 const postButton = document.querySelector('#postButton');
 const userId = document.querySelector('#userId');
+// get the current user profile picture
+const realAvatar = document.querySelector('#realAvatar');
+let commentInput = document.getElementsByClassName('commentInput');
+
 
 // create formData object
 const formData = new FormData();
@@ -78,9 +82,23 @@ fileInput.addEventListener('change', handleSelectImages);
         });
         const content = await rawResponse.json();
 
-        // re-render the feeds block
+        // re-render the feeds block 
         loadFeeds();
     })();
+}
+
+const toggleComment = (feedId) => {
+    const commentBox = document.querySelector(`#commentBox-${feedId}`);
+    commentBox.classList.toggle("d-none");
+    const commentList = document.querySelector(`#commentList-${feedId}`);
+    commentList.classList.toggle("d-none");
+
+    /**
+     * add keyboard enter event listener for all comment inputs,
+     * call a function that sends a POST request 
+     * if a comment has been entered.
+     */
+    ([...commentInput].forEach(el => el.addEventListener('keyup', handlePostComment)));
 }
 
 /**
@@ -134,10 +152,10 @@ const loadFeeds = () => {
         let feedBlocks = '';
         content.map(feed => {
             return feedBlocks += `
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="profile-img-style">
-                            <div class="post-border">
+                            <div class="post-border p-2">
                             <div class="row">
                             <div class="col-sm-8">
                                 <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
@@ -177,15 +195,45 @@ const loadFeeds = () => {
                             <div class="like-comment">
                                 <ul class="list-inline">
                                     <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label><span class="ms-2 counter">${feed.likes.length}</span>
+                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                        <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">
-                                        <label class="m-0"><a href="#"><i class="fa fa-comment"></i></a>  Comment</label><span class="ms-2 counter">569</span>
+                                        <label onclick="toggleComment(${feed.id})" class="m-0 btn p-0"><a href="#"><i class="fa fa-comment"></i></a>  Comment</label>
+                                        <span class="ms-2 counter">${feed.total_comments}</span>
                                     </li>
                                 </ul>
                             </div>
                             <hr>
-                            
+                            <div id="commentList-${feed.id}" class="social-chat d-none">
+                                ${
+                                    // if comment exist show the block below
+                                    (feed.total_comments) ? (feed.comments.slice(0, 2).map(comment => `
+                                        <div class="your-msg">
+                                            <div class="media">
+                                                <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(comment.user.attachments) ? './assets/uploads/' + comment.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
+                                                <div class="media-body"><span class="f-w-600">${comment.user.firstname + ' ' + comment.user.lastname} <span>${getTimeAgo(new Date(comment.created_at))} <i class="fa fa-reply font-primary"></i></span></span>
+                                                    <p>${comment.content}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `)) : ''
+                                }
+                                ${(feed.total_comments > 2) ? '<div class="text-center"><a href="#">More Commnets</a></div>' : ''}
+                            </div>
+                            <div id="commentBox-${feed.id}" class="comments-box d-none">
+                                <div class="media">
+                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${realAvatar.src}">
+                                    <div class="media-body">
+                                        <div class="input-group text-box">
+                                            <input postid="${feed.id}" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-transparent" type="button"><i class="fa fa-smile-o"> </i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                         </div>
                     </div>
@@ -198,5 +246,34 @@ const loadFeeds = () => {
         waitSpinner.style.display = 'none';
     })();
 }
-
 loadFeeds();
+
+const handlePostComment = (event) => {
+    event.preventDefault();
+    // make sure an enter key was pressed before processing
+    if (event.keyCode === 13) {
+        // make sure comment is not an empty string
+        if(event.target.value){
+            // send a post request to the server with the form data
+            (async () => {
+                const rawResponse = await fetch(`${baseUrl}/api/comment`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId.value,
+                        feedId: event.target.attributes.postid.value,
+                        content: event.target.value
+                    })
+                });
+                const content = await rawResponse.json();
+                console.log(content);
+                event.target.value = '';
+                // re-render the feeds block
+                loadFeeds();
+            })();
+        }
+    }
+}

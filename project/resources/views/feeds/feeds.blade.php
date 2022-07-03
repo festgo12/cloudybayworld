@@ -45,6 +45,7 @@
                     
                     <div class="px-4">
                         <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                        <img class="d-none" id="realAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
                         <textarea id="postInput" placeholder="What's happening?"  class="form-control"></textarea>
                         <div class="form-group">
                             <div>

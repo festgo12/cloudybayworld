@@ -25,9 +25,17 @@ class FeedsController extends Controller
             ->orWhere('user_id', $userId)
             ->with('user')
             ->with('likes')
-            ->with(['isLikedBy' => function ($query) use ($userId) {
-            $query->where('user_id', $userId);
-        }])
+            ->with([
+                'isLikedBy' => function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            ])
+            ->with([
+                'comments' => function ($query){
+                    $query->orderByDesc('id')->with('user');
+                }
+            ])
+            ->withCount('comments as total_comments')
             ->orderByDesc('id')
             ->get();
         return $feeds;

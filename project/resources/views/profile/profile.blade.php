@@ -132,10 +132,12 @@
                                             <div class="like-comment">
                                                 <ul class="list-inline">
                                                     <li class="list-inline-item border-right pe-3">
-                                                        <label class="m-0"><a href="#"><i class="fa fa-heart"></i></a>  Like</label><span class="ms-2 counter">2659</span>
+                                                        <label class="m-0"><a href="#"><i class="fa fa-heart"></i></a>  Like</label>
+                                                        <span class="ms-2 counter">2659</span>
                                                     </li>
                                                     <li class="list-inline-item ms-2">
-                                                        <label class="m-0"><a href="#"><i class="fa fa-comment"></i></a>  Comment</label><span class="ms-2 counter">569</span>
+                                                        <label class="m-0 btn p-0"><a href="#"><i class="fa fa-comment"></i></a>  Comment</label>
+                                                        <span class="ms-2 counter">569</span>
                                                     </li>
                                                 </ul>
                                             </div>
