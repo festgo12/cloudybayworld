@@ -148,7 +148,6 @@ const loadFeeds = () => {
             method: 'GET',
         });
         const content = await rawResponse.json();
-        console.log(content);
         let feedBlocks = '';
         content.map(feed => {
             return feedBlocks += `
@@ -171,25 +170,25 @@ const loadFeeds = () => {
                             <hr>
 
                             ${feed.attachments ? (
-                    (feed.attachments.length > 1) ? (
-                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                                    (feed.attachments.length > 1) ? (
+                                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
                                             <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                             </figure>
                                             <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                             </figure>
                                         </div>`
-                    ) : (
-                        `<div class="img-container">
+                                    ) : (
+                                        `<div class="img-container">
                                             <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
                                                 <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                                 </figure>
                                             </div>
                                         </div>`
-                    )
-                ) : (
-                    ''
-                )
-                }
+                                    )
+                                ) : (
+                                    ''
+                                )
+                            }
                             <p>${feed.content}</p>
                             
                             <div class="like-comment">
@@ -254,6 +253,7 @@ const handlePostComment = (event) => {
     if (event.keyCode === 13) {
         // make sure comment is not an empty string
         if(event.target.value){
+            const feedId = event.target.attributes.postid.value;
             // send a post request to the server with the form data
             (async () => {
                 const rawResponse = await fetch(`${baseUrl}/api/comment`, {
@@ -264,15 +264,24 @@ const handlePostComment = (event) => {
                     },
                     body: JSON.stringify({
                         userId: userId.value,
-                        feedId: event.target.attributes.postid.value,
+                        feedId: feedId,
                         content: event.target.value
                     })
                 });
                 const content = await rawResponse.json();
-                console.log(content);
                 event.target.value = '';
-                // re-render the feeds block
-                loadFeeds();
+                // add the new comment to the comment block
+                const commentList = document.querySelector(`#commentList-${feedId}`);
+                const newComment = `
+                <div class="your-msg">
+                    <div class="media">
+                        <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(content.data.user.attachments) ? './assets/uploads/' + content.data.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
+                        <div class="media-body"><span class="f-w-600">${content.data.user.firstname + ' ' + content.data.user.lastname} <span>${getTimeAgo(new Date(content.data.created_at))} <i class="fa fa-reply font-primary"></i></span></span>
+                            <p>${content.data.content}</p>
+                        </div>
+                    </div>
+                </div>`;
+                commentList.insertAdjacentHTML('afterbegin', newComment);
             })();
         }
     }

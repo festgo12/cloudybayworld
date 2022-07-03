@@ -21,7 +21,7 @@ class CommentController extends Controller
         $feed->comments()->save($comment);
 
         $response['message'] = "Comment added successfully";
-        // $response['data'] = $comment;
+        $response['data'] = $comment;
 
         return $response;
     }

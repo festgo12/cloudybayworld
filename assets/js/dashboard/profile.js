@@ -10,6 +10,7 @@ const saveButton = document.querySelector('#saveButton');
 const feedContainer = document.querySelector('#feedContainer');
 const userId = document.querySelector('#userId');
 const usernameHolder = document.querySelector('#usernameHolder');
+let commentInput = document.getElementsByClassName('commentInput');
 
 
 // create formData object
@@ -84,6 +85,15 @@ avatarInput.addEventListener('change', handleSelectImage);
 const toggleComment = (feedId) => {
     const commentBox = document.querySelector(`#commentBox-${feedId}`);
     commentBox.classList.toggle("d-none");
+    const commentList = document.querySelector(`#commentList-${feedId}`);
+    commentList.classList.toggle("d-none");
+
+    /**
+     * add keyboard enter event listener for all comment inputs,
+     * call a function that sends a POST request 
+     * if a comment has been entered.
+     */
+    ([...commentInput].forEach(el => el.addEventListener('keyup', handlePostComment)));
 }
 
 
@@ -136,7 +146,7 @@ const toggleComment = (feedId) => {
         let feedBlocks = '';
         content.map(feed => {
             return feedBlocks += `
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="profile-img-style">
                             <div class="post-border p-2">
@@ -155,25 +165,25 @@ const toggleComment = (feedId) => {
                             <hr>
 
                             ${feed.attachments ? (
-                    (feed.attachments.length > 1) ? (
-                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                                    (feed.attachments.length > 1) ? (
+                                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
                                             <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                             </figure>
                                             <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                             </figure>
                                         </div>`
-                    ) : (
-                        `<div class="img-container">
+                                    ) : (
+                                        `<div class="img-container">
                                             <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
                                                 <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
                                                 </figure>
                                             </div>
                                         </div>`
-                    )
-                ) : (
-                    ''
-                )
-                }
+                                    )
+                                ) : (
+                                    ''
+                                )
+                            }
                             <p>${feed.content}</p>
                             
                             <div class="like-comment">
@@ -189,19 +199,35 @@ const toggleComment = (feedId) => {
                                 </ul>
                             </div>
                             <hr>
+                            <div id="commentList-${feed.id}" class="social-chat d-none">
+                                ${
+                                    // if comment exist show the block below
+                                    (feed.total_comments) ? (feed.comments.slice(0, 2).map(comment => `
+                                        <div class="your-msg">
+                                            <div class="media">
+                                                <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(comment.user.attachments) ? './assets/uploads/' + comment.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
+                                                <div class="media-body"><span class="f-w-600">${comment.user.firstname + ' ' + comment.user.lastname} <span>${getTimeAgo(new Date(comment.created_at))} <i class="fa fa-reply font-primary"></i></span></span>
+                                                    <p>${comment.content}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `)) : ''
+                                }
+                                ${(feed.total_comments > 2) ? '<div class="text-center"><a href="#">More Commnets</a></div>' : ''}
+                            </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
                                 <div class="media">
                                     <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${realAvatar.src}">
                                     <div class="media-body">
                                         <div class="input-group text-box">
-                                            <input class="form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+                                            <input postid="${feed.id}" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
                                             <div class="input-group-append">
                                                 <button class="btn btn-transparent" type="button"><i class="fa fa-smile-o"> </i></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>  
                         </div>
                         </div>
                     </div>
@@ -214,7 +240,6 @@ const toggleComment = (feedId) => {
         waitSpinner.style.display = 'none';
     })();
 }
-
 loadFeeds();
 
 /**
@@ -293,4 +318,44 @@ const handleFollowUser = (username) => {
         // re-render the followButton
         isFollowingCheck();
     })();
+}
+
+const handlePostComment = (event) => {
+    event.preventDefault();
+    // make sure an enter key was pressed before processing
+    if (event.keyCode === 13) {
+        // make sure comment is not an empty string
+        if(event.target.value){
+            const feedId = event.target.attributes.postid.value;
+            // send a post request to the server with the form data
+            (async () => {
+                const rawResponse = await fetch(`${baseUrl}/api/comment`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId.value,
+                        feedId: feedId,
+                        content: event.target.value
+                    })
+                });
+                const content = await rawResponse.json();
+                event.target.value = '';
+                // add the new comment to the comment block
+                const commentList = document.querySelector(`#commentList-${feedId}`);
+                const newComment = `
+                <div class="your-msg">
+                    <div class="media">
+                        <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(content.data.user.attachments) ? './assets/uploads/' + content.data.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
+                        <div class="media-body"><span class="f-w-600">${content.data.user.firstname + ' ' + content.data.user.lastname} <span>${getTimeAgo(new Date(content.data.created_at))} <i class="fa fa-reply font-primary"></i></span></span>
+                            <p>${content.data.content}</p>
+                        </div>
+                    </div>
+                </div>`;
+                commentList.insertAdjacentHTML('afterbegin', newComment);
+            })();
+        }
+    }
 }
