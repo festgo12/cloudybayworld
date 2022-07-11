@@ -25,4 +25,17 @@ class CommentController extends Controller
 
         return $response;
     }
+
+    public function getComment($feedId){
+        // response array object containing message and error indicator
+        $response = array('message' => '', 'error' => false);
+
+        $comments = Comment::where('commentable_id', $feedId)
+            ->orderByDesc('id')
+            ->with('user')
+            ->get();
+        $response['data'] = $comments;
+
+        return $response;
+    }
 }

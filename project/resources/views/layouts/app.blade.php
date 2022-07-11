@@ -232,7 +232,7 @@
                 </li>
                 <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
                 <li class="profile-nav onhover-dropdown p-0 me-0">
-                  <div class="media profile-media"><img class="b-r-10" src="{{ asset('./assets/images/dashboard/profile.jpg') }}" alt="">
+                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? './assets/uploads/'.Auth::user()->attachments['path'] : './assets/images/dashboard/profile.jpg' }}" alt="">
                     <div class="media-body"><span>{{ Auth::user()->username }}</span>
                       <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                     </div>

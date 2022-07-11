@@ -1,7 +1,8 @@
+<base href="../">
+
 @extends('layouts.app')
 
 @section('content')
-<base href="../">
 <div class="page-body">
     <div class="container-fluid">
         <div class="page-title">
@@ -43,14 +44,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del>02 January 1988</del>
+                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-4 order-sm-0 order-xl-1">
                                     <div class="user-designation ">
-                                        <div class="title"><a target="_blank" href="#"><strong>Ada Ayo</strong></a></div>
+                                        <div class="title"><a target="_blank" href="#"><strong>{{ $user->firstname }} {{ $user->lastname }}</strong></a></div>
                                         <!-- <div class="p-online"></div> -->
                                     </div>
                                 </div>
