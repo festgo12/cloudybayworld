@@ -41,6 +41,31 @@ class FeedsController extends Controller
         return $feeds;
     }
 
+    public function apiGetProfileFeeds($username)
+    {
+        $user = User::where('username', $username)->first();
+        $userId = $user->id;
+
+        $feeds = Feed::whereIn('id', $user->likes->pluck('feed_id'))
+            ->orWhere('user_id', $userId)
+            ->with('user')
+            ->with('likes')
+            ->with([
+                'isLikedBy' => function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            ])
+            ->with([
+                'comments' => function ($query){
+                    $query->orderByDesc('id')->with('user');
+                }
+            ])
+            ->withCount('comments as total_comments')
+            ->orderByDesc('id')
+            ->get();
+        return $feeds;
+    }
+
     public function postFeed(Request $request, $userId)
     {
         // response array object containing message and error indicator
