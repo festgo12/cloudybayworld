@@ -139,7 +139,7 @@ const toggleComment = (feedId) => {
  const loadFeeds = () => {
     // send a get request to the server to fetch feeds
     (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/feeds/${userId.value}`, {
+        const rawResponse = await fetch(`${baseUrl}/api/profile-feeds/${usernameHolder.value}`, {
             method: 'GET',
         });
         const content = await rawResponse.json();
@@ -151,13 +151,13 @@ const toggleComment = (feedId) => {
                         <div class="profile-img-style">
                             <div class="post-border p-2">
                             <div class="row">
-                            <div class="col-sm-8">
+                            <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
                                 <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
                                 <div class="media-body align-self-center">
                                     <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
                                 </div>
                                 </div>
-                            </div>
+                            </a>
                             <div class="col-sm-4 align-self-center">
                                 <div class="float-sm-end"><small>${getTimeAgo(new Date(feed.created_at))}</small></div>
                             </div>
@@ -213,7 +213,7 @@ const toggleComment = (feedId) => {
                                         </div>
                                     `)) : ''
                                 }
-                                ${(feed.total_comments > 2) ? '<div class="text-center"><a href="#">More Commnets</a></div>' : ''}
+                                ${(feed.total_comments > 2) ? `<div class="text-center"><a href="javascript:loadMoreComments(${feed.id});">More Commnets</a></div>` : ''}
                             </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
                                 <div class="media">
@@ -358,4 +358,31 @@ const handlePostComment = (event) => {
             })();
         }
     }
+}
+
+const loadMoreComments = (feedId) => {
+    // send a get request to the server
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/comment/${feedId}`, {
+            method: 'GET',
+        });
+        const content = await rawResponse.json();
+        // add the new comment to the comment block
+        const commentList = document.querySelector(`#commentList-${feedId}`);
+        // map through the comments and fill the comment block of the particular feed
+        let commentContents = '';
+        content.data.map(comment => {
+            commentContents += `
+                <div class="your-msg">
+                    <div class="media">
+                        <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(comment.user.attachments) ? './assets/uploads/' + comment.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
+                        <div class="media-body"><span class="f-w-600">${comment.user.firstname + ' ' + comment.user.lastname} <span>${getTimeAgo(new Date(comment.created_at))} <i class="fa fa-reply font-primary"></i></span></span>
+                            <p>${comment.content}</p>
+                        </div>
+                    </div>
+                </div>
+                `
+        });
+        commentList.innerHTML = commentContents;
+    })();
 }
