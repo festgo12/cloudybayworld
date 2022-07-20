@@ -2,6 +2,8 @@ var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
 const waitSpinner = document.querySelector('#waitSpinner');
+const errorMessage = document.querySelector('#errorMessage');
+errorMessage.style.display = 'none';
 const feedContainer = document.querySelector('#feedContainer');
 // Get all the form input elements using a query selector
 const postInput = document.querySelector('#postInput');
@@ -40,9 +42,14 @@ const handleSavePost = (event) => {
             body: formData
         });
         const content = await rawResponse.json();
+        errorMessage.style.display = 'block';
+        if(content.error){
+            errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
+        }
         // reset the input fields
         fileInput.value = '';
         postInput.value = '';
+        formData.delete('fileInput[]')
         // re-render the feeds block
         loadFeeds();
         // hide the spinner after processing the request
@@ -172,15 +179,42 @@ const loadFeeds = () => {
                             ${feed.attachments ? (
                                     (feed.attachments.length > 1) ? (
                                         `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[0]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }
+                                                </a>
                                             </figure>
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[1]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[1]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }
+                                                </a>
                                             </figure>
                                         </div>`
                                     ) : (
                                         `<div class="img-container">
                                             <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
-                                                <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                                <figure itemprop="associatedMedia" itemscope="">
+                                                    <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                    ${(feed.attachments[0]['type'] == 'image') ? `
+                                                        <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                    ` : `
+                                                        <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                            <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                        </video>
+                                                    ` }                                                            
+                                                    </a>
                                                 </figure>
                                             </div>
                                         </div>`

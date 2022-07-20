@@ -165,25 +165,52 @@ const toggleComment = (feedId) => {
                             <hr>
 
                             ${feed.attachments ? (
-                                    (feed.attachments.length > 1) ? (
-                                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                            </figure>
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                            </figure>
-                                        </div>`
-                                    ) : (
-                                        `<div class="img-container">
-                                            <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
-                                                <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                                </figure>
-                                            </div>
-                                        </div>`
-                                    )
+                                (feed.attachments.length > 1) ? (
+                                    `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                            <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                            ${(feed.attachments[0]['type'] == 'image') ? `
+                                                <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                            ` : `
+                                                <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                    <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                </video>
+                                            ` }
+                                            </a>
+                                        </figure>
+                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                            <a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                            ${(feed.attachments[1]['type'] == 'image') ? `
+                                                <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery">
+                                            ` : `
+                                                <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                    <source src="./assets/uploads/${feed.attachments[1]['path']}" type="video/mp4">
+                                                </video>
+                                            ` }
+                                            </a>
+                                        </figure>
+                                    </div>`
                                 ) : (
-                                    ''
+                                    `<div class="img-container">
+                                        <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
+                                            <figure itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[0]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }                                                            
+                                                </a>
+                                            </figure>
+                                        </div>
+                                    </div>`
                                 )
-                            }
+                            ) : (
+                                ''
+                            )
+                        }
                             <p>${feed.content}</p>
                             
                             <div class="like-comment">

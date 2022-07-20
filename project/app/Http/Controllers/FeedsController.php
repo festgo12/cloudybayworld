@@ -72,9 +72,13 @@ class FeedsController extends Controller
         $response = array('message' => '', 'error' => false);
 
         $validator = Validator::make($request->all(), [
-            'postInput' => 'string|max:255',
-            'fileInput' => 'required|mimes:png,jpg,jpeg,gif|max:2048',
+            'postInput' => 'required|string|max:255',
+            'fileInput' => 'max:2048',
         ]);
+
+        $requiredMemeTypes = ['video/x-ms-asf', 'video/x-flv', 'video/mp4', 'application/x-mpegURL',
+            'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv', 
+            'video/avi', 'video/webm', 'image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp'];
 
         /**
          * Set error true if the rules are not followed 
@@ -83,36 +87,42 @@ class FeedsController extends Controller
         if ($validator->fails()) {
             $response['message'] = implode("<br>", $validator->messages()->all());
             $response['error'] = true;
-        }
+        }else{
+            // create a new Feed object
+            $feed = new Feed();
+            $feed->content = $request->post('postInput');
+            // create a new unique string for the slug
+            $bytes = random_bytes(20);
+            $slug = bin2hex($bytes);
+            $feed->slug = $slug;
+            $feed->user_id = $userId;
 
-        // create a new Feed object
-        $feed = new Feed();
-        $feed->content = $request->post('postInput');
-        // create a new unique string for the slug
-        $bytes = random_bytes(20);
-        $slug = bin2hex($bytes);
-        $feed->slug = $slug;
-        $feed->user_id = $userId;
-
-        // check if an image was uploaded        
-        if ($request->hasfile('fileInput')) {
-            $attachments = [];
-            foreach ($request->file('fileInput') as $file) {
-                $path = $file->store('', 'uploads');
-                $name = $file->getClientOriginalName();
-                // store the image path, name and type on the DB
-                array_push($attachments, [
-                    'path' => $path,
-                    'type' => 'image',
-                    'name' => $name
-                ]);
+            // check if an image was uploaded        
+            if ($request->hasfile('fileInput')) {
+                $attachments = [];
+                foreach ($request->file('fileInput') as $file) {
+                    // check if video/image has an accepted mime type
+                    if(!(in_array($file->getMimeType(), $requiredMemeTypes))){
+                        $response['message'] = "Please upload a valid image/video file";
+                        $response['error'] = true;
+                        return $response;
+                    }
+                    $path = $file->store('', 'uploads');
+                    $name = $file->getClientOriginalName();
+                    // store the image path, name and type on the DB
+                    array_push($attachments, [
+                        'path' => $path,
+                        'type' => str_contains($file->getMimeType(), 'video') ? 'video':'image',
+                        'name' => $name
+                    ]);
+                }
+                $feed->attachments = $attachments;
             }
-            $feed->attachments = $attachments;
-        }
 
-        $feed->save();
-        $response['message'] = "Post added successfully";
-        $response['data'] = $feed;
+            $feed->save();
+            $response['message'] = "Post added successfully";
+            $response['data'] = $feed;
+        }
 
         return $response;
     }
