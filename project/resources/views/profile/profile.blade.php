@@ -59,12 +59,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>{{ $user->contactNo }}</span>
+                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>{{ ($user->contactNo) ? $user->contactNo : '-------------' }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>{{ $user->homeAddress }}</span>
+                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>{{ ($user->homeAddress) ? $user->homeAddress : '-----------' }}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -42,8 +42,8 @@ const handleSavePost = (event) => {
             body: formData
         });
         const content = await rawResponse.json();
-        errorMessage.style.display = 'block';
         if(content.error){
+            errorMessage.style.display = 'block';
             errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
         }
         // reset the input fields

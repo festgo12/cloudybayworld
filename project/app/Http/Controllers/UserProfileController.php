@@ -31,10 +31,15 @@ class UserProfileController extends Controller
         return view('profile.editProfile')->with('user', $user);
     }
 
+    public function apiGetProfileByUsername($username){
+        $user = User::where('username', $username)->first();
+        return ($user) ? $user : 0;
+    }
+
     public function apiGetProfile($userId)
     {
         $user = User::find($userId);
-        return $user;
+        return ($user) ? $user : 0;
     }
 
     public function apiEditProfile(Request $request, $userId)

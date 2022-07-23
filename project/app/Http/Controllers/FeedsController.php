@@ -14,7 +14,6 @@ class FeedsController extends Controller
     {
         $user = Auth::user();
         return view('feeds.feeds')->with('user', $user);
-        ;
     }
 
     public function apiGetFeeds($userId)

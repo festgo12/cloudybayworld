@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //------------ User SECTION ------------
 Route::get('/profile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiGetProfile']);
+Route::get('/profileByUsername/{username}', [App\Http\Controllers\UserProfileController::class, 'apiGetProfileByUsername']);
 Route::post('/editProfile/{userId}', [App\Http\Controllers\UserProfileController::class, 'apiEditProfile']);
 Route::post('/updateAvatar/{userId}', [App\Http\Controllers\UserProfileController::class, 'updateAvatar']);
 Route::post('/follow', [App\Http\Controllers\UserProfileController::class, 'follow']);
@@ -37,3 +38,7 @@ Route::post('/feed-like', [App\Http\Controllers\FeedsController::class, 'likeFee
 Route::get('/comment/{feedId}', [App\Http\Controllers\CommentController::class, 'getComment']);
 Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);
 
+//------------ Shop SECTION ------------
+Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
+Route::post('/createShop', [App\Http\Controllers\ShopController::class, 'store']);
+Route::get('/getShops/{categoryHash}', [App\Http\Controllers\ShopController::class, 'getShops']);
