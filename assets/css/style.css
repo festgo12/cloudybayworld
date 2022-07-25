@@ -27153,7 +27153,7 @@ footer {
 }
 
 .user-profile .hovercard .cardheader {
-    background: url(../images/other-images/cover.jpeg);
+    background: url(../images/other-images/default-cover.jpg);
     background-size: cover;
     background-position: 10%;
     height: 250px
