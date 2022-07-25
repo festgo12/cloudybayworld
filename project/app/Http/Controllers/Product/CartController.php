@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Wishlist;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use App\Models\Childcategory;
@@ -20,8 +21,10 @@ class CartController extends Controller
 {
     public function cart()
     {
+        $wishCount = count(Wishlist::all());
+
         if (!Session::has('cart')) {
-            return view('front.product.cart');
+            return view('front.product.cart', compact('wishCount'));
         }
         if (Session::has('already')) {
             Session::forget('already');
@@ -50,15 +53,15 @@ class CartController extends Controller
             $tax = ($totalPrice / 100) * $tx;
             $mainTotal = $totalPrice + $tax;
         }
-
-        return view('front.product.cart', compact('products','totalPrice','mainTotal','tx')); 
+        // dd($products);
+        return view('front.product.cart', compact('products','totalPrice','mainTotal','tx', 'wishCount')); 
     }
 
     public function cartview()
     {
         // load the min cart on top nav
 
-        // return view('load.cart'); 
+        return view('front.product.load.mini-cart'); 
     }
 
     public function addtocart($id)
@@ -90,7 +93,7 @@ class CartController extends Controller
             }
                 if($lcheck == 0)
                 {
-                    return redirect()->route('front.cart')->with('unsuccess','this product is out of stock');              
+                    return redirect()->route('product.cart')->with('unsuccess','this product is out of stock');              
                 }
         }
 
@@ -163,18 +166,18 @@ class CartController extends Controller
         $cart->add($prod, $prod->id, $size ,$color, $keys, $values);
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['dp'] == 1)
         {
-            return redirect()->route('front.cart')->with('unsuccess','this product is already in the cart');
+            return redirect()->route('product.cart')->with('unsuccess','this product is already in the cart');
         }
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['stock'] < 0)
         {
-            return redirect()->route('front.cart')->with('unsuccess','this product is out of stock');
+            return redirect()->route('product.cart')->with('unsuccess','this product is out of stock');
         }
         
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
         {
             if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'] > $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
             {
-                return redirect()->route('front.cart')->with('unsuccess','this product is out of stock');
+                return redirect()->route('product.cart')->with('unsuccess','this product is out of stock');
             }           
         }
 
@@ -182,7 +185,7 @@ class CartController extends Controller
         foreach($cart->items as $data)
         $cart->totalPrice += $data['price'];
         Session::put('cart',$cart);
-         return redirect()->route('front.cart');
+         return redirect()->route('product.cart');
     }  
 
 
@@ -499,7 +502,7 @@ class CartController extends Controller
             }
                 if($lcheck == 0)
                 {
-                    return redirect()->route('front.cart')->with('unsuccess','this product is out of stock');           
+                    return redirect()->route('product.cart')->with('unsuccess','this product is out of stock');           
                 }
         }
         if(empty($size))
@@ -525,18 +528,18 @@ class CartController extends Controller
         $cart->addnum($prod, $prod->id, $qty, $size,$color,$size_qty,$size_price,$size_key,$keys,$values);
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['dp'] == 1)
         {
-            return redirect()->route('front.cart')->with('unsuccess','this product is already in the cart');  
+            return redirect()->route('product.cart')->with('unsuccess','this product is already in the cart');  
         }
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['stock'] < 0)
         {
-            return redirect()->route('front.cart')->with('unsuccess','this product is out of stock'); 
+            return redirect()->route('product.cart')->with('unsuccess','this product is out of stock'); 
         }
 
         if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
         {
             if($cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['qty'] > $cart->items[$id.$size.$color.str_replace(str_split(' ,'),'',$values)]['size_qty'])
             {
-                return redirect()->route('front.cart')->with('unsuccess','this product is out of stock'); 
+                return redirect()->route('product.cart')->with('unsuccess','this product is out of stock'); 
             }           
         }
 
@@ -544,7 +547,7 @@ class CartController extends Controller
         foreach($cart->items as $data)
         $cart->totalPrice += $data['price'];        
         Session::put('cart',$cart);
-        return redirect()->route('front.cart');      
+        return redirect()->route('product.cart');      
     }  
 
 
@@ -563,12 +566,13 @@ class CartController extends Controller
         {
             $curr = Currency::where('is_default','=',1)->first();
         }
+        
         $id = $_GET['id'];
         $itemid = $_GET['itemid'];
         $size_qty = $_GET['size_qty'];
         $size_price = $_GET['size_price'];
         $prod = Product::where('id','=',$id)->first(['id','user_id','slug','name','size','size_qty','size_price','color','price','stock','type','file', 'image','link','license','license_qty','whole_sell_qty','whole_sell_discount','attributes']);
-
+        // dd('ok');
         if($prod->user_id != 0){
         $gs = Generalsetting::findOrFail(1);
         $prc = $prod->price + $gs->fixed_commission + ($prod->price/100) * $gs->percentage_commission ;

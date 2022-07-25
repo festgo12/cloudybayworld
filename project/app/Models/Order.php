@@ -46,7 +46,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-         'user_id',   'cart',   'method',   'shipping',   'pickup_location',   'totalQty',   'pay_amount',   'txnid',   'charge_id',   'order_number',   'payment_status',   'customer_email',   'customer_name',   'customer_country',   'customer_phone',   'customer_address',   'customer_city',   'customer_zip',   'shipping_name',   'shipping_country',   'shipping_email',   'shipping_phone',   'shipping_address',   'shipping_city',   'shipping_zip',   'order_note',   'coupon_code',   'coupon_discount',   'status',   'shipping_cost',   'pay_id',   'vendor_shipping_id',   'tax',  
+         'user_id',   'cart',   'method',   'shipping',   'pickup_location',   'totalQty',   'pay_amount',   'txnid',   'charge_id',   'order_number',   'payment_status',   'customer_email',   'customer_name',   'customer_country',   'customer_phone',   'customer_address',   'customer_city',   'customer_zip',   'shipping_name',   'shipping_country',   'shipping_email',   'shipping_phone',   'shipping_address',   'shipping_city',   'shipping_zip',   'order_note',   'coupon_code',   'coupon_discount',   'status',   'shipping_cost',  'currency_sign',   'currency_value',   'pay_id',   'vendor_shipping_id',   'tax',  
     ];
 
     public function vendororders()

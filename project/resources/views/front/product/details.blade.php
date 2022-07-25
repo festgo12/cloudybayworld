@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title')
+{{mb_strlen($productt['name'],'utf-8')
+> 35 ? mb_substr($productt['name'] ,0,35,'utf-8').'...' : $productt['name']}}
 @endsection
 
 @section('style')
@@ -8,7 +10,7 @@
 @endsection
 
 @section('content')
-
+ 
 @php
      
       $attrPrice = 0;
@@ -51,7 +53,7 @@
                   @if (count($productt->galleries))
                       
                   <div class="product-slider owl-carousel owl-theme" id="sync1">
-                    <div class="item"><img src="{{ asset('assets/uploads/products').'/'.$productt->image }}" alt=""></div>
+                    <div class="item"><img src="{{ $productt->image ? asset('assets/uploads/products/'.$productt->image):asset('assets/uploads/noimage.png') }}" alt=""></div>
 
                       @foreach($productt->galleries as $gal)
                     <div class="item"><img src="{{ asset('assets/uploads/products/gal').'/'.$gal->photo }}" alt=""></div>
@@ -59,7 +61,7 @@
 
                   </div>
                   <div class="owl-carousel owl-theme" id="sync2">
-                    <div class="item"><img src="{{ asset('assets/uploads/products').'/'.$productt->image }}" alt=""></div>
+                    <div class="item"><img src="{{ $productt->image ? asset('assets/uploads/products/'.$productt->image):asset('assets/uploads/noimage.png') }}" alt=""></div>
 
                     @foreach($productt->galleries as $gal)
                     <div class="item"><img src="{{ asset('assets/uploads/products/gal').'/'.$gal->photo }}" alt=""></div>
@@ -67,10 +69,10 @@
                   </div>
                   @else
                   <div class="product-slider owl-carousel owl-theme" id="sync1">
-                    <div class="item"><img src="{{ asset('assets/uploads/products').'/'.$productt->image }}" alt=""></div>
+                    <div class="item"><img src="{{ $productt->image ? asset('assets/uploads/products/'.$productt->image):asset('assets/uploads/noimage.png') }}" alt=""></div>
                   </div>
                   <div class="owl-carousel owl-theme" id="sync2">
-                    <div class="item"><img src="{{ asset('assets/uploads/products').'/'.$productt->image }}" alt=""></div>
+                    <div class="item"><img src="{{ $productt->image ? asset('assets/uploads/products/'.$productt->image):asset('assets/uploads/noimage.png') }}" alt=""></div>
                   </div>
                       
                   @endif
@@ -82,7 +84,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="product-page-details">
-                  <h3>{{ $productt->name }} - {{ $productt->id }}</h3>
+                  <h3>{{ $productt->name }}</h3>
                 </div>
                 <div class="product-price">{{ $productt->showPrice() }}
                   <del>{{ $productt->showPreviousPrice() }} </del>
@@ -102,8 +104,8 @@
                   <table class="product-page-width">
                     <tbody>
                       <tr>
-                        <td> <b>Brand &nbsp;&nbsp;&nbsp;:</b></td>
-                        <td>Pixelstrap</td>
+                        <td> <b>Brand Store &nbsp;&nbsp;&nbsp;:</b></td>
+                        <td>cloudbay store</td>
                       </tr>
                       <tr>
                         <td> <b>Availability &nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp;</b></td>
@@ -119,10 +121,7 @@
                         <td> <b>Seller &nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp;</b></td>
                         <td>{{ $productt->user->username }}</td>
                       </tr>
-                      <tr>
-                        <td> <b>Fabric &nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp;</b></td>
-                        <td>Cotton</td>
-                      </tr>
+                     
                     </tbody>
                   </table>
                 </div>
@@ -134,9 +133,9 @@
                   <div class="col-md-6">
                     <div class="product-icon">
                       <ul class="product-social f-right">
-                        <li class="d-inline-block"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li class="d-inline-block"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li class="d-inline-block"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li class="d-inline-block"><a href="http://facebook.com"><i class="fa fa-facebook"></i></a></li>
+                        <li class="d-inline-block"><a href="http://twitter.com"><i class="fa fa-twitter"></i></a></li>
+                        <li class="d-inline-block"><a href="http://instagram.com"><i class="fa fa-instagram"></i></a></li>
                       </ul>
                       
                     </div>
@@ -148,25 +147,26 @@
                     <h6 class="product-title">Rate Now</h6>
                   </div>
                   <div class="col-md-6">
-                    <form class="d-inline-block f-right">
                           
-                        <div class="d-flex">
-                          <select id="u-rating-fontawesome" name="rating" autocomplete="off">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                          </select><span>(250 review)</span>
+                        <div class="d-flex f-right">
+                          
+                          <div class="rating">
+                            <i class="fa {{ (App\Models\Rating::rating($productt->id) >= 1) ? ' fa-star' : 'fa-star-o'}}"></i>
+                            <i class="fa {{ (App\Models\Rating::rating($productt->id) >= 2) ? ' fa-star' : 'fa-star-o'}}"></i>
+                            <i class="fa {{ (App\Models\Rating::rating($productt->id) >= 3) ? ' fa-star' : 'fa-star-o'}}"></i>
+                            <i class="fa {{ (App\Models\Rating::rating($productt->id) >= 4) ? ' fa-star' : 'fa-star-o'}}"></i>
+                            <i class="fa {{ (App\Models\Rating::rating($productt->id) >= 5) ? ' fa-star' : 'fa-star-o'}}"></i>
+                           
+                          </div>
+                          <a href="#review-top-tab"><span>({{ count($productt->ratings) }} reviews)</span></a>
                         </div>
-                    </form>
                   </div>
                 </div>
                 <hr>
                 <div class="m-t-15">
                   <button  class="btn btn-info m-r-10 addtocart" data-href="{{ route('product.cart.quickadd',$productt->id) }}" type="button" title=""> <i class="fa fa-shopping-basket me-1"></i>Add To Cart</button>
-                  <button  class="btn btn-success m-r-10" type="button" title=""> <i class="fa fa-shopping-cart me-1"></i>Buy Now</button>
-                  <button  class="btn btn-secondary m-r-10 addwish" type="button" title=""> <i class="fa fa-heart me-1"></i>Add To WishList</button>
+                  {{-- <button  class="btn btn-success m-r-10" type="button" title=""> <i class="fa fa-shopping-cart me-1"></i>Buy Now</button> --}}
+                  <button  class="btn btn-secondary m-r-10 addwish" data-href="{{ route('product-wishlist-add',$productt->id) }}" type="button" title=""> <i class="fa fa-heart me-1"></i>Add To WishList</button>
                 </div>
               </div>
             </div>
@@ -235,16 +235,16 @@
         <div class="row product-page-main">
           <div class="col-sm-12">
             <ul class="nav nav-tabs border-tab mb-0" id="top-tab" role="tablist">
-              <li class="nav-item"><a class="nav-link active" id="top-home-tab" data-bs-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="false">Febric</a>
+              <li class="nav-item"><a class="nav-link " id="top-home-tab" data-bs-toggle="tab" href="#top-home" role="tab" aria-controls="top-home" aria-selected="false">Brand</a>
                 <div class="material-border"></div>
               </li>
               <li class="nav-item"><a class="nav-link" id="profile-top-tab" data-bs-toggle="tab" href="#top-profile" role="tab" aria-controls="top-profile" aria-selected="false">Video</a>
                 <div class="material-border"></div>
               </li>
-              <li class="nav-item"><a class="nav-link" id="contact-top-tab" data-bs-toggle="tab" href="#top-contact" role="tab" aria-controls="top-contact" aria-selected="true">Details</a>
+              <li class="nav-item"><a class="nav-link active" id="contact-top-tab" data-bs-toggle="tab" href="#top-contact" role="tab" aria-controls="top-contact" aria-selected="true">Details</a>
                 <div class="material-border"></div>
               </li>
-              <li class="nav-item"><a class="nav-link" id="brand-top-tab" data-bs-toggle="tab" href="#top-brand" role="tab" aria-controls="top-brand" aria-selected="true">Brand</a>
+              <li class="nav-item"><a class="nav-link" id="review-top-tab" data-bs-toggle="tab" href="#top-review" role="tab" aria-controls="top-review" aria-selected="true">Reviews</a>
                 <div class="material-border"></div>
               </li>
             </ul>
@@ -255,16 +255,66 @@
               </div>
               <div class="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
                 {{-- @if($productt->youtube != null) --}}
-                      <a href="{{ $productt->youtube }}" class="video-play-btn mfp-iframe">
-                        <i class="fas fa-play"></i>
-                      </a>
+                <center class="mt-5"><a target="_blank" href="{{ $productt->youtube }}" class="video-play-btn mfp-iframe">
+                  <i class="fa fa-play"></i>
+                      </a></center>
                     {{-- @endif --}}
                 </div>
               <div class="tab-pane fade" id="top-contact" role="tabpanel" aria-labelledby="contact-top-tab">
                 <p class="mb-0 m-t-20">{{ $productt->details }}</p>
               </div>
-              <div class="tab-pane fade" id="top-brand" role="tabpanel" aria-labelledby="brand-top-tab">
-                <p class="mb-0 m-t-20">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+              <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="brand-top-tab">
+                <p class="mb-0 m-t-20">Give your review for this product</p>
+                <div>
+
+                  <hr>
+
+                  <div class="row mt-3">
+                    <form action="{{ route('product.review.submit') }}" id="reviewform" method="post" data-href="{{ route('product.reviews',$productt->id) }}" class="d-inline-block">
+                      @csrf
+                      
+                      <div class="d-flex">
+                            <h6 class="product-title mr-5">Rate Now</h6>
+                            <select id="u-rating-fontawesome" name="rating" autocomplete="off">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                            </select>
+                            <span class="select-star ml-2">1 star</span>
+                          </div>
+                          <input type="hidden" name="product_id" value="{{ $productt->id }}">
+                          <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                          <div class="row">
+                            <div class="col-xl-6 col-sm-12">
+                                <div class="row">
+                                  
+                                
+                                <div class="mb-3">
+                                  <label for="zip">Review (optional)</label>
+                                  <textarea class="form-control" name="review" id="" cols="20" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                  <div class="order-place review-btn"><button class="btn btn-info">Review </button></div>
+
+                                </div>
+                               
+                            </div>
+                            
+                          </div>
+
+
+                      </form>
+                      <hr>
+                      
+                      <div id="reviews-section">
+                        @include('front.product.load.reviews')
+                      </div>
+                  </div>
+                 
+                  
+                </div>
               </div>
             </div>
           </div>
@@ -272,6 +322,7 @@
       </div>
     </div>
     <!-- Container-fluid Ends-->
+  </div>
   </div>
 @endsection
 

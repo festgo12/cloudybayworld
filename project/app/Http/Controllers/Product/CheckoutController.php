@@ -26,12 +26,14 @@ class CheckoutController extends Controller
     public function checkout()
     {
         if (!Session::has('cart')) {
-            return redirect()->route('front.cart')->with('success',"You don't have any product to checkout.");
+            return redirect()->route('product.cart')->with('success',"You don't have any product to checkout.");
         }
         $gs = Generalsetting::findOrFail(1);
         $dp = 1;
         $vendor_shipping_id = 0;
-        $vendor_packing_id = 0;
+      
+        $countries  = DB::table('countries')->get();
+        // get currency
             if (Session::has('currency')) 
             {
               $curr = Currency::find(Session::get('currency'));
@@ -41,10 +43,10 @@ class CheckoutController extends Controller
                 $curr = Currency::where('is_default','=',1)->first();
             }
 
-        // If a user is Authenticated then there is no problm user can go for checkout
+        // // If a user is Authenticated then there is no problm user can go for checkout
 
-        if(Auth::guard('web')->check())
-        {
+        // if(Auth::guard('web')->check())
+        // {
                 $pickups = Pickup::all();
                 $oldCart = Session::get('cart');
                 $cart = new Cart($oldCart);
@@ -80,7 +82,7 @@ class CheckoutController extends Controller
                 }
 
 
-
+                // Checking if it is a physical product for shipping
                 foreach ($products as $prod) {
                     if($prod['item']['type'] == 'Physical')
                     {
@@ -92,6 +94,7 @@ class CheckoutController extends Controller
                 {
                 $ship  = 0;                    
                 }
+                //total price
                 $total = $cart->totalPrice;
                 $coupon = Session::has('coupon') ? Session::get('coupon') : 0;
                 if($gs->tax != 0)
@@ -108,10 +111,10 @@ class CheckoutController extends Controller
                 $total = Session::get('coupon_total');  
                 $total = $total + round(0 * $curr->value, 2); 
                 }
+// dd($dp, $shipping_data);
 
-
-        return view('front.product.checkout', ['products' => $cart->items, 'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id, 'vendor_packing_id' => $vendor_packing_id]);             
-        }
+        return view('front.product.checkout', ['products' => $cart->items, 'countries' => $countries ,'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id]);             
+        // }
 
         
 
@@ -124,7 +127,7 @@ class CheckoutController extends Controller
     {
       
         if (!Session::has('cart')) {
-            return redirect()->route('front.cart')->with('success',"You don't have any product to checkout.");
+            return redirect()->route('product.cart')->with('success',"You don't have any product to checkout.");
         }
             if (Session::has('currency')) 
             {
@@ -139,6 +142,7 @@ class CheckoutController extends Controller
         $cart = new Cart($oldCart);
         foreach($cart->items as $key => $prod)
         {
+            //checking licensing if exit
         if(!empty($prod['item']['license']) && !empty($prod['item']['license_qty']))
         {
                 foreach($prod['item']['license_qty']as $ttl => $dtl)
@@ -163,46 +167,47 @@ class CheckoutController extends Controller
                 }
         }
         }
+        // create order
         $order = new Order;
-        $success_url = action('Product\PaymentController@payreturn');
+        $success_url = action('App\Http\Controllers\Product\PaymentController@payreturn');
         $item_name = "CloudBay World Order";
         $item_number = Str::random(10);
         $order['user_id'] = $request->user_id;
-        $order['cart'] = utf8_encode(bzcompress(serialize($cart), 9)); 
+        $order['cart'] = utf8_encode( bzcompress(serialize($cart), 9)); 
         $order['totalQty'] = $request->totalQty;
-        $order['pay_amount'] = round($request->total / $curr->value, 2);
+        $order['pay_amount'] = round($request->total / $curr->value, 2) ;
+
         $order['method'] = $request->method;
         $order['shipping'] = $request->shipping;
         $order['pickup_location'] = $request->pickup_location;
         $order['customer_email'] = $request->email;
-        $order['customer_name'] = $request->name;
+        $order['customer_name'] = $request->firstname.' '.$request->lastname;
         $order['shipping_cost'] = $request->shipping_cost;
         // $order['packing_cost'] = $request->packing_cost;
-        $order['tax'] = $request->tax;
+        $order['tax'] = $gs->tax;
         $order['customer_phone'] = $request->phone;
         $order['order_number'] = Str::random(10);
         $order['customer_address'] = $request->address;
         $order['customer_country'] = $request->customer_country;
         $order['customer_city'] = $request->city;
         $order['customer_zip'] = $request->zip;
-        $order['shipping_email'] = $request->shipping_email;
-        $order['shipping_name'] = $request->shipping_name;
-        $order['shipping_phone'] = $request->shipping_phone;
-        $order['shipping_address'] = $request->shipping_address;
-        $order['shipping_country'] = $request->shipping_country;
-        $order['shipping_city'] = $request->shipping_city;
-        $order['shipping_zip'] = $request->shipping_zip;
+        $order['shipping_email'] = $request->email;
+        $order['shipping_name'] = $request->firstname.' '.$request->lastname;
+        $order['shipping_phone'] = $request->phone;
+        $order['shipping_address'] = $request->address;
+        $order['shipping_country'] = $request->customer_country;
+        $order['shipping_city'] = $request->city;
+        $order['shipping_zip'] = $request->zip;
         $order['order_note'] = $request->order_notes;
-        $order['coupon_code'] = $request->coupon_code;
-        $order['coupon_discount'] = $request->coupon_discount;
+        // $order['coupon_code'] = $request->coupon_code;
+        // $order['coupon_discount'] = $request->coupon_discount;
         $order['dp'] = $request->dp;
         $order['payment_status'] = "Pending";
-        // $order['currency_sign'] = $curr->sign;
-        // $order['currency_value'] = $curr->value;
+        $order['currency_sign'] = $curr->sign;
+        $order['currency_value'] = $curr->value;
         $order['vendor_shipping_id'] = $request->vendor_shipping_id;
-        // $order['vendor_packing_id'] = $request->vendor_packing_id;
 
-        
+        // dd( $order, $request->total);
         $order->save();
 
         $track = new OrderTrack;
@@ -211,6 +216,7 @@ class CheckoutController extends Controller
         $track->order_id = $order->id;
         $track->save();
 
+                    // subtract coupon used
                     if($request->coupon_id != "")
                     {
                        $coupon = Coupon::findOrFail($request->coupon_id);
@@ -241,7 +247,7 @@ class CheckoutController extends Controller
             }
         }
 
-
+        //update product stock 
         foreach($cart->items as $prod)
         {
             $x = (string)$prod['stock'];
@@ -257,6 +263,7 @@ class CheckoutController extends Controller
 
         $notf = null;
 
+        // create the vendor orders for the product
         foreach($cart->items as $prod)
         {
             if($prod['item']['user_id'] != 0)
@@ -276,6 +283,7 @@ class CheckoutController extends Controller
         // check notifiable users
         if(!empty($notf))
         {
+            //vendor users
             $users = array_unique($notf);
             foreach ($users as $user) {
                 // Notify Vendor users

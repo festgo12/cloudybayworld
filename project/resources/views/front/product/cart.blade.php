@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Cart
 @endsection
 
 @section('style')
@@ -28,8 +29,15 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="card">
-                  <div class="card-header">
+                  <div class="card-header d-flex justify-content-between">
                     <h5>Cart</h5>
+
+                    @if (Session::has('success'))
+                    <div class="text-danger">
+                      <p>{{ Session::get('success') }}</p>
+                    </div>
+                        
+                    @endif
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -58,18 +66,41 @@
                               </td>
                               <td>{{ App\Models\Product::convertPrice($product['item_price']) }}</td>
                               <td>
+                                    <input type="hidden" class="prodid" value="{{$product['item']['id']}}">
+                                      <input type="hidden" class="itemid"
+                                        value="{{$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])}}">
+                                      <input type="hidden" class="size_qty" value="{{$product['size_qty']}}">
+                                      <input type="hidden" class="size_price" value="{{$product['size_price']}}">
                                 <fieldset class="qty-box">
                                   <div class="input-group">
-                                    <input class="touchspin text-center cart-quantity" type="text" value="{{ $product['qty'] }}">
+                                    <input  class="touchspin text-center cart-quantity qty{{$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])}}" type="text" value="{{ $product['qty'] }}">
                                   </div>
                                 </fieldset>
+
+                                    {{-- <div class="qty-box d-flex">
+
+                                      <input type="hidden" class="prodid" value="{{$product['item']['id']}}">
+                                      <input type="hidden" class="itemid"
+                                        value="{{$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])}}">
+                                      <input type="hidden" class="size_qty" value="{{$product['size_qty']}}">
+                                      <input type="hidden" class="size_price" value="{{$product['size_price']}}">
+              
+                                      <div class="input-group">
+                                          <span class="input-group-prepend">
+                                          <button class="btn quantity-left-minus reducing" type="button" data-type="minus" data-field=""><i data-feather="minus"></i></button></span>
+                                          <input class="form-control input-number qty{{$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])}}" 
+                                          type="text" name="quantity" value="{{ $product['qty'] }}"><span class="input-group-prepend">
+                                          <button class="btn quantity-right-plus adding" type="button" data-type="plus" data-field=""><i data-feather="plus"></i></button></span>
+                                      </div>
+                                  </div> --}}
                               </td>
                               <td><i class="removecart cart-remove text-danger" data-feather="x-circle" 
                                 data-class="cremove{{ $product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values']) }}"
                                 data-href="{{ route('product.cart.remove',$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])) }}">
                               </i></td>
 
-                              <td>{{ App\Models\Product::convertPrice($product['price']) }}</td>
+                              <td class="prc{{$product['item']['id'].$product['size'].$product['color'].str_replace(str_split(' ,'),'',$product['values'])}}" >
+                                {{ App\Models\Product::convertPrice($product['price']) }}</td>
                             </tr>
                             @endforeach
                             <tr>
@@ -108,7 +139,9 @@
                               }} </span></td> --}}
                             </tr>
                             <tr>
-                              <td class="text-end" colspan="5"><a class="btn btn-secondary cart-btn-transform" href="{{ route('product.index') }}">continue shopping</a></td>
+                              
+                              <td class="text-end" colspan="1"><a class="" href="{{ route('product-wishlists') }}"><div class="wish-box"><i class="font-info" data-feather="heart"></i><span id="wish-count" class="badge rounded-pill badge-primary">{{ $wishCount }}</span></div></a></td>
+                              <td class="text-end" colspan="4"><a class="btn btn-secondary cart-btn-transform" href="{{ route('product.index') }}">continue shopping</a></td>
                               <td><a class="btn btn-success cart-btn-transform" href="{{ route('product.checkout') }}">check out</a></td>
                             </tr>
                             
@@ -117,6 +150,11 @@
                             @else
                             
                         <center class="">Your cart is Empty</center>
+                        @if ($wishCount)
+                        
+                          <center class="mt-3"><a class="" href="{{ route('product-wishlists') }}"><div class="wish-box"><i class="font-info" data-feather="heart"></i><span id="wish-count" class="badge rounded-pill badge-primary">{{ $wishCount }}</span></div></a></center>
+                          @endif
+                          <center class="mt-3"><a class="btn btn-info cart-btn-transform" href="{{ route('product.index') }}">continue shopping</a></center>
                         @endif
                       </div>
                     </div>

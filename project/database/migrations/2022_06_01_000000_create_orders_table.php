@@ -45,6 +45,8 @@ class CreateOrdersTable extends Migration
              $table->string('coupon_discount')->nullable();
              $table->enum('status', ['pending', 'processing' ,'completed','declined', 'on delivery'])->default('pending');
              $table->decimal('shipping_cost');
+             $table->string('currency_sign')->nullable();
+             $table->double('currency_value')->default(0)->nullable();
              $table->text('pay_id')->nullable();
              $table->integer('dp')->default(0);
              $table->integer('vendor_shipping_id');

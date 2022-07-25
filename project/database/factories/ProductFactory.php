@@ -55,6 +55,7 @@ class ProductFactory extends Factory
             'festured' => $this->faker->numberBetween(0,1),
             'best' => $this->faker->numberBetween(0,1),
             'top' => $this->faker->numberBetween(0,1),
+            'latest' => $this->faker->numberBetween(0,1),
             
         ];
     }

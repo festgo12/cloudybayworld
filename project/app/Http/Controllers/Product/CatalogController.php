@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\Order;
+use App\Models\Rating;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Currency;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Childcategory;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CatalogController extends Controller
@@ -42,13 +45,17 @@ class CatalogController extends Controller
         $cat = null;
         $subcat = null;
         $childcat = null;
-        $minprice = $request->min;
-        $maxprice = $request->max;
+        $minprice = str_replace(' ','',$request->min);
+        $maxprice = str_replace(' ','',$request->max);
+        
         $sort = $request->sort;
         $search = $request->search;
-        $minprice = round(($minprice / $curr->value),2);
-        $maxprice = round(($maxprice / $curr->value),2);
-  
+        $minprice = round((intval($minprice )/ $curr->value),2);
+        $maxprice = round((intval($maxprice) / $curr->value),2);
+        // dd($minprice,$request->min,$maxprice, $search);
+        // $minprice = round(($minprice),2);
+        // $maxprice = round(($maxprice),2);
+
         if (!empty($slug)) {
           $cat = Category::where('slug', $slug)->firstOrFail();
           $data['cat'] = $cat;
@@ -72,7 +79,7 @@ class CatalogController extends Controller
                                         return $query->where('childcategory_id', $childcat->id);
                                     })
                                     ->when($search, function ($query, $search) {
-                                        return $query->whereRaw('MATCH (name) AGAINST (? IN BOOLEAN MODE)' , array($search));
+                                        return $query->where('name', 'like', '%' . $search . '%')->orWhere('details', 'like', '%' . $search . '%');
                                     })
                                     ->when($minprice, function($query, $minprice) {
                                       return $query->where('price', '>=', $minprice);
@@ -166,18 +173,25 @@ class CatalogController extends Controller
         foreach($prods as $product){
           $product->showprice = $product->showPrice();
           $product->showprevprice = $product->showpreviousPrice();
+          $product->rating = Rating::rating($product->id);
+          $product->wishlistCount = $product->user->wishlistCount();
         }
+
+        $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
+        $newProducts2 = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
         
         $data['prods'] = $prods;
 
-  
+        
         if($request->ajax()) {
   
-        $data['ajax_check'] = 1;
-  
+         $data['ajax_check'] = 1;
+          // dd($data);
           return $data;
         }
-        return view('front.product.index', compact('data'));
+        // dd($data);
+        
+        return view('front.product.index', compact('data','newProducts', 'newProducts2'));
       }
   
   
@@ -188,6 +202,57 @@ class CatalogController extends Controller
       }
  
          
+
+         // ------------------ Rating SECTION --------------------
+
+         public function reviewsubmit(Request $request)
+         {
+          
+             $ck = 0;
+             $orders = Order::where('user_id','=',$request->user_id)->where('status','=','completed')->get();
+ 
+             foreach($orders as $order)
+             {
+             $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
+                 foreach($cart->items as $product)
+                 {
+                     if($request->product_id == $product['item']['id'])
+                     {
+                         $ck = 1;
+                         break;
+                     }
+                 }
+             }
+             if($ck == 1)
+             {
+                 $user = Auth::guard('web')->user();
+                 $prev = Rating::where('product_id','=',$request->product_id)->where('user_id','=',$user->id)->get();
+                 if(count($prev) > 0)
+                 {
+                 return response()->json(array('errors' => [ 0 => 'You Have Reviewed Already.' ]));
+                 }
+                 $Rating = new Rating;
+                 $Rating->product_id = $request->product_id;
+                 $Rating->user_id = $request->user_id;
+                 $Rating->rating = $request->rating;
+                 $Rating->review = $request->review;
+                 $Rating['review_date'] = date('Y-m-d H:i:s');
+                 $Rating->save();
+                 $data[0] = 'Your Rating was Successfully.';
+                 $data[1] = Rating::rating($request->product_id);
+                 return response()->json($data);
+             }
+             else{
+                 return response()->json(array('errors' => [ 0 => 'Buy This Product First' ]));
+             }
+         }
+ 
+ 
+         public function reviews($id){
+             $productt = Product::find($id);
+             return view('load.reviews',compact('productt','id'));
+ 
+         }
 
 
 }

@@ -65,12 +65,12 @@ class Rating extends Model
     }
     public static function ratings($productid){
         $stars = Rating::where('product_id',$productid)->avg('rating');
-        $ratings = number_format((float)$stars, 1, '.', '')*20;
+        $ratings = number_format((float)$stars, 1, '.', '')*20; // 100%
         return $ratings;
     }
     public static function rating($productid){
         $stars = Rating::where('product_id',$productid)->avg('rating');
-        $stars = number_format((float)$stars, 1, '.', '');
+        $stars = number_format((float)$stars, 1, '.', ''); // 5stars
         return $stars;
     }
 

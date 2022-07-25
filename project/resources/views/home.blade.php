@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+Home
+@endsection
+
 @section('content')
 <div class="page-body">
     <div class="container-fluid">        
@@ -82,7 +86,8 @@
                     
                   </div>
                   <div class="drop-left dropdown-content f-menu p-b-10">
-                    <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>
+                    <a href="{{ route('product.index') }}" >
+                    <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4></a>
                       @foreach( $cats as $cat)
 
                         <a href="{{ route('product.index', $cat->slug) }}" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> {{ $cat->name }}</a>
@@ -308,17 +313,20 @@
                  
                   <div class="product-wrapper-grid">
                     <div class="row">
+
+                      @foreach ($products as $prod)
+                          
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
+                                    <button class="btn addcart" id="{{ $prod->id }}" data-href="{{ route('product.cart.add', $prod->id) }}" type="button"><i class="icofont icofont-shopping-cart"></i></button>
                                   </li>
                                   <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
+                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-{{ $prod->id }}" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
                                   </li>
                                   <li>
                                     <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
@@ -326,20 +334,26 @@
                                 </ul>
                               </div>
                             </div>
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter" aria-hidden="true">
+                            <div class="modal fade" id="exampleModalCenter-{{ $prod->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter-{{ $prod->id }}" aria-hidden="true">
                               <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
+                                        <div class="d-flex justify-content-between mr-5">
+                                          <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
+                                            > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
+  
+                                            <i class="icofont icofont-heart wishcart addwish font-info" data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
+                                        </div>
+
+                                        <div class="product-price">{{ $prod->showPrice() }}
+                                          <del>{{ $prod->showPreviousPrice() }}    </del>
                                         </div>
                                         <div class="product-view">
                                           <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
+                                          <p class="mb-0">{{ $prod->details }}</p>
                                         </div>
                                         <div class="product-size">
                                           <ul>
@@ -355,16 +369,11 @@
                                           </ul>
                                         </div>
                                         <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          
+                                         
                                           <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
+                                            <button id="{{ $prod->id }}" data-href="{{ route('product.cart.quickadd',$prod->id) }}" class="btn btn-info addtocart" type="button">Add to Cart</button>
+                                            <a href="{{ route('product.details',$prod->slug) }}" class="btn btn-info" type="button">View Details</a>
+
                                           </div>
                                         </div>
                                       </div>
@@ -375,396 +384,27 @@
                               </div>
                             </div>
                             <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Women's Shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
+                              <div class="rating">
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 1) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 2) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 3) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 4) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 5) ? ' fa-star' : 'fa-star-o'}}"></i>
+                              </div>
+
+                              <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
+                                > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
+
+                              <p>{{mb_strlen($prod->details,'utf-8')
+                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p>
+                              <div class="product-price">{{ $prod->showPrice() }}
+                                <del>{{ $prod->showPreviousPrice() }}    </del>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img">
-                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter2" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Man T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price"> ₦7500.00
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img">
-                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter3" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter3" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman's Suit</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦7500.00
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter4" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter4" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">
-                                                                          ₦5600.00 </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="ribbon ribbon-secondary ribbon-vertical-left"><i class="icon-gift"></i></div>
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter5" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter5" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      @endforeach
                       
                       
                     </div>
@@ -817,17 +457,19 @@
                   
                   <div class="product-wrapper-grid">
                     <div class="row">
+                      @foreach ($newProducts as $prod)
+                          
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
+                            <div class="product-img"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="">
                               <div class="product-hover">
                                 <ul>
                                   <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
+                                    <button class="btn addcart" id="{{ $prod->id }}" data-href="{{ route('product.cart.add', $prod->id) }}" type="button"><i class="icofont icofont-shopping-cart"></i></button>
                                   </li>
                                   <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
+                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-{{ $prod->id }}" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
                                   </li>
                                   <li>
                                     <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
@@ -835,20 +477,26 @@
                                 </ul>
                               </div>
                             </div>
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter" aria-hidden="true">
+                            <div class="modal fade" id="exampleModalCenter-{{ $prod->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter-{{ $prod->id }}" aria-hidden="true">
                               <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
+                                      <div class="product-img col-lg-6"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
+                                        <div class="d-flex justify-content-between mr-5">
+                                          <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
+                                            > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
+  
+                                    <i class="icofont icofont-heart wishcart addwish {{ $prod->user->wishlistCount() ? 'font-info': '' }} " data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
+                                        </div>
+
+                                        <div class="product-price">{{ $prod->showPrice() }}
+                                          <del>{{ $prod->showPreviousPrice() }}    </del>
                                         </div>
                                         <div class="product-view">
                                           <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
+                                          <p class="mb-0">{{ $prod->details }}</p>
                                         </div>
                                         <div class="product-size">
                                           <ul>
@@ -864,15 +512,11 @@
                                           </ul>
                                         </div>
                                         <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
+                                          
                                           <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
+                                            <button id="{{ $prod->id }}" data-href="{{ route('product.cart.quickadd',$prod->id) }}" class="btn btn-info addtocart" type="button">Add to Cart</button>
+                                            <a href="{{ route('product.details',$prod->slug) }}" class="btn btn-info" type="button">View Details</a>
+
                                           </div>
                                         </div>
                                       </div>
@@ -883,622 +527,28 @@
                               </div>
                             </div>
                             <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman's Shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
+                              <div class="rating">
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 1) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 2) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 3) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 4) ? ' fa-star' : 'fa-star-o'}}"></i>
+                                <i class="fa {{ (App\Models\Rating::rating($prod->id) >= 5) ? ' fa-star' : 'fa-star-o'}}"></i>
+                              </div>
+                              <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
+                                > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
+
+                              <p>{{mb_strlen($prod->details,'utf-8')
+                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p>
+                              <div class="product-price">{{ $prod->showPrice() }}
+                                <del>{{ $prod->showPreviousPrice() }}    </del>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img">
-                              <div class="ribbon ribbon-danger">Sale</div><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter2" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price"> ₦7500.00
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img">
-                              <div class="ribbon ribbon-success ribbon-right">50%</div><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter3" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter3" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/04.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man's Suit</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦7500.00
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter4" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter4" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/02.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">
-                                                                          ₦5600.00 </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="ribbon ribbon-secondary ribbon-vertical-left"><i class="icon-gift"></i></div>
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter5" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter5" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter6" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter6" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter6" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/01.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Woman T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter7" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter7" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter7" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/03.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-3 col-sm-6 xl-4">
-                        <div class="card">
-                          <div class="product-box">
-                            <div class="product-img"><img class="img-fluid" src="assets/images/ecommerce/12.jpg" alt="">
-                              <div class="product-hover">
-                                <ul>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-shopping-cart"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter8" data-bs-original-title="" title=""><i class="icofont icofont-eye"></i></button>
-                                  </li>
-                                  <li>
-                                    <button class="btn" type="button" data-bs-original-title="" title=""><i class="icofont icofont-food-cart"></i></button>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="modal fade" id="exampleModalCenter8" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter8" aria-hidden="true">
-                              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <div class="product-box row">
-                                      <div class="product-img col-lg-6"><img class="img-fluid" src="assets/images/ecommerce/12.jpg" alt=""></div>
-                                      <div class="product-details col-lg-6 text-start">
-                                        <h4>Woman T-shirt</h4>
-                                        <div class="product-price">₦5600.00
-                                          <del>₦11500.00    </del>
-                                        </div>
-                                        <div class="product-view">
-                                          <h6 class="f-w-600">Product Details</h6>
-                                          <p class="mb-0">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo.</p>
-                                        </div>
-                                        <div class="product-size">
-                                          <ul>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset class="qty-box">
-                                            <div class="input-group">
-                                              <input class="touchspin text-center" type="text" value="5">
-                                            </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">Add to Cart</button>
-                                            <button class="btn btn-info" type="button" data-bs-original-title="" title="">View Details</button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="product-details">
-                              <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
-                              <h4>Man T-shirt</h4>
-                              <p>Simply dummy text of the printing.</p>
-                              <div class="product-price">₦5600.00 
-                                <del>₦11500.00    </del>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      @endforeach
+                      
+                     
                       
                     </div>
                   </div>
@@ -1606,8 +656,8 @@
 {{-- <script src="{{ asset('./assets/js/tooltip-init.js') }}"></script> --}}
 <script>
   // let products = {!! $products->toJson() !!};
-  let products = {!! json_encode($products) !!};
-  console.log(products);
+  // let products = {!! json_encode($products) !!};
+  // console.log(products);
 
 
 

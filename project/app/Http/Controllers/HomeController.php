@@ -30,10 +30,11 @@ class HomeController extends Controller
             return view('landing');
         }
 
-        $products = Product::take(20)->get();
+        
+        $products = Product::where('status', 1)->take(6)->get();
+        $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->get();
-        // dd($products);
 
-        return view('home', compact('products','cats'));
+        return view('home', compact('products','cats', 'newProducts'));
     }
 }

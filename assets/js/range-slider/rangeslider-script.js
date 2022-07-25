@@ -10,10 +10,10 @@ var range_slider_custom = {
             type: "double",
             grid: true,
             min: 0,
-            max: 1000,
-            from: 200, 
-            to: 800,
-            prefix: "$"
+            max: 100000,
+            from: 1, 
+            // to: 9000,
+            // prefix: "$"
         }),$("#u-range-04").ionRangeSlider({
             type: "double",
             grid: true,

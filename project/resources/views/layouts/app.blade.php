@@ -76,7 +76,7 @@
           <div class="d-flex justify-content-between p-0">
 
             <div class="left-header col horizontal-wrapper ps-0">
-              <h3 > <strong>Home</strong> <h3>
+              <h3 > <strong>@yield('title')</strong> <h3>
              
             </div>
             <div class="nav-right col-8 pull-right right-header p-0">
@@ -150,52 +150,14 @@
                   <div class="mode"><i class="fa fa-moon-o"></i></div>
                 </li>
                 <li class="cart-nav onhover-dropdown">
-                  <div class="cart-box"><i data-feather="shopping-cart"></i><span id="cart-count" class="badge rounded-pill badge-primary">2</span></div>
-                  <ul id="cart-items" class="cart-dropdown onhover-show-div">
-                    <li>
-                      <h6 class="mb-0 f-20">Shoping Bag</h6><i data-feather="shopping-cart"></i>
-                    </li>
-                    <li class="mt-0">
-                      <div class="media"><img class="img-fluid rounded-circle me-3 img-60" src="{{ asset('assets/images/ecommerce/01.jpg') }}" alt="">
-                        <div class="media-body"><span>V-Neck Shawl Collar Woman's Solid T-Shirt</span>
-                          <p>Yellow(#fcb102)</p>
-                          <div class="qty-box">
-                            <div class="input-group"><span class="input-group-prepend">
-                                <button class="btn quantity-left-minus" type="button" data-type="minus" data-field=""><i data-feather="minus"></i></button></span>
-                              <input class="form-control input-number" type="text" name="quantity" value="1"><span class="input-group-prepend">
-                                <button class="btn quantity-right-plus" type="button" data-type="plus" data-field=""><i data-feather="plus"></i></button></span>
-                            </div>
-                          </div>
-                          <h6 class="text-end text-muted">₦299.00</h6>
-                        </div>
-                        <div class="close-circle"><a href="#"><i data-feather="x"></i></a></div>
-                      </div>
-                    </li>
-                    <li class="mt-0">
-                      <div class="media"><img class="img-fluid rounded-circle me-3 img-60" src="{{ asset('assets/images/ecommerce/03.jpg') }}" alt="">
-                        <div class="media-body"><span>V-Neck Shawl Collar Woman's Solid T-Shirt</span>
-                          <p>Yellow(#fcb102)</p>
-                          <div class="qty-box">
-                            <div class="input-group"><span class="input-group-prepend">
-                                <button class="btn quantity-left-minus" type="button" data-type="minus" data-field=""><i data-feather="minus"></i></button></span>
-                              <input class="form-control input-number" type="text" name="quantity" value="1"><span class="input-group-prepend">
-                                <button class="btn quantity-right-plus" type="button" data-type="plus" data-field=""><i data-feather="plus"></i></button></span>
-                            </div>
-                          </div>
-                          <h6 class="text-end text-muted">₦299.00</h6>
-                        </div>
-                        <div class="close-circle"><a href="#"><i data-feather="x"></i></a></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="total">
-                        <h6 class="mb-2 mt-0 text-muted">Order Total : <span class="f-right f-20">₦598.00</span></h6>
-                      </div>
-                    </li>
-                    <li><a class="btn btn-block w-100 mb-2 btn-info view-cart" href="cart.html">Go to shoping bag</a><a class="btn btn-block w-100 btn-secondary view-cart" href="checkout.html">Checkout</a></li>
+                  <div class="cart-box"><i data-feather="shopping-cart"></i><span id="cart-count" class="badge rounded-pill badge-primary">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span></div>
+                  <ul id="cart-items" class="cart-dropdown list-scroll onhover-show-div" >
+
+                      @include('front.product.load.mini-cart')
+
                   </ul>
-                </li>
-                <li class="onhover-dropdown"><i data-feather="message-square"></i>
+                  </li>
+                  <li class="onhover-dropdown"><i data-feather="message-square"></i>
                   <ul class="chat-dropdown onhover-show-div">
                     <li><i data-feather="message-square"></i>
                       <h6 class="f-18 mb-0">Message Box                                    </h6>
@@ -294,6 +256,12 @@
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="messaging.html"><i data-feather="message-circle" > </i><span class="msg-circle">Massaging</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="user-profile.html"><i data-feather="user"> </i><span>Profile</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="package"></i><span class="">My Orders</span></a>
+                    <ul class="sidebar-submenu">
+                      <li><a href="{{ route('product-wishlists') }}">Wishlist</a></li>
+                      <li><a href="{{ route('order.history') }}">Orders</a></li>
+                    </ul>
+                  </li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="settings.html"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
                   <li class="mega-menu"><a class="sidebar-link sidebar-title" href="#"><i data-feather="layers"></i><span>Pages</span></a>
                     <div class="mega-menu-container menu-content">
@@ -445,7 +413,6 @@
       <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
       <!-- Bootstrap js-->
       <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-      <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
       <!-- feather icon js-->
       <script src="{{ asset('assets/js/icons/feather-icon/feather.min.js') }}"></script>
       <script src="{{ asset('assets/js/icons/feather-icon/feather-icon.js') }}"></script>
@@ -462,14 +429,22 @@
     <script src="{{ asset('assets/js/touchspin/touchspin.js') }}"></script>
     <script src="{{ asset('assets/js/touchspin/input-groups.min.js') }}"></script>
       <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
+      <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+      {{-- <script src="{{ asset('assets/js/notify/index.js') }}"></script> --}}
+
       
       {{-- <script src="{{ asset('assets/js/dashboard/default.js') }}"></script> --}}
   
       <!-- Plugins JS Ends-->
       <!-- Theme js-->
       <script src="{{ asset('assets/js/script.js') }}"></script>
-      
       @yield('script')
+
+      @if(Session::get('msg'))
+      <script>
+        notice({{ Session::get('msg') }});
+      </script>
+      @endif
 
 
     </body>

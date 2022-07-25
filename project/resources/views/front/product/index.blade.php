@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Explore Product
 @endsection
 
 @section('style')
@@ -120,12 +121,13 @@
                 </ul>
               </div>
             </div>
-            <div class="col-md-6 text-end"><span class="f-w-600 m-r-5">Showing Products 1 - 24 Of 200 Results</span>
+            <div class="col-md-6 text-end"><span class="f-w-600 m-r-5 prod-result"></span>
               <div class="select2-drpdwn-product select-options d-inline-block">
-                <select class="form-control btn-square" name="select">
-                  <option value="opt1">Featured</option>
-                  <option value="opt2">Lowest Prices</option>
-                  <option value="opt3">Highest Prices</option>
+                <select class="form-control btn-square" id="sortby" name="sort">
+                  <option value="date_desc">Latest Products</option>
+                  <option value="date_asc">Oldest Products</option>
+                  <option value="price_asc">Lowest Prices</option>
+                  <option value="price_desc">Highest Prices</option>
                 </select>
               </div>
             </div>
@@ -207,14 +209,24 @@
                         <div class="product-filter pb-0 new-products">
                           <div class="owl-carousel owl-theme" id="testimonial">
                             <div class="item">
+                              @foreach ($newProducts as $prod)
+                                  
                               <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/01.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00</div>
+                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="" data-original-title="" title=""></div>
+                                <div class="product-details col-md-7 text-start">
+                                  <span><i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-dark"></i>
+                                  </span>
+                                  <p class="mb-0">{{mb_strlen($prod->name,'utf-8')
+                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p>
+                                  <div class="product-price">{{ $prod->showPrice() }}</div>
                                 </div>
                               </div>
-                              <div class="product-box row">
+                              @endforeach
+                              {{-- <div class="product-box row">
                                 <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/02.jpg') }}" alt="" data-original-title="" title=""></div>
                                 <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
                                   <p class="mb-0">Fancy Shirt</p>
@@ -227,30 +239,29 @@
                                   <p class="mb-0">Fancy Shirt</p>
                                   <div class="product-price">₦100.00</div>
                                 </div>
-                              </div>
+                              </div> --}}
                             </div>
                             <div class="item">
+
+                              @foreach ($newProducts2 as $prod)
+                                  
                               <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/01.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00</div>
+                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="" data-original-title="" title=""></div>
+                                <div class="product-details col-md-7 text-start">
+                                  <span><i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-warning me-1"></i>
+                                    <i class="fa fa-star font-dark"></i>
+                                  </span>
+                                  <p class="mb-0">{{mb_strlen($prod->name,'utf-8')
+                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p>
+                                  <div class="product-price">{{ $prod->showPrice() }}</div>
                                 </div>
                               </div>
-                              <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/02.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00</div>
-                                </div>
-                              </div>
-                              <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/03.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00  </div>
-                                </div>
-                              </div>
+                              @endforeach
+
+                              
                             </div>
                           </div>
                         </div>
@@ -262,11 +273,13 @@
               </div>
             </div>
             <div class="col-md-9 col-sm-12">
-              <form>
                 <div class="form-group m-0">
-                  <input class="form-control" type="search" placeholder="Search.." data-original-title="" title=""><i class="fa fa-search"></i>
+                  <input class="form-control" id="prod_name" name="search" type="search" placeholder="Search.." value="{{ request()->input('search') }}" autocomplete="off"><i class="fa fa-search"></i>
+                  <div class="autocomplete">
+                    <div id="myInputautocomplete-list" class="autocomplete-items">
+                    </div>
+                  </div>
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -280,7 +293,10 @@
         </ul>
         <div class="d-flex justify-content-center m-b-30">
 
+          {{-- @if($data['prods']['next_page_url']) --}}
           <button id="load-more" class="btn btn-info text-white" > <strong>Load More</strong></button>
+          {{-- @endif --}}
+
         </div>
       </div>
         </div>
@@ -292,13 +308,17 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('assets/js/range-slider/ion.rangeSlider.min.js') }}"></script>
+<script src="{{ asset('assets/js/range-slider/rangeslider-script.js') }}"></script>
+<script src="{{ asset('assets/js/owlcarousel/owl.carousel.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
-<script src="{{ asset('assets/js/range-slider/ion.rangeSlider.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/range-slider/rangeslider-script.js') }}"></script> --}}
+<script src="{{ asset('assets/js/product-tab.js') }}"></script>
     
     
 <script type="text/javascript">
+
+
 
 $(document).ready(function () {
 
@@ -308,7 +328,7 @@ $(document).ready(function () {
     let prods= data.prods;
     let content ='';
     let loadMore = prods.next_page_url;
-    // console.log(prods);
+    console.log(prods);
 
     const loopProds = ()=>{
 
@@ -321,7 +341,9 @@ $(document).ready(function () {
             </li>`
           });
 
+        //  /
 
+          let star = '4';
 
 
             content +=`
@@ -350,7 +372,10 @@ $(document).ready(function () {
                                     <div class="product-box row">
                                       <div class="product-img col-lg-6"><img class="img-fluid" src="{{ asset('assets/uploads/products') }}/${item.image}" alt=""></div>
                                       <div class="product-details col-lg-6 text-start">
-                                        <h4>${item.name}</h4>
+                                        <div class="d-flex justify-content-between mr-5">
+                                          <h4>${item.name}</h4>
+                                          <i class="icofont icofont-heart addwish wishcart ${ (item['wishlistCount'] > 0) ? 'font-info' : ''} " data-href="{{URL::to('/wishlist/add')}}/${item.id}" ></i>
+                                        </div>
                                         <div class="product-price">${item.showprice}
                                           <del>${item.showprevprice}    </del>
                                         </div>
@@ -364,24 +389,13 @@ $(document).ready(function () {
                                           </ul>
                                         </div>
                                         <div class="product-qnty">
-                                            <h6 class="f-w-600">Quantity</h6>
-                                            <fieldset>
-                                                <div class="input-group bootstrap-touchspin">
-                                                <button class="btn btn-info btn-square bootstrap-touchspin-down" type="button" data-bs-original-title="" title=""><i class="fa fa-minus"></i></button><span class="input-group-text bootstrap-touchspin-prefix" style="display: none;"></span><input class="touchspin text-center form-control" type="text" value="5" style="display: block;" data-bs-original-title="" title=""><span class="input-group-text bootstrap-touchspin-postfix" style="display: none;"></span><button class="btn btn-info btn-square bootstrap-touchspin-up" type="button" data-bs-original-title="" title=""><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </fieldset>
-
-                                            <fieldset class="qty-box">
-                                              <div class="input-group">
-                                                <input class="touchspin text-center" type="text" value="5">
-                                              </div>
-                                            </fieldset>
+                                            
                                             <div class="addcart-btn">
                                                 <button id="${item.id}" data-href="{{URL::to('/addtocart')}}/${item.id}" class="btn btn-info addtocart" type="button">Add to Cart</button>
                                                 <a href="{{URL::to('/item')}}/${item.slug}" class="btn btn-info" type="button">View Details</a>
                                             </div>
                                             </div>
-                                      </div>
+                                      </div>                                     
                                     </div>
                                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
                                   </div>
@@ -389,7 +403,13 @@ $(document).ready(function () {
                               </div>
                             </div>
                         <div class="product-details">
-                        <div class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></div>
+                          <div class="rating">
+                                <i class="fa ${ (item['rating'] >= 1) ? ' fa-star' : 'fa-star-o'}"></i>
+                                <i class="fa ${ (item['rating'] >= 2) ? ' fa-star' : 'fa-star-o'}"></i>
+                                <i class="fa ${ (item['rating'] >= 3) ? ' fa-star' : 'fa-star-o'}"></i>
+                                <i class="fa ${ (item['rating'] >= 4) ? ' fa-star' : 'fa-star-o'}"></i>
+                                <i class="fa ${ (item['rating'] >= 5) ? ' fa-star' : 'fa-star-o'}"></i>
+                              </div>
                         <a href="{{URL::to('/item')}}/${item.slug}"><h4>${item.name}</h4></a>
                         
                         <div class="product-price">${item.showprice}
@@ -405,44 +425,209 @@ $(document).ready(function () {
     }
     loopProds();
 
-
+    $('.prod-result').html(`Showing Products 1 - ${prods.to} Of ${prods.total} Results`);
     $('#product-list').html(content);
     
+    if (!loadMore) {
+        $('#load-more').hide()
+      }else{
+      $('#load-more').show()
+
+    }
     
 
 
-    $('#load-more').on('click', ()=>{
-      console.log('ok');
-      $.ajax({
-            type: 'get',
-            url: loadMore,
-            
-            success: function (data) {
-              prods= data.prods;
-              loadMore = prods.next_page_url;
+        $('#load-more').on('click', ()=>{
+          
+          $.ajax({
 
-              if (!loadMore) {
-                  $('#load-more').hide()
-              }
+                type: 'get',
+                url: loadMore,
+                
+                success: function (data) {
+                  prods= data.prods;
+                  loadMore = prods.next_page_url;
 
-              loopProds();
-                $('#product-list').html(content);
-            },
-            error: function (err){
-                console.log(err);
+                  if (!loadMore) {
+                      $('#load-more').hide()
+                    }else{
+                    $('#load-more').show()
+
+                  }
+
+                  loopProds();
+                  $('.prod-result').html(`Showing Products 1 - ${prods.to} Of ${prods.total} Results`);
+                    $('#product-list').html(content);
+                },
+                error: function (err){
+                    console.log(err);
+                }
+        
+            });
+            // return false;
+        });
+        
+                  // when dynamic attribute changes
+              $(".attribute-input, #sortby").on('change', function() {
+                // $("#ajaxLoader").show();
+                filter();
+              });
+        
+              val='';
+              $(".irs-from").on('click', function() {
+                if(val == ''){
+                    
+                    val= $('.irs-from').html()
+                    filter();
+                    console.log(val);
+                }else{
+                  if (!(val == $('.irs-from').html())) {
+                    
+                    val= $('.irs-from').html()
+                    filter();
+                    console.log(val);
+                  }
+        
+                }
+                // $("#ajaxLoader").show();
+                // filter();
+              });
+        
+        
+              $(".irs-to").on('click', function() {
+                if(val == ''){
+                    
+                    val= $('.irs-to').html()
+                    filter();
+                    console.log(val);
+                }else{
+                  if (!(val == $('.irs-to').html())) {
+                    
+                    val= $('.irs-to').html()
+                    filter();
+                    console.log(val);
+                  }
+        
+                }
+                // $("#ajaxLoader").show();
+                // filter();
+              });
+        
+        
+        
+        
+              // when price changed & clicked in search button
+              $("#prod_name").on('keyup', function(e) {
+                e.preventDefault();
+                // $("#ajaxLoader").show();
+                if (e.key == 'Enter') {
+                  filter();
+                }
+              });
+        
+              // $(".filter-btn").on('click', function(e) {
+              //   e.preventDefault();
+              //   // $("#ajaxLoader").show();
+              //   filter();
+              // });
+                    
+        
+        
+              function filter() {
+                  let filterlink = '';
+                  content ='';
+                
+                  $('#product-list').html('');
+
+                  if ($("#prod_name").val() != '') {
+                    if (filterlink == '') {
+                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?search='+$("#prod_name").val();
+                    } else {
+                      filterlink += '&search='+$("#prod_name").val();
+                    }
+                  }
+          
+                  $(".attribute-input").each(function() {
+                    if ($(this).is(':checked')) {
+                      if (filterlink == '') {
+                        filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+$(this).attr('name')+'='+$(this).val();
+                      } else {
+                        filterlink += '&'+$(this).attr('name')+'='+$(this).val();
+                      }
+                    }
+                  });
+          
+                  if ($("#sortby").val() != '') {
+                    if (filterlink == '') {
+                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+$("#sortby").attr('name')+'='+$("#sortby").val();
+                    } else {
+                      filterlink += '&'+$("#sortby").attr('name')+'='+$("#sortby").val();
+                    }
+                  }
+          
+                  if ($('.irs-from').html() != '') {
+                    if (filterlink == '') {
+                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'min'+'='+$('.irs-from').html();
+                    } else {
+                      filterlink += '&'+'min'+'='+$('.irs-from').html();
+                    }
+                  }
+          
+                  if ($('.irs-to').html() != '') {
+                    if (filterlink == '') {
+                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'max'+'='+$('.irs-to').html();
+                    } else {
+                      filterlink += '&'+'max'+'='+$('.irs-to').html();
+                    }
+                  }
+          
+                  console.log(filterlink);
+                  console.log(encodeURI(filterlink));
+                  // $("#ajaxContent").load(encodeURI(filterlink), function(data) {
+                  //   // add query string to pagination
+                  //   addToPagination();
+                  //   $("#ajaxLoader").fadeOut(1000);
+                  // });
+          
+                      $.ajax({
+          
+                            type: 'get',
+                            url: encodeURI(filterlink),
+          
+                            success: function (data) {
+                              console.log(data);
+                              console.log('od => '+encodeURI(filterlink));
+          
+                              prods= data.prods;
+                              loadMore = prods.next_page_url;
+
+          
+                              if (!loadMore) {
+                                  $('#load-more').hide()
+                                }else{
+                                $('#load-more').show()
+
+                              }
+                              
+          
+                              
+                              loopProds(); 
+                                $('.prod-result').html(`Showing Products 1 - ${prods.to} Of ${prods.total} Results`);
+                                $('#product-list').html(content);
+                            },
+                            error: function (err){
+                                console.log(err);
+                            }
+          
+                            });
+          
+          
             }
-    
-        });
-        return false;
-        });
-
-
-
-
-
-
-
-    });
+        
+        
+            });
+        
+        
 
 
    
