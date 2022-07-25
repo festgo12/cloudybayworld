@@ -158,7 +158,7 @@
 
 })(jQuery);
 
-$('.loader-wrapper').fadeOut('slow', function () {
+$('.loader-wrapper').fadeOut('fast', function () {
     $(this).remove();
 });
 
@@ -380,4 +380,333 @@ $("#flip-btn").click(function(){
 
 $("#flip-back").click(function(){
     $(".flip-card-inner").removeClass("flipped")
+});
+
+// Notifier
+
+const notice = ( message,type= 'info')=>{
+    $.notify({
+        message: message
+     },
+     {
+        type: type,
+        allow_dismiss:true,
+        newest_on_top:true ,
+        mouse_over:false,
+        showProgressbar:true,
+        spacing:20,
+        timer:200,
+        placement:{
+          from:'top',
+          align:'right'
+        },
+        offset:{
+          x:31,
+          y:30
+        },
+        delay:100 ,
+        z_index:1000,
+        animate:{
+          enter:'animated flash',
+          exit:'animated bounce'
+      }
+    });
+}
+
+
+
+// add to cart
+$(document).on("click", ".addtocart" , function(e){
+
+    e.preventDefault();
+  window.location = $(this).data('href');
+  notice('added to cart');
+
+    
+});
+
+
+// add to cart ajax
+$(document).on("click", ".addcart" , function(){
+
+    $.get( $(this).data('href') , function( data ) {
+        if(data == 'digital') {
+        }
+        else if(data == 0) {
+          }
+          else {
+            // console.log('success');
+            $("#cart-count").html(data[0]);
+            // console.log(data);
+          $("#cart-items").load(mainurl+'/carts/view');
+          notice('added to cart');
+          }
+    });
+                return false;
+});
+
+
+// romove from  cart
+$(document).on('click', '.cart-remove', function(){
+    var $selector = $(this).data('class');
+
+    $.get( $(this).data('href') , function( data ) {
+          $('.'+$selector).hide();
+        notice('Item removed');
+        // console.log(data);
+          if(data == 0) {
+              $("#cart-count").html(data);
+             $('.cart-table').html('<center class="">Your cart is Empty</center>');
+              $('#cart-items').html('<center class="mt-5">Your cart is Empty</center>');
+              $('.cartpage .col-lg-4').html('');
+            }
+          else {
+            $("#cart-count").html(data[1]);
+            //  $('.cart-quantity').html(data[1]);
+             $('.cart-total').html(data[0]);
+             $('.mini-total').html(data[0]);
+            //  $('.coupon-total').val(data[0]);
+             $('.main-total').html(data[3]);
+            }
+            
+
+      });
+  });
+
+// Adding Muliple Quantity Ends
+
+// Add By ONE
+
+$(document).on("click", ".bootstrap-touchspin-up" , function(){
+    //get data
+    var pid =  $(this).parent().parent().parent().find('.prodid').val();
+    var itemid =  $(this).parent().parent().parent().find('.itemid').val();
+    var size_qty = $(this).parent().parent().parent().find('.size_qty').val();
+    var size_price = $(this).parent().parent().parent().find('.size_price').val();
+    var stck = $("#stock"+itemid).val();
+    var qty = $(".qty"+itemid).val();
+    // console.log(pid);
+    if(stck != "")
+    {
+    var stk = parseInt(stck);
+      if(qty < stk)
+      {
+         qty++;
+     $(".qty"+itemid).val(qty);
+      }
+    }
+    else{
+     qty++;
+     $(".qty"+itemid).html(qty);
+    }
+        $.ajax({
+                type: "GET",
+                url:mainurl+"/addbyone",
+                data:{id:pid,itemid:itemid,size_qty:size_qty,size_price:size_price},
+                success:function(data){
+                    if(data == 0)
+                    {
+                    }
+                    else
+                    {
+                        // console.log(data);
+                    // $(".discount").html($("#d-val").val());
+                    $(".cart-total").html(data[0]);
+                    $(".mini-total").html(data[0]);
+                    $(".main-total").html(data[3]);
+                    $(".prc"+itemid).html(data[2]);
+                    // $(".coupon-total").val(data[3]);
+                    // $("#prct"+itemid).html(data[4]);
+                    // $("#cqt"+itemid).html(data[1]);
+                    $(".qty"+itemid).val(data[1]);
+                    notice('1 More Added');
+                    }
+                  },
+                  error: function(err){
+                    // console.log(err);
+                  }
+          });
+   });
+
+
+   // Reduce By ONE
+
+   $(document).on("click", ".bootstrap-touchspin-down" , function(){
+        
+
+
+    var pid =  $(this).parent().parent().parent().find('.prodid').val();
+    var itemid =  $(this).parent().parent().parent().find('.itemid').val();
+    var size_qty = $(this).parent().parent().parent().find('.size_qty').val();
+    var size_price = $(this).parent().parent().parent().find('.size_price').val();
+    var stck = $("#stock"+itemid).val();
+    var qty = $(".qty"+itemid).val();
+    qty--;
+
+    
+    if(qty < 1)
+     {
+     $(".qty"+itemid).val("1");
+     }
+     else{
+     $(".qty"+itemid).val(qty);
+        $.ajax({
+                type: "GET",
+                url:mainurl+"/reducebyone",
+                data:{id:pid,itemid:itemid,size_qty:size_qty,size_price:size_price},
+                success:function(data){
+                  
+                    // $(".discount").html($("#d-val").val());
+                    $(".cart-total").html(data[0]);
+                    $(".mini-total").html(data[0]);
+                    $(".main-total").html(data[3]);
+                    $(".prc"+itemid).html(data[2]);
+                    // $(".coupon-total").val(data[3]);
+                    // $("#prct"+itemid).html(data[4]);
+                    // $("#cqt"+itemid).html(data[1]);
+                    $(".qty"+itemid).val(data[1]);
+                    notice('1 More Removed');
+                  }
+          });
+     }
+   });
+
+
+
+// Wishlist Section
+
+    $(document).on('click', '.addwish', function(){
+        $.get( $(this).data('href') , function( data ) {
+
+            if(data[0] == 1) {
+              notice('added to Wishlist');
+              $('#wishlist-count').html(data[1]);
+              
+            }
+            else {
+                notice('Already in Wishlist');
+                
+              }
+
+        });
+
+              return false;
+    });
+
+
+    $(document).on('click', '.move-cart', function(e){
+
+        e.preventDefault();
+
+        // remove wishlist item
+        $(this).parent().parent().parent().parent().remove();
+        $.get( $(this).data('href') , function( data ) {
+            
+
+            if (!data[1]) {
+                $('.wishlist').html('<center class="">Your Wishlist  is Empty</center>');
+            }
+         });
+
+
+            // add item to cart json
+
+            $.get( $(this).data('href2') , function( data ) {
+                if(data == 'digital') {
+                }
+                else if(data == 0) {
+                  }
+                  else {
+                    // console.log('success');
+                    $("#cart-count").html(data[0]);
+                    // console.log(data);
+                  $("#cart-items").load(mainurl+'/carts/view');
+                //   notice('added to cart');
+                  notice('Wish Moved');
+                  }
+            });
+
+
+
+            
+    });
+
+ 
+
+
+    $(document).on('click', '.wishlist-remove', function(){
+      $(this).parent().parent().parent().parent().remove();
+        $.get( $(this).data('href') , function( data ) {
+        //   $('#wishlist-count').html(data[1]);
+        notice('Wish Removed');
+
+          if (!data[1]) {
+            $('.wishlist').html('<center class="">Your cart is Empty</center>');
+          }
+        });
+    });
+
+// Wishlist Section Ends
+
+// Rating 
+
+$('#u-rating-fontawesome').on('change', (e)=>{
+    e.preventDefault()
+    notice($('#u-rating-fontawesome').val()+ ' stars');
+    $('.select-star').html($('#u-rating-fontawesome').val()+ ' stars');
 })
+
+
+$(document).on('submit','#reviewform',function(e){
+    var $this = $(this);
+    e.preventDefault();
+    // $('.gocover').show();
+    $('button.review-btn').prop('disabled',true);
+        $.ajax({
+         method:"POST",
+         url:$(this).prop('action'),
+         data:new FormData(this),
+         contentType: false,
+         cache: false,
+         processData: false,
+         success:function(data)
+         {
+            if ((data.errors)) {
+
+              for(var error in data.errors)
+              {
+                notice(data.errors[error],'danger');
+              }
+              $('#reviewform textarea').eq(0).focus();
+
+            }
+            else
+            {
+                notice(data[0]);
+
+           
+              $('#reviewform textarea').eq(0).focus();
+              $('#reviewform textarea').val('');
+              $('#reviews-section').load($(this).data('href'));
+            }
+            $('button.review-btn').prop('disabled',false);
+         }
+
+        });
+  });
+
+//End rating
+
+//Checkout 
+$(document).on('click', '.wishlist-remove', function(){
+    $(this).parent().parent().parent().parent().remove();
+      $.get( $(this).data('href') , function( data ) {
+      //   $('#wishlist-count').html(data[1]);
+      notice('Wish Removed');
+
+        if (!data[1]) {
+          $('.wishlist').html('<center class="">Your wishlist is Empty</center>');
+        }
+      });
+  });
+
