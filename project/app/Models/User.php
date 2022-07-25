@@ -92,6 +92,7 @@ class User extends Authenticatable
                     $query->where('status', '=', 1);
                  })->count();
 
+                }
     public function feeds()
     {
         return $this->hasMany(Feed::class);
