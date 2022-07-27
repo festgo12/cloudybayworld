@@ -40,57 +40,117 @@ Checkout
                   <div class="mb-3 col-sm-6">
                     <input class="form-control" hidden name="user_id" value="{{ Auth::user()->id }}" type="text">
                     <input class="form-control" hidden name="vendor_shipping_id" value="{{ $vendor_shipping_id }}" type="text">
-                    <label for="firstname">First Name</label>
-                    <input class="form-control" name="firstname" value="{{ Auth::user()->firstname }} " id="firstname" type="text">
+                    <label for="firstname">First Name <span class="text-danger">*</span></label>
+                    <input class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ Auth::user()->firstname }} " id="firstname" type="text">
+
+                    @error('firstname')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                   </div>
                   <div class="mb-3 col-sm-6">
-                    <label for="lastname">Last Name</label>
-                    <input class="form-control" name="lastname" value="{{ Auth::user()->lastname }} " id="lastname" type="text">
+                    <label for="lastname">Last Name <span class="text-danger">*</span></label>
+                    <input class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ Auth::user()->lastname }} " id="lastname" type="text">
+
+                    @error('lastname')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                   </div>
                 </div>
                 <div class="row">
                   <div class="mb-3 col-sm-6">
-                    <label for="phone">Phone</label>
-                    <input class="form-control" name="phone" id="phone" type="text">
+                    <label for="phone">Phone <span class="text-danger">*</span></label>
+                    <input class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" type="text">
+
+                    @error('phone')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                   </div>
                   <div class="mb-3 col-sm-6">
-                    <label for="inputPassword7">Email Address</label>
-                    <input class="form-control" name="email" value="{{ Auth::user()->email }} " id="inputPassword7" type="email">
+                    <label for="inputPassword7">Email Address <span class="text-danger">*</span></label>
+                    <input class="form-control @error('email') is-invalid @enderror" name="email" value="{{ Auth::user()->email }} " id="inputPassword7" type="email">
+
+                    @error('email')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label for="customer_country">Country</label>
-                  <select class="form-control" name="customer_country" id="customer_country">
+                  <label for="customer_country">Country <span class="text-danger">*</span></label>
+                  <select class="form-control @error('customer_country') is-invalid @enderror" name="customer_country" id="customer_country">
                     <option value="">Choose...</option>
                     @foreach($countries as $cn)
                     <option value="{{ $cn->country_code }}">{{ $cn->country_name }}</option>
                     @endforeach
                   </select>
+
+                  @error('customer_country')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="address">Address</label>
-                  <input class="form-control" name="address" id="address" type="text">
+                  <label for="address">Address <span class="text-danger">*</span></label>
+                  <input class="form-control @error('address') is-invalid @enderror" name="address" id="address" type="text">
+
+                  @error('address')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="city">City</label>
-                  <input class="form-control" name="city" id="city" type="text">
+                  <label for="city">City <span class="text-danger">*</span></label>
+                  <input class="form-control @error('city') is-invalid @enderror" name="city" id="city" type="text">
+
+                  @error('city')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="state">State</label>
-                  <input class="form-control" name="state" id="state" type="text">
+                  <label for="state">State <span class="text-danger">*</span></label>
+                  <input class="form-control @error('state') is-invalid @enderror" name="state" id="state" type="text">
+
+                  @error('state')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="pickup_location">Pickup in State</label>
-                  <select class="form-control" name="pickup_location" id="pickup_location">
+                  <label for="pickup_location">Pickup in State <span class="text-danger">*</span></label>
+                  <select class="form-control @error('pickup_location') is-invalid @enderror" name="pickup_location" id="pickup_location">
                     <option value="">Choose...</option>
                     @foreach($pickups as $pic)
                     <option value="{{ $pic->location }}">{{ $pic->location }}, {{ $pic->state }}</option>
                     @endforeach
                   </select>
+
+                  @error('pickup_location')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
-                  <label for="zip">Postal Code</label>
-                  <input class="form-control" name="zip" id="zip" type="text">
+                  <label for="zip">Postal Code <span class="text-danger">*</span></label>
+                  <input class="form-control @error('zip') is-invalid @enderror" name="zip" id="zip" type="text">
+
+                  @error('zip')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
                 </div>
                 <div class="mb-3">
                   <label for="zip">Order Note (optional)</label>

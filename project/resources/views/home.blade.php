@@ -90,7 +90,7 @@ Home
                     <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4></a>
                       @foreach( $cats as $cat)
 
-                        <a href="{{ route('product.index', $cat->slug) }}" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> {{ $cat->name }}</a>
+                        <a href="{{ route('product.index', $cat->slug) }}" data-bs-original-title="" title=""><i class="icofont icofont-{{ ($cat->icon) ? $cat->icon: 'box' }} m-r-10"></i> {{ $cat->name }}</a>
                       @endforeach
                   </div>
                 </div>
@@ -345,7 +345,7 @@ Home
                                           <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
                                             > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
   
-                                            <i class="icofont icofont-heart wishcart addwish font-info" data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
+                                            <i class="icofont icofont-heart wishcart addwish {{ count(App\Models\Wishlist::where('user_id', Auth::user()->id)->where('product_id', $prod->id)->get()) ? 'font-info': '' }}" data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
                                         </div>
 
                                         <div class="product-price">{{ $prod->showPrice() }}
@@ -357,15 +357,13 @@ Home
                                         </div>
                                         <div class="product-size">
                                           <ul>
+                                           
+                                            @foreach( $prod->size as $size)
                                             <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
+                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
+                                            @endforeach
+
                                           </ul>
                                         </div>
                                         <div class="product-qnty">
@@ -395,9 +393,10 @@ Home
                               <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
                                 > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
 
-                              <p>{{mb_strlen($prod->details,'utf-8')
-                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p>
-                              <div class="product-price">{{ $prod->showPrice() }}
+                              {{-- <p>{{mb_strlen($prod->details,'utf-8')
+                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p> --}}
+                              
+                                <div class="product-price">{{ $prod->showPrice() }}
                                 <del>{{ $prod->showPreviousPrice() }}    </del>
                               </div>
                             </div>
@@ -488,7 +487,7 @@ Home
                                           <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
                                             > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
   
-                                    <i class="icofont icofont-heart wishcart addwish {{ $prod->user->wishlistCount() ? 'font-info': '' }} " data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
+                                    <i class="icofont icofont-heart wishcart addwish {{ count(App\Models\Wishlist::where('user_id', Auth::user()->id)->where('product_id', $prod->id)->get()) ? 'font-info': '' }} " data-href="{{ route('product-wishlist-add',$prod->id) }}"></i>
                                         </div>
 
                                         <div class="product-price">{{ $prod->showPrice() }}
@@ -500,15 +499,14 @@ Home
                                         </div>
                                         <div class="product-size">
                                           <ul>
+                                           
+                                            @foreach( $prod->size as $size)
                                             <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">M</button>
+                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">L</button>
-                                            </li>
-                                            <li> 
-                                              <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">Xl</button>
-                                            </li>
+                                            @endforeach
+
+                                            
                                           </ul>
                                         </div>
                                         <div class="product-qnty">
@@ -537,8 +535,9 @@ Home
                               <a href="{{ route('product.details', $prod->slug) }}"><h4>{{mb_strlen($prod->name,'utf-8')
                                 > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</h4></a>
 
-                              <p>{{mb_strlen($prod->details,'utf-8')
-                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p>
+                              {{-- <p>{{mb_strlen($prod->details,'utf-8')
+                                > 55 ? mb_substr($prod->details ,0,55,'utf-8').'...' : $prod->details}}</p> --}}
+
                               <div class="product-price">{{ $prod->showPrice() }}
                                 <del>{{ $prod->showPreviousPrice() }}    </del>
                               </div>

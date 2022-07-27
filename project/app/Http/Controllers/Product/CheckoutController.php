@@ -125,7 +125,24 @@ class CheckoutController extends Controller
 
     public function cashondelivery(Request $request)
     {
-      
+      $rule = [
+
+        'firstname' => ['required', 'string'],
+        'lastname' => ['required', 'string'],
+        'phone' => ['required' , 'string'],
+        'email' => ['required', 'email'],
+        'customer_country' => ['required'],
+        'address' => ['required' , 'string'],
+        'city' => ['required', 'string'],
+        'state' => ['required', 'string'],
+        'pickup_location' => ['required'],
+        'zip' => ['required'],
+
+    ];
+
+        $request->validate($rule);
+
+
         if (!Session::has('cart')) {
             return redirect()->route('product.cart')->with('success',"You don't have any product to checkout.");
         }

@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
              $table->integer('status')->default(1)->unsigned();
              $table->string('photo', 200)->nullable();
              $table->tinyInteger('is_featured')->default(0)->unsigned();
-             $table->string('image')->nullable();
+             $table->string('icon')->default('icofont-dice-alt')->nullable();
              $table->timestamp('updated_at')->nullable();
              $table->timestamp('created_at')->nullable();
             

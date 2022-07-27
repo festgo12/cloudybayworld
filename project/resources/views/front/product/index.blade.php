@@ -226,20 +226,7 @@ Explore Product
                                 </div>
                               </div>
                               @endforeach
-                              {{-- <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/02.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00</div>
-                                </div>
-                              </div>
-                              <div class="product-box row">
-                                <div class="product-img col-md-5"><img class="img-fluid img-100" src="{{ asset('assets/images/ecommerce/03.jpg') }}" alt="" data-original-title="" title=""></div>
-                                <div class="product-details col-md-7 text-start"><span><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning me-1"></i><i class="fa fa-star font-warning"></i></span>
-                                  <p class="mb-0">Fancy Shirt</p>
-                                  <div class="product-price">₦100.00</div>
-                                </div>
-                              </div> --}}
+                              
                             </div>
                             <div class="item">
 
@@ -254,8 +241,8 @@ Explore Product
                                     <i class="fa fa-star font-warning me-1"></i>
                                     <i class="fa fa-star font-dark"></i>
                                   </span>
-                                  <p class="mb-0">{{mb_strlen($prod->name,'utf-8')
-                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p>
+                                  <a href="{{ route('product.details', $prod->slug) }}"><p class="mb-0">{{mb_strlen($prod->name,'utf-8')
+                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p></a>
                                   <div class="product-price">{{ $prod->showPrice() }}</div>
                                 </div>
                               </div>
@@ -328,13 +315,13 @@ $(document).ready(function () {
     let prods= data.prods;
     let content ='';
     let loadMore = prods.next_page_url;
-    console.log(prods);
+    // console.log(prods);
 
     const loopProds = ()=>{
 
         prods.data.map(item => {
           let sizes = '';
-          item['size'].map(item =>{
+          item['size'].map(item => {
             sizes +=`
             <li> 
               <button class="btn btn-outline-light" data-size='${item}' type="button" data-bs-original-title="" title="">${item}</button>
@@ -374,7 +361,7 @@ $(document).ready(function () {
                                       <div class="product-details col-lg-6 text-start">
                                         <div class="d-flex justify-content-between mr-5">
                                           <h4>${item.name}</h4>
-                                          <i class="icofont icofont-heart addwish wishcart ${ (item['wishlistCount'] > 0) ? 'font-info' : ''} " data-href="{{URL::to('/wishlist/add')}}/${item.id}" ></i>
+                                          <i class="icofont icofont-heart addwish wishcart ${ (item['is_wish'] > 0) ? 'font-info' : ''} " data-href="{{URL::to('/wishlist/add')}}/${item.id}" ></i>
                                         </div>
                                         <div class="product-price">${item.showprice}
                                           <del>${item.showprevprice}    </del>
@@ -469,7 +456,7 @@ $(document).ready(function () {
         
                   // when dynamic attribute changes
               $(".attribute-input, #sortby").on('change', function() {
-                // $("#ajaxLoader").show();
+                
                 filter();
               });
         
@@ -479,18 +466,16 @@ $(document).ready(function () {
                     
                     val= $('.irs-from').html()
                     filter();
-                    console.log(val);
+                    // console.log(val);
                 }else{
                   if (!(val == $('.irs-from').html())) {
                     
                     val= $('.irs-from').html()
                     filter();
-                    console.log(val);
+                    // console.log(val);
                   }
         
                 }
-                // $("#ajaxLoader").show();
-                // filter();
               });
         
         
@@ -499,18 +484,16 @@ $(document).ready(function () {
                     
                     val= $('.irs-to').html()
                     filter();
-                    console.log(val);
+                    // console.log(val);
                 }else{
                   if (!(val == $('.irs-to').html())) {
                     
                     val= $('.irs-to').html()
                     filter();
-                    console.log(val);
+                    // console.log(val);
                   }
         
                 }
-                // $("#ajaxLoader").show();
-                // filter();
               });
         
         
@@ -519,17 +502,12 @@ $(document).ready(function () {
               // when price changed & clicked in search button
               $("#prod_name").on('keyup', function(e) {
                 e.preventDefault();
-                // $("#ajaxLoader").show();
                 if (e.key == 'Enter') {
                   filter();
                 }
               });
         
-              // $(".filter-btn").on('click', function(e) {
-              //   e.preventDefault();
-              //   // $("#ajaxLoader").show();
-              //   filter();
-              // });
+              
                     
         
         
@@ -573,30 +551,23 @@ $(document).ready(function () {
                     }
                   }
           
-                  if ($('.irs-to').html() != '') {
-                    if (filterlink == '') {
-                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'max'+'='+$('.irs-to').html();
-                    } else {
-                      filterlink += '&'+'max'+'='+$('.irs-to').html();
-                    }
-                  }
+                  // if ($('.irs-to').html() != '') {
+                  //   if (filterlink == '') {
+                  //     filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'max'+'='+$('.irs-to').html();
+                  //   } else {
+                  //     filterlink += '&'+'max'+'='+$('.irs-to').html();
+                  //   }
+                  // }
           
-                  console.log(filterlink);
-                  console.log(encodeURI(filterlink));
-                  // $("#ajaxContent").load(encodeURI(filterlink), function(data) {
-                  //   // add query string to pagination
-                  //   addToPagination();
-                  //   $("#ajaxLoader").fadeOut(1000);
-                  // });
-          
+                  // console.log(encodeURI(filterlink));
+                 
                       $.ajax({
           
                             type: 'get',
                             url: encodeURI(filterlink),
           
                             success: function (data) {
-                              console.log(data);
-                              console.log('od => '+encodeURI(filterlink));
+                              // console.log(data);
           
                               prods= data.prods;
                               loadMore = prods.next_page_url;

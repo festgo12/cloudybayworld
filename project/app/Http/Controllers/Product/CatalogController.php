@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Childcategory;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -174,7 +175,7 @@ class CatalogController extends Controller
           $product->showprice = $product->showPrice();
           $product->showprevprice = $product->showpreviousPrice();
           $product->rating = Rating::rating($product->id);
-          $product->wishlistCount = $product->user->wishlistCount();
+          $product->is_wish = count(Wishlist::where('user_id', Auth::user()->id)->where('product_id', $product->id)->get());
         }
 
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
@@ -189,7 +190,7 @@ class CatalogController extends Controller
           // dd($data);
           return $data;
         }
-        // dd($data);
+         //dd($data);
         
         return view('front.product.index', compact('data','newProducts', 'newProducts2'));
       }
@@ -210,7 +211,7 @@ class CatalogController extends Controller
           
              $ck = 0;
              $orders = Order::where('user_id','=',$request->user_id)->where('status','=','completed')->get();
- 
+
              foreach($orders as $order)
              {
              $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
