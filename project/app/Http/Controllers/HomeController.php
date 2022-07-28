@@ -35,6 +35,8 @@ class HomeController extends Controller
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->get();
 
+        // dd($products);
+
         return view('home', compact('products','cats', 'newProducts'));
     }
 }

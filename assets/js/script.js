@@ -578,6 +578,12 @@ $(document).on("click", ".bootstrap-touchspin-up" , function(){
     $(document).on('click', '.addwish', function(){
         $.get( $(this).data('href') , function( data ) {
 
+
+            if(!($(this).hasClass('font-info'))){
+                // console.log('ok');
+                $(this).addClass('font-info')
+            }
+
             if(data[0] == 1) {
               notice('added to Wishlist');
               $('#wishlist-count').html(data[1]);
