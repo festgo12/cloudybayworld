@@ -2,8 +2,6 @@ var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 // get category from url #hash
 const requestCategory = decodeURIComponent(window.location.hash);
-console.log(requestCategory.slice(1));
-
 
 const getMarketList = (hash) => {
     // send a get request to the server

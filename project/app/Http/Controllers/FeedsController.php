@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Feed;
 use App\Models\User;
+use App\Models\Shop;
 
 class FeedsController extends Controller
 {
@@ -20,20 +21,23 @@ class FeedsController extends Controller
     {
         $user = User::find($userId);
 
-        $feeds = Feed::whereIn('user_id', $user->following->pluck('id'))
-            ->orWhere('user_id', $userId)
+        $feeds = Feed::whereIn('feedable_id', $user->following->pluck('id'))
+            ->orWhere([
+            ['feedable_id', '=', $userId],
+            ['feedable_type', 'User']
+        ])
             ->with('user')
             ->with('likes')
             ->with([
-                'isLikedBy' => function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
-                }
-            ])
+            'isLikedBy' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
             ->with([
-                'comments' => function ($query){
-                    $query->orderByDesc('id')->with('user');
-                }
-            ])
+            'comments' => function ($query) {
+            $query->orderByDesc('id')->with('user');
+        }
+        ])
             ->withCount('comments as total_comments')
             ->orderByDesc('id')
             ->get();
@@ -46,26 +50,56 @@ class FeedsController extends Controller
         $userId = $user->id;
 
         $feeds = Feed::whereIn('id', $user->likes->pluck('feed_id'))
-            ->orWhere('user_id', $userId)
+            ->orWhere([
+            ['feedable_id', '=', $userId],
+            ['feedable_type', 'User']
+        ])
             ->with('user')
             ->with('likes')
             ->with([
-                'isLikedBy' => function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
-                }
-            ])
+            'isLikedBy' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
             ->with([
-                'comments' => function ($query){
-                    $query->orderByDesc('id')->with('user');
-                }
-            ])
+            'comments' => function ($query) {
+            $query->orderByDesc('id')->with('user');
+        }
+        ])
             ->withCount('comments as total_comments')
             ->orderByDesc('id')
             ->get();
         return $feeds;
     }
 
-    public function postFeed(Request $request, $userId)
+    public function apiGetShopFeeds($userId, $slug)
+    {
+        $shop = Shop::where('slug', $slug)->first();
+        $shopId = $shop->id;
+
+        $feeds = Feed::where([
+            ['feedable_id', '=', $shopId],
+            ['feedable_type', 'Shop']
+        ])
+            ->with('shop')
+            ->with('likes')
+            ->with([
+            'isLikedBy' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
+            ->with([
+            'comments' => function ($query) {
+            $query->orderByDesc('id')->with('user');
+        }
+        ])
+            ->withCount('comments as total_comments')
+            ->orderByDesc('id')
+            ->get();
+        return $feeds;
+    }
+
+    public function postFeed(Request $request, $ownerId)
     {
         // response array object containing message and error indicator
         $response = array('message' => '', 'error' => false);
@@ -76,7 +110,7 @@ class FeedsController extends Controller
         ]);
 
         $requiredMemeTypes = ['video/x-ms-asf', 'video/x-flv', 'video/mp4', 'application/x-mpegURL',
-            'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv', 
+            'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv',
             'video/avi', 'video/webm', 'image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp'];
 
         /**
@@ -86,22 +120,24 @@ class FeedsController extends Controller
         if ($validator->fails()) {
             $response['message'] = implode("<br>", $validator->messages()->all());
             $response['error'] = true;
-        }else{
+        }
+        else {
             // create a new Feed object
             $feed = new Feed();
             $feed->content = $request->post('postInput');
+            $feed->feedable_type = $request->post('postType');
             // create a new unique string for the slug
             $bytes = random_bytes(20);
             $slug = bin2hex($bytes);
             $feed->slug = $slug;
-            $feed->user_id = $userId;
+            $feed->feedable_id = $ownerId;
 
             // check if an image was uploaded        
             if ($request->hasfile('fileInput')) {
                 $attachments = [];
                 foreach ($request->file('fileInput') as $file) {
                     // check if video/image has an accepted mime type
-                    if(!(in_array($file->getMimeType(), $requiredMemeTypes))){
+                    if (!(in_array($file->getMimeType(), $requiredMemeTypes))) {
                         $response['message'] = "Please upload a valid image/video file";
                         $response['error'] = true;
                         return $response;
@@ -111,7 +147,7 @@ class FeedsController extends Controller
                     // store the image path, name and type on the DB
                     array_push($attachments, [
                         'path' => $path,
-                        'type' => str_contains($file->getMimeType(), 'video') ? 'video':'image',
+                        'type' => str_contains($file->getMimeType(), 'video') ? 'video' : 'image',
                         'name' => $name
                     ]);
                 }

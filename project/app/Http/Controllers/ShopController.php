@@ -25,6 +25,11 @@ class ShopController extends Controller
         return view('shop.marketDetails')->with('shop', $shop);
     }
 
+    public function marketfeeds($slug)
+    {
+        $shop = Shop::where('slug', $slug)->first();
+        return view('shop.marketFeeds')->with('shop', $shop);
+    }
     /**
 	* Get all categories
 	*/

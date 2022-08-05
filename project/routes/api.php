@@ -31,9 +31,10 @@ Route::get('/isFollowing/{userId}/{username}', [App\Http\Controllers\UserProfile
 
 
 //------------ Feeds SECTION ------------
-Route::post('/feed/{userId}', [App\Http\Controllers\FeedsController::class, 'postFeed']);
+Route::post('/feed/{ownerId}', [App\Http\Controllers\FeedsController::class, 'postFeed']);
 Route::get('/feeds/{userId}', [App\Http\Controllers\FeedsController::class, 'apiGetFeeds']);
 Route::get('/profile-feeds/{username}', [App\Http\Controllers\FeedsController::class, 'apiGetProfileFeeds']);
+Route::get('/shop-feeds/{userId}/{slug}', [App\Http\Controllers\FeedsController::class, 'apiGetShopFeeds']);
 Route::post('/feed-like', [App\Http\Controllers\FeedsController::class, 'likeFeed']);
 Route::get('/comment/{feedId}', [App\Http\Controllers\CommentController::class, 'getComment']);
 Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);

@@ -35,7 +35,6 @@
             </div>
             </div>
         </div>
-        <!-- user profile first-style end-->
         <div class="row">
             <div class="col-md-8">
                 <div class="card">

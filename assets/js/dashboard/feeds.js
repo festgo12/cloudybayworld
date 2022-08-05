@@ -35,6 +35,7 @@ const handleSavePost = (event) => {
     waitSpinner.style.display = 'block';
     // append the post content to the form data
     formData.append('postInput', postInput.value);
+    formData.append('postType', 'User');
     // send a post request to the server with the form data
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {

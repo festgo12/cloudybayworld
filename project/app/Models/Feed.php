@@ -13,7 +13,7 @@ class Feed extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'feedable_id');
     }
 
     public function likes()
@@ -42,9 +42,9 @@ class Feed extends Model
         return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
     }
 
-    public function shops()
+    public function shop()
     {
-        return $this->hasMany(Shop::class);
+        return $this->belongsTo(Shop::class, 'feedable_id');
     }
 
 }
