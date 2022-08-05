@@ -24,4 +24,9 @@ class Shop extends Model
     {
         return $this->hasOne(ShopCategory::class, 'id', 'category_id');
     }
+
+    public function feeds()
+    {
+        return $this->hasMany(Feed::class, 'feedable_id')->where('feedable_type', 'Shop');
+    }
 }

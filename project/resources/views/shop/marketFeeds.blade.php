@@ -72,7 +72,9 @@
                   <div class="cardheader socialheader"></div>
                   <div class="user-image">
                      <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
+                     @if($shop->user_id == auth()->user()->id)
                      <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+                     @endif
                   </div>
                   <div class="info">
                      <div class="row">
@@ -111,13 +113,13 @@
                            <div class="row">
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
-                                    <h6>69</h6>
+                                    <h6>{{count($shop->feeds)}}</h6>
                                     <span>Post</span>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
-                                    <h6>206</h6>
+                                    <h6>1</h6>
                                     <span>Reviews</span>
                                  </div>
                               </div>
