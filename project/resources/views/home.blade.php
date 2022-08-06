@@ -27,7 +27,7 @@
                     </div>
                     
                   </div>
-                  <div class="drop-left dropdown-content  p-b-10">
+                  <div id="tagList" class="drop-left dropdown-content  p-b-10">
                     <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> Clothing</a>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-fast-food m-r-10"></i> Food & Drinks</a>
@@ -1600,5 +1600,6 @@
       </div>
     </div>
     <!-- Container-fluid Ends-->
+    <script src="{{ asset('./assets/js/dashboard/home.js') }}"></script>
   </div>
 @endsection

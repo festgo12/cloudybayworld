@@ -26,18 +26,20 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::group(['middleware'=>'auth'],function(){
     
     //------------ User SECTION ------------
-    // Route::get('/profile', function(){
-    //     dd('user routes');
-    // });
-    
+    Route::get('/profile/{username}', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');
+    Route::get('/editProfile', [App\Http\Controllers\UserProfileController::class, 'editProfile'])->name('editProfile');
 
 
-
+    //------------ Feeds SECTION ------------
+    Route::get('/feeds', [App\Http\Controllers\FeedsController::class, 'getFeeds'])->name('feeds');
 
 
     
     //------------ Shop SECTION ------------
-    
+    Route::get('/createShop', [App\Http\Controllers\ShopController::class, 'createShop'])->name('createShop');
+    Route::get('/markets', [App\Http\Controllers\ShopController::class, 'markets'])->name('markets');
+    Route::get('/market/{slug}', [App\Http\Controllers\ShopController::class, 'marketDetails']);
+    Route::get('/market/feeds/{slug}', [App\Http\Controllers\ShopController::class, 'marketfeeds']);    
     
     //------------ Products SECTION ------------
     
