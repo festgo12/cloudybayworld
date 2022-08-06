@@ -29,4 +29,9 @@ class Shop extends Model
     {
         return $this->hasMany(Feed::class, 'feedable_id')->where('feedable_type', 'Shop');
     }
+
+    public function followers()
+    {
+        return $this->hasMany(ShopFollow::class, 'shop_id', 'user_id');
+    }
 }

@@ -77,4 +77,31 @@ class User extends Authenticatable
     {
         return $this->following()->save($user);
     }
+
+    public function shopFollowing()
+    {
+        return $this->belongsToMany(User::class, 'shop_follows', 'user_id', 'shop_id')->withTimestamps();
+    }
+
+
+    public function shopFollow(Shop $shop)
+    {
+        return $this->shopFollowing()->save($shop);
+    }
+
+    public function shopFavorites()
+    {
+        return $this->belongsToMany(User::class, 'shop_favorites', 'user_id', 'shop_id')->withTimestamps();
+    }
+
+    public function favoriteShop(Shop $shop)
+    {
+        return $this->shopFavorites()->save($shop);
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'shop_favorites', 'shop_id', 'user_id');
+    }
+
 }

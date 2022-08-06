@@ -151,13 +151,24 @@ const toggleComment = (feedId) => {
                         <div class="profile-img-style">
                             <div class="post-border p-2">
                             <div class="row">
-                            <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
-                                <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
-                                <div class="media-body align-self-center">
-                                    <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
-                                </div>
-                                </div>
-                            </a>
+                            ${(feed.feedable_type == 'Shop') ? `
+                                <a href="${baseUrl+'/market/'+feed.shop.slug}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.shop.shopName}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            ` : `
+                                <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            `}
+
                             <div class="col-sm-4 align-self-center">
                                 <div class="float-sm-end"><small>${getTimeAgo(new Date(feed.created_at))}</small></div>
                             </div>
@@ -270,7 +281,7 @@ const toggleComment = (feedId) => {
 loadFeeds();
 
 /**
- * This function gets the number of the 
+ * This function gets the number followers of the 
  * current user from the server
  */
 const followersCount = () => {
@@ -335,13 +346,13 @@ const handleFollowUser = (username) => {
             },
             body: JSON.stringify({
                 userId: userId.value,
-                followerUsername: username
+                followingUsername: username
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
         // re-render the following count
         followingCount();
+        followersCount();
         // re-render the followButton
         isFollowingCheck();
     })();

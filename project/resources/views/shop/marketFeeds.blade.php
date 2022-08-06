@@ -82,13 +82,13 @@
                            <div class="row">
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
-                                    <h6>&nbsp;&nbsp;11K</h6>
+                                    <h6>&nbsp;&nbsp;<span id="followersCountEl">0</span></h6>
                                     <span>Followers</span>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
-                                    <h6>&nbsp;1</h6>
+                                    <h6>&nbsp;0</h6>
                                     <span>Following</span>
                                  </div>
                               </div>
@@ -119,7 +119,7 @@
                               </div>
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
-                                    <h6>1</h6>
+                                    <h6>0</h6>
                                     <span>Reviews</span>
                                  </div>
                               </div>
@@ -128,9 +128,9 @@
                      </div>
                      <hr>
                      <div>
-                        <button class="btn btn-light active text-primary" type="button"><i class="fa fa-star"></i>
+                        <button id="favoriteButton" onclick="handleFavoriteShop()" class="btn btn-light active text-primary" type="button"><i class="fa fa-star"></i>
                         Favourite</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-info active txt-light" type="button">Follow</button>
+                        <button id="followButton" onclick="handleFollowShop()" class="btn btn-info active txt-light" type="button">Follow</button>
                      </div>
                   </div>
                </div>

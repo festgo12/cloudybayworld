@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ShopCategory;
 use App\Models\Shop;
+use App\Models\User;
+use App\Models\ShopFollow;
+use App\Models\ShopFavorite;
 
 class ShopController extends Controller
 {
@@ -120,5 +123,62 @@ class ShopController extends Controller
         $shops = Shop::whereIn('category_id', $categories->pluck('id'))->get();
 
         return $shops;
+    }
+
+    public function followShop(Request $request)
+    {
+        $user = User::find($request->post('userId'));
+        $shop = Shop::where('slug', $request->post('shopSlug'))->first();
+        
+        // follow only the shop you have not followed before
+        if(!$user->shopFollowing()->where('shop_id', $shop->id)->exists()){
+            return $user->shopFollow($shop);
+        }else{
+            // unfollow shop if already following
+            $follow = ShopFollow::where([
+                ['shop_id', '=', $shop->id],
+                ['user_id', '=', $user->id]
+                ])->first()
+                ->delete();
+            return 0;
+        }
+    }
+
+    public function shopFollowers($slug)
+    {
+        $shop = Shop::where('slug', $slug)->first();
+        return $shop->followers->count();
+    }
+
+    public function isFollowingShop($slug, $userId)
+    {
+        $shop = Shop::where('slug', $slug)->first();
+        return $shop->followers()->where('user_id', $userId)->count();
+    }
+
+    public function favoriteShop(Request $request)
+    {
+        $user = User::find($request->post('userId'));
+        $shop = Shop::where('slug', $request->post('shopSlug'))->first();
+        
+        // favorite only the shop you have not favorited before
+        if(!$user->shopFavorites()->where('shop_id', $shop->id)->exists()){
+            return $user->favoriteShop($shop);
+        }else{
+            // unfavorite shop if already following
+            $favorite = ShopFavorite::where([
+                ['shop_id', '=', $shop->id],
+                ['user_id', '=', $user->id]
+                ])->first()
+                ->delete();
+            return 0;
+        }
+    }
+
+    public function isFavorited($slug, $userId)
+    {
+        $shop = Shop::where('slug', $slug)->first();
+        $user = User::find($userId);
+        return $user->favorites()->where('shop_id', $shop->id)->count();
     }
 }

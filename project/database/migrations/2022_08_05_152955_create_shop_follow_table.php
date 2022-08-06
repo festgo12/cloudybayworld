@@ -14,7 +14,7 @@ class CreateShopFollowTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_follow', function (Blueprint $table) {
+        Schema::create('shop_follows', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
             $table->foreignId('shop_id')->constrained('shops')->cascadeOnDelete();

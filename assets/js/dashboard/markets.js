@@ -34,7 +34,7 @@ const getMarketList = (hash) => {
                                             class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-dark"></i></span><span
-                                            style="color:black">(206)</span></div>
+                                            style="color:black">(0)</span></div>
                                         <div class="price d-flex">
                                         <div class="text-muted me-2">
                                             <span style="color:red">Closed </span> 

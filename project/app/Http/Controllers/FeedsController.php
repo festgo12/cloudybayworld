@@ -22,11 +22,13 @@ class FeedsController extends Controller
         $user = User::find($userId);
 
         $feeds = Feed::whereIn('feedable_id', $user->following->pluck('id'))
+            ->orWhereIn('feedable_id', $user->shopFollowing->pluck('id'))
             ->orWhere([
             ['feedable_id', '=', $userId],
             ['feedable_type', 'User']
         ])
             ->with('user')
+            ->with('shop')
             ->with('likes')
             ->with([
             'isLikedBy' => function ($query) use ($userId) {
@@ -55,6 +57,7 @@ class FeedsController extends Controller
             ['feedable_type', 'User']
         ])
             ->with('user')
+            ->with('shop')
             ->with('likes')
             ->with([
             'isLikedBy' => function ($query) use ($userId) {
