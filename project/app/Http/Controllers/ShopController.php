@@ -152,12 +152,14 @@ class ShopController extends Controller
         }
     }
 
+    // Get the number of followers the current shop has
     public function shopFollowers($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
         return $shop->followers->count();
     }
 
+    // checks if the authenticated is following a particular shop
     public function isFollowingShop($slug, $userId)
     {
         $shop = Shop::where('slug', $slug)->first();
