@@ -17,6 +17,12 @@ class FeedsController extends Controller
         return view('feeds.feeds')->with('user', $user);
     }
 
+
+    /**
+     * Get feeds for the main feed page based
+     * on the authenticated user's personal post and
+     * the posts of users/shops the current user is following.
+     */
     public function apiGetFeeds($userId)
     {
         $user = User::find($userId);
@@ -46,6 +52,11 @@ class FeedsController extends Controller
         return $feeds;
     }
 
+    /**
+     * Get feeds for that appear in user's profile
+     * page based on the personal posts of the current 
+     * profile and the posts 'liked' the current profile
+     */
     public function apiGetProfileFeeds($username)
     {
         $user = User::where('username', $username)->first();
@@ -75,6 +86,9 @@ class FeedsController extends Controller
         return $feeds;
     }
 
+    /**
+     * Get feeds posted by a particular shop
+     */
     public function apiGetShopFeeds($userId, $slug)
     {
         $shop = Shop::where('slug', $slug)->first();
@@ -112,6 +126,7 @@ class FeedsController extends Controller
             'fileInput' => 'max:2048',
         ]);
 
+        // the required mime type for media file upload
         $requiredMemeTypes = ['video/x-ms-asf', 'video/x-flv', 'video/mp4', 'application/x-mpegURL',
             'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv',
             'video/avi', 'video/webm', 'image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/webp'];

@@ -2,12 +2,13 @@ var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 // get category from url #hash
 const requestCategory = decodeURIComponent(window.location.hash);
+const userId = document.querySelector('#userId');
 
 const getMarketList = (hash) => {
     // send a get request to the server
     // get the markets based on the selected category
     (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/getShops/${hash || 'Markets'}`, {
+        const rawResponse = await fetch(`${baseUrl}/api/getShops/${hash || 'Markets'}/${userId.value}`, {
             method: 'GET',
         });
         const content = await rawResponse.json();
@@ -46,7 +47,7 @@ const getMarketList = (hash) => {
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="col-md-12"><span class="fa fa-check-square font-warning"><span>
+                                        <div class="col-md-12">${(market.favorites.length > 0) ? '<span class="fa fa-check-square font-warning">' : ''}<span>
                                         </div>
                                         <div class="col-md-12"><a class="btn btn-default text-primary" href="#"><span
                                             class="fa fa-paper-plane">DIRECTION<span> </a></div>

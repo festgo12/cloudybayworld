@@ -95,6 +95,10 @@ fileInput.addEventListener('change', handleSelectImages);
     })();
 }
 
+/**
+ * This functions show/hide the comment section 
+ * for each post/feed
+ */
 const toggleComment = (feedId) => {
     const commentBox = document.querySelector(`#commentBox-${feedId}`);
     commentBox.classList.toggle("d-none");
@@ -147,7 +151,7 @@ const getTimeAgo = (date) => {
 
 
 /**
- *  This function gets feeds tailored forna particular user
+ *  This function gets feeds tailored for a particular user
  */
 const loadFeeds = () => {
     // send a get request to the server to fetch feeds

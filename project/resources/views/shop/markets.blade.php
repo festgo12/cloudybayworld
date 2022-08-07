@@ -141,6 +141,7 @@
     
     </div>  
     <!-- Container-fluid Ends-->
+    <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
     <script src="{{ asset('./assets/js/dashboard/markets.js') }}"></script>
 </div>
 @endsection

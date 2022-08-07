@@ -15,7 +15,9 @@ const city = document.querySelector('#city');
 const zipCode = document.querySelector('#zipCode');
 const countryId = document.querySelector('#countryId');
 const aboutUser = document.querySelector('#aboutUser');
+// get the submit button elements
 let submitButtons = document.getElementsByClassName('submitButtons');
+// get the authenticated user Id
 const userId = document.querySelector('#userId');
 
 // store the current input data in a object
@@ -66,7 +68,10 @@ const handleSubmit = (event) => {
             });
             const content = await rawResponse.json();
             console.log(content); 
-            // check if the response retured an error
+            /**
+             * check the response status and message
+             * map through and display the response messages
+             */
             if(content.error){
                 const elCollection = document.getElementsByClassName('serverMessage');
                 ([...elCollection].map(el => el.innerHTML = `<strong class="text-danger">${content.message}</strong>`))
