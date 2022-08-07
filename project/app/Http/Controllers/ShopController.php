@@ -34,9 +34,9 @@ class ShopController extends Controller
         return view('shop.marketFeeds')->with('shop', $shop);
     }
     /**
-	* Get all categories
-	*/
-	public function categories()
+     * Get all categories
+     */
+    public function categories()
     {
         $categories = ShopCategory::all();
         return $categories;
@@ -45,14 +45,14 @@ class ShopController extends Controller
     public function store(Request $request)
     {
         // response array object containing message and error indicator
-        $response = array('message' => '', 'error' => false); 
+        $response = array('message' => '', 'error' => false);
         // validate the sent request parameters using the following rules
-        $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [
             'shopName' => 'required|string|min:6',
             'description' => 'required|string|min:10',
             'founder' => 'string',
             'businessType' => 'string',
-            'yearFounded' => 'integer|min:1900|max:'.date("Y"),
+            'yearFounded' => 'integer|min:1900|max:' . date("Y"),
             'numberOfBranch' => 'integer',
             'location' => 'string',
             'category_id' => 'required|integer',
@@ -76,14 +76,15 @@ class ShopController extends Controller
          * Set the error message from the validator to the response object
          */
         if ($validator->fails()) {
-            $response['message'] = implode("<br>",$validator->messages()->all());
-            $response['error'] = true;        
-        }else {
+            $response['message'] = implode("<br>", $validator->messages()->all());
+            $response['error'] = true;
+        }
+        else {
             // create new shop object
-            $shop  = new Shop();
+            $shop = new Shop();
             // loop through and save the sent request values
             foreach ($request->all() as $key => $value) {
-                if($key != 'avatarInput'){
+                if ($key != 'avatarInput') {
                     $shop->$key = $value;
                 }
             }
@@ -104,7 +105,7 @@ class ShopController extends Controller
                     'path' => $path,
                     'name' => $name
                 ];
-                
+
                 $shop->attachments = $attachments;
             }
 
@@ -116,11 +117,17 @@ class ShopController extends Controller
         return $response;
     }
 
-    public function getShops($categoryHash)
+    public function getShops($categoryHash, $userId)
     {
-        $categories = ShopCategory::where('category_name', 'like', '%'.$categoryHash.'%')->get();
+        $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
         // shop object
-        $shops = Shop::whereIn('category_id', $categories->pluck('id'))->get();
+        $shops = Shop::whereIn('category_id', $categories->pluck('id'))
+            ->with([
+            'favorites' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
+            ->get();
 
         return $shops;
     }
@@ -129,16 +136,17 @@ class ShopController extends Controller
     {
         $user = User::find($request->post('userId'));
         $shop = Shop::where('slug', $request->post('shopSlug'))->first();
-        
+
         // follow only the shop you have not followed before
-        if(!$user->shopFollowing()->where('shop_id', $shop->id)->exists()){
+        if (!$user->shopFollowing()->where('shop_id', $shop->id)->exists()) {
             return $user->shopFollow($shop);
-        }else{
+        }
+        else {
             // unfollow shop if already following
             $follow = ShopFollow::where([
                 ['shop_id', '=', $shop->id],
                 ['user_id', '=', $user->id]
-                ])->first()
+            ])->first()
                 ->delete();
             return 0;
         }
@@ -160,16 +168,17 @@ class ShopController extends Controller
     {
         $user = User::find($request->post('userId'));
         $shop = Shop::where('slug', $request->post('shopSlug'))->first();
-        
+
         // favorite only the shop you have not favorited before
-        if(!$user->shopFavorites()->where('shop_id', $shop->id)->exists()){
+        if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
             return $user->favoriteShop($shop);
-        }else{
+        }
+        else {
             // unfavorite shop if already following
             $favorite = ShopFavorite::where([
                 ['shop_id', '=', $shop->id],
                 ['user_id', '=', $user->id]
-                ])->first()
+            ])->first()
                 ->delete();
             return 0;
         }

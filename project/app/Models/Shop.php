@@ -34,4 +34,9 @@ class Shop extends Model
     {
         return $this->hasMany(ShopFollow::class, 'shop_id', 'user_id');
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(ShopFavorite::class, 'shop_id', 'user_id');
+    }
 }
