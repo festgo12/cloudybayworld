@@ -4,6 +4,8 @@ var getUrl = window.location;
 var baseUrl = getUrl.origin;
 
 const waitSpinner = document.querySelector('#waitSpinner');
+const errorMessage = document.querySelector('#errorMessage');
+errorMessage.style.display = 'none';
 const feedContainer = document.querySelector('#feedContainer');
 // Get all the form input elements using a query selector
 const postInput = document.querySelector('#postInput');
@@ -35,6 +37,7 @@ const handleSavePost = (event) => {
     waitSpinner.style.display = 'block';
     // append the post content to the form data
     formData.append('postInput', postInput.value);
+    formData.append('postType', 'User');
     // send a post request to the server with the form data
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {
@@ -42,9 +45,14 @@ const handleSavePost = (event) => {
             body: formData
         });
         const content = await rawResponse.json();
+        if(content.error){
+            errorMessage.style.display = 'block';
+            errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
+        }
         // reset the input fields
         fileInput.value = '';
         postInput.value = '';
+        formData.delete('fileInput[]')
         // re-render the feeds block
         loadFeeds();
         // hide the spinner after processing the request
@@ -89,6 +97,10 @@ fileInput.addEventListener('change', handleSelectImages);
     })();
 }
 
+/**
+ * This functions show/hide the comment section 
+ * for each post/feed
+ */
 const toggleComment = (feedId) => {
     const commentBox = document.querySelector(`#commentBox-${feedId}`);
     commentBox.classList.toggle("d-none");
@@ -141,7 +153,7 @@ const getTimeAgo = (date) => {
 
 
 /**
- *  This function gets feeds tailored forna particular user
+ *  This function gets feeds tailored for a particular user
  */
 const loadFeeds = () => {
     // send a get request to the server to fetch feeds
@@ -158,13 +170,24 @@ const loadFeeds = () => {
                         <div class="profile-img-style">
                             <div class="post-border p-2">
                             <div class="row">
-                            <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
-                                <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
-                                <div class="media-body align-self-center">
-                                    <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
-                                </div>
-                                </div>
-                            </a>
+                            ${(feed.feedable_type == 'Shop') ? `
+                                <a href="${baseUrl+'/market/'+feed.shop.slug}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.shop.shopName}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            ` : `
+                                <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            `}
+
                             <div class="col-sm-4 align-self-center">
                                 <div class="float-sm-end"><small>${getTimeAgo(new Date(feed.created_at))}</small></div>
                             </div>
@@ -174,15 +197,42 @@ const loadFeeds = () => {
                             ${feed.attachments ? (
                                     (feed.attachments.length > 1) ? (
                                         `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[0]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }
+                                                </a>
                                             </figure>
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[1]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[1]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }
+                                                </a>
                                             </figure>
                                         </div>`
                                     ) : (
                                         `<div class="img-container">
                                             <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
-                                                <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
+                                                <figure itemprop="associatedMedia" itemscope="">
+                                                    <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                    ${(feed.attachments[0]['type'] == 'image') ? `
+                                                        <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                    ` : `
+                                                        <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                            <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                        </video>
+                                                    ` }                                                            
+                                                    </a>
                                                 </figure>
                                             </div>
                                         </div>`

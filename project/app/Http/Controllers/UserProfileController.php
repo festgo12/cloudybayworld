@@ -31,10 +31,15 @@ class UserProfileController extends Controller
         return view('profile.editProfile')->with('user', $user);
     }
 
+    public function apiGetProfileByUsername($username){
+        $user = User::where('username', $username)->first();
+        return ($user) ? $user : 0;
+    }
+
     public function apiGetProfile($userId)
     {
         $user = User::find($userId);
-        return $user;
+        return ($user) ? $user : 0;
     }
 
     public function apiEditProfile(Request $request, $userId)
@@ -127,19 +132,19 @@ class UserProfileController extends Controller
     public function follow(Request $request)
     {
         $user = User::find($request->post('userId'));
-        $follower = User::where('username', $request->post('followerUsername'))->first();
+        $following = User::where('username', $request->post('followingUsername'))->first();
         
         // do not allow user follow him/her self
-        if($user->id == $follower->id){
+        if($user->id == $following->id){
             return 0;
         }
         // follow only the user have not been followed before
-        if(!$user->following()->where('following_user_id', $follower->id)->exists()){
-            return $user->follow($follower);
+        if(!$user->following()->where('following_user_id', $following->id)->exists()){
+            return $user->follow($following);
         }else{
             // unfollow user if already following
             $follow = Follow::where([
-                ['following_user_id', '=', $follower->id],
+                ['following_user_id', '=', $following->id],
                 ['user_id', '=', $user->id]
                 ])->first()
                 ->delete();

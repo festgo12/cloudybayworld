@@ -35,7 +35,6 @@
             </div>
             </div>
         </div>
-        <!-- user profile first-style end-->
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -51,6 +50,7 @@
                             <div>
                                 <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
                             </div>
+                            <p id="errorMessage" class="text-center">Message</p>
                             <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
                                 Post
                             </button>
