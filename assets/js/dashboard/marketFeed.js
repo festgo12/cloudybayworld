@@ -1,5 +1,6 @@
 var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+var baseUrl = getUrl.origin;
 
 const waitSpinner = document.querySelector('#waitSpinner') || '';
 const errorMessage = document.querySelector('#errorMessage') || '';

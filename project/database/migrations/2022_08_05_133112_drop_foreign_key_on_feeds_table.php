@@ -14,7 +14,7 @@ class DropForeignKeyOnFeedsTable extends Migration
     public function up()
     {
         Schema::table('feeds', function(Blueprint $table) {
-            $table->dropForeign('feeds_user_id_foreign');
+            // $table->dropForeign('feeds_user_id_foreign');
             // $table->dropColumn('feeds_user_id_foreign');
         });
     }
