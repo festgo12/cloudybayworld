@@ -1,4 +1,5 @@
 "use strict";
+// require('./owlcarousel/owl.carousel')
 var ecommerce_product = {
 	init: function() {
 		var sync1 = $("#sync1");
