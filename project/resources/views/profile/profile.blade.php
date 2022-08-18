@@ -28,9 +28,11 @@
                         <div class="cardheader"></div>
                         <div class="user-image">
                             <div class="avatar">
-                                <img id="realAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                <img id="profileAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
                             </div>
+                            @if($user->id == auth()->user()->id)
                             <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+                            @endif
                         </div>
                         <div class="info">
                             <input id="usernameHolder" type="hidden" name="username" value="{{ $user->username }}" />
@@ -96,7 +98,25 @@
                             <div class="feed-title">
                                 <h4>Feed Update</h4>
                             </div>
+                            @if($user->id == auth()->user()->id)
+                            <div class="px-4">
+                                <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                                <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                <textarea id="postInput" placeholder="What's happening?"  class="form-control"></textarea>
+                                <div class="form-group">
+                                    <div>
+                                        <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
+                                    </div>
+                                    <p id="errorMessage" class="text-center">Message</p>
+                                    <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                            @else
                             <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                            <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                            @endif
                             <div class="d-flex justify-content-center">
                                 <div id="waitSpinner" class="spinner-border" role="status">
                                     <span class="visually-hidden">Loading...</span>

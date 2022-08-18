@@ -3,12 +3,21 @@ var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split
 
 const tempAvatar = document.querySelector('#tempAvatar');
 // get the current user profile picture
-const realAvatar = document.querySelector('#realAvatar');
+const profileAvatar = document.querySelector('#profileAvatar');
 const avatarInput = document.querySelector('#avatarInput');
 const saveButton = document.querySelector('#saveButton');
 
+const waitSpinner = document.querySelector('#waitSpinner') || '';
+const errorMessage = document.querySelector('#errorMessage') || '';
+errorMessage ? errorMessage.style.display = 'none' : '';
 const feedContainer = document.querySelector('#feedContainer');
+// Get all the form input elements using a query selector
+const postInput = document.querySelector('#postInput');
+const fileInput = document.querySelector('#fileInput') || '';
+const postButton = document.querySelector('#postButton') || '';
 const userId = document.querySelector('#userId');
+// get the current user profile picture
+const realAvatar = document.querySelector('#realAvatar');
 const usernameHolder = document.querySelector('#usernameHolder');
 let commentInput = document.getElementsByClassName('commentInput');
 
@@ -32,7 +41,7 @@ const handleSaveAvatar = (event) => {
     if(!avatarInput.value){
         return;
     }
-    realAvatar.src = URL.createObjectURL(file);
+    profileAvatar.src = URL.createObjectURL(file);
     // send a post request to the server with the form data
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
@@ -41,6 +50,8 @@ const handleSaveAvatar = (event) => {
         });
         const content = await rawResponse.json();
         console.log(content);
+        // clear form data
+        formData.delete('avatarInput')
     })();
 }
 
@@ -52,10 +63,63 @@ saveButton.addEventListener('click', handleSaveAvatar);
 
  /**
   * listen for avatarInput onChange event and call 
-  * the 'handleSelectImages' function when changed
+  * the 'handleSelectImage' function when changed
   * */
 avatarInput.addEventListener('change', handleSelectImage);
 
+
+const handleSelectImages = (event) => {
+    let files = event.target.files;
+    // append the post files to the form data
+    [...files].map((file, i) => formData.append('fileInput[]', file, `fileInput${i}`));
+    // formData.append('fileInput', files[0], 'fileInput');
+}
+
+const handleSavePost = (event) => {
+    event.preventDefault();
+    // do nothing if input is empty
+    if(!postInput.value){
+        return;
+    }
+    // show the spinner while the request is being processed
+    waitSpinner.style.display = 'block';
+    // append the post content to the form data
+    formData.append('postInput', postInput.value);
+    formData.append('postType', 'User');
+    // send a post request to the server with the form data
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {
+            method: 'POST',
+            body: formData
+        });
+        const content = await rawResponse.json();
+        if(content.error){
+            errorMessage.style.display = 'block';
+            errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
+        }
+        // reset the input fields
+        fileInput.value = '';
+        postInput.value = '';
+        formData.delete('fileInput[]')
+        // re-render the feeds block
+        loadFeeds();
+        // hide the spinner after processing the request
+        waitSpinner.style.display = 'none';
+    })();
+}
+
+/**
+ * listen for postButton Onclick event and call 
+ * the 'handlePost' function when clicked
+ * */
+ postButton ? postButton.addEventListener('click', handleSavePost) : '';
+
+ /**
+  * listen for fileInput onChange event and call 
+  * the 'handleSelectImages' function when changed
+  * */
+ fileInput ? fileInput.addEventListener('change', handleSelectImages) : '';
+ 
 
 /**
  * This function sends a post request to 
@@ -255,7 +319,7 @@ const toggleComment = (feedId) => {
                             </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
                                 <div class="media">
-                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${realAvatar.src}">
+                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${profileAvatar.src}">
                                     <div class="media-body">
                                         <div class="input-group text-box">
                                             <input postid="${feed.id}" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
