@@ -3,6 +3,9 @@ var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split
 // get category from url #hash
 const requestCategory = decodeURIComponent(window.location.hash);
 const userId = document.querySelector('#userId');
+// get current hour for checking closing and opening time
+const dateObj = new Date();
+let currentHour = dateObj.getHours();
 
 const getMarketList = (hash) => {
     // send a get request to the server
@@ -38,8 +41,12 @@ const getMarketList = (hash) => {
                                             style="color:black">(0)</span></div>
                                         <div class="price d-flex">
                                         <div class="text-muted me-2">
-                                            <span style="color:red">Closed </span> 
-                                            Opened ${market.startTime}am
+                                            ${
+                                                ((currentHour >= market.startTime.split(":")[0]) && (currentHour <= market.closeTime.split(":")[0])) ?
+                                                `<span style="color:green">Opened</span> ${market.startTime}am` 
+                                                :
+                                                `<span style="color:red">Closed </span> ${market.closeTime}pm`
+                                            }
                                         </div>
                                         </div>
                                         <div class="avaiabilty">
