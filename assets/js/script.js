@@ -121,40 +121,28 @@
         }
     });
     $(".mode").on("click", function () {
-        $('.mode i').toggleClass("fa-moon-o").toggleClass("fa-lightbulb-o");
-        $('.f-ch').toggleClass("text-dark").toggleClass("text-light");
-        $('body').toggleClass("dark-only");
-        $('.profile-bar').toggleClass("bar-dark");
         var color = $(this).attr("data-attr");
-                
-        if (!localStorage.getItem('cloudbay-body')) {
-            localStorage.setItem('cloudbay-body', 'light')
-        }
+        var dark_mode = $(this).data("dark");
+        var modeChange = dark_mode ? '0': '1';
         
-        
-        (localStorage.getItem('cloudbay-body') == 'dark-only') ? 
-        localStorage.setItem('cloudbay-body', 'light') : localStorage.setItem('cloudbay-body', 'dark-only');
-    });
-
-
-    // $(window).on("load", function () {
-    // document.onload( function () {
+       
             
-    $(window).on("load", function () {
 
-        if (localStorage.getItem('cloudbay-body') == 'dark-only') {
-            $('body').addClass("dark-only")
-            $('.profile-bar').addClass("bar-dark");
-            $('.f-ch').removeClass("text-dark").addClass("text-light");
-            $('.mode i').removeClass("fa-moon-o").addClass("fa-lightbulb-o");
-        } else {
-            $('body').removeClass("dark-only")
-            $('.f-ch').removeClass("text-light").addClass("text-dark");
-            $('.profile-bar').removeClass("bar-dark");
-            $('.mode i').addClass("fa-moon-o").removeClass("fa-lightbulb-o");
-        }
-    
-    });
+            console.log(dark_mode);
+        $.get( mainurl + '/darkmode/'+ modeChange , function( data ) {
+            console.log(data);
+            
+            $('.mode').attr("data-dark", data);
+            $('.mode i').toggleClass("fa-moon-o").toggleClass("fa-lightbulb-o");
+            $('.f-ch').toggleClass("text-dark").toggleClass("text-light");
+            $('body').toggleClass("dark-only");
+            $('.profile-bar').toggleClass("bar-dark");
+        });
+                
+       });
+
+
+   
 
 })(jQuery);
 

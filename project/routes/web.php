@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/darkmode/{mode}', [App\Http\Controllers\HomeController::class, 'darkmode'])->name('darkmode');
 
 
 
@@ -38,6 +39,7 @@ Route::group(['middleware'=>'auth'],function(){
     //------------ Shop SECTION ------------
     Route::get('/createShop', [App\Http\Controllers\ShopController::class, 'createShop'])->name('createShop');
     Route::get('/markets', [App\Http\Controllers\ShopController::class, 'markets'])->name('markets');
+    Route::get('/market/p/{shop}', [App\Http\Controllers\Product\CatalogController::class, 'marketProduct'])->name('market.product');
     Route::get('/market/{slug}', [App\Http\Controllers\ShopController::class, 'marketDetails']);
     Route::get('/market/feeds/{slug}', [App\Http\Controllers\ShopController::class, 'marketfeeds']);    
     
@@ -84,6 +86,128 @@ Route::group(['middleware'=>'auth'],function(){
 
 
 
+
+ 
+
+ Route::prefix('chat')->group(function() {
+
+
+    
+    /*
+    * This is the main app route [Chat Messenger]
+    */
+    // Route::get('/', 'App\Http\Controllers\MessageController@index')->name(config('chat.routes.prefix'));
+    Route::get('/', 'App\Http\Controllers\MessageController@index')->name('chat');
+    
+    /**
+     *  Fetch info for specific id [user/group]
+     */
+    Route::post('/idInfo', 'App\Http\Controllers\MessageController@idFetchData');
+    
+    /**
+     * Send message route
+     */
+    Route::post('/sendMessage', 'App\Http\Controllers\MessageController@send')->name('send.message');
+    
+    /**
+     * Fetch messages
+     */
+    Route::post('/fetchMessages', 'App\Http\Controllers\MessageController@fetch')->name('fetch.messages');
+    
+    /**
+     * Download attachments route to create a downloadable links
+     */
+    Route::get('/download/{fileName}', 'App\Http\Controllers\MessageController@download')->name(config('chat.attachments.download_route_name'));
+    // Route::get('/download/{fileName}', 'App\Http\Controllers\MessageController@download')->name('attachments.download');
+    
+    /**
+     * Authintication for pusher private channels
+     */
+    Route::post('/auth', 'App\Http\Controllers\MessageController@pusherAuth')->name('pusher.auth');
+    // Route::get('/auth', 'App\Http\Controllers\MessageController@pusherAuth')->name('pusher.auth');
+    
+    /**
+     * Make messages as seen
+     */
+    Route::post('/makeSeen', 'App\Http\Controllers\MessageController@seen')->name('messages.seen');
+    
+    /**
+     * Get contacts
+     */
+    Route::post('/getContacts', 'App\Http\Controllers\MessageController@getContacts')->name('contacts.get');
+    // Route::get('/getContacts', 'App\Http\Controllers\MessageController@getContacts')->name('contacts.get');
+    
+    /**
+     * Update contact item data
+     */
+    Route::post('/updateContacts', 'App\Http\Controllers\MessageController@updateContactItem')->name('contacts.update');
+    
+    
+    /**
+     * Star in favorite list
+     */
+    Route::post('/star', 'App\Http\Controllers\MessageController@favorite')->name('star');
+    
+    /**
+     * get favorites list
+     */
+    Route::post('/favorites', 'App\Http\Controllers\MessageController@getFavorites')->name('favorites');
+    
+    /**
+     * Search in messenger
+     */
+    Route::post('/search', 'App\Http\Controllers\MessageController@search')->name('search');
+    // Route::get('/search', 'App\Http\Controllers\MessageController@search')->name('search');
+    
+    /**
+     * Get shared photos
+     */
+    Route::post('/shared', 'App\Http\Controllers\MessageController@sharedPhotos')->name('shared');
+    // Route::get('/shared', 'App\Http\Controllers\MessageController@sharedPhotos')->name('shared');
+    
+    /**
+     * Delete Conversation
+     */
+    Route::post('/deleteConversation', 'App\Http\Controllers\MessageController@deleteConversation')->name('conversation.delete');
+    Route::post('/deleteMessage', 'App\Http\Controllers\MessageController@deleteMessage')->name('message.delete');
+    
+    /**
+     * Delete Conversation
+     */
+    Route::post('/updateSettings', 'App\Http\Controllers\MessageController@updateSettings')->name('avatar.update');
+    
+    /**
+     * Set active status
+     */
+    Route::post('/setActiveStatus', 'App\Http\Controllers\MessageController@setActiveStatus')->name('activeStatus.set');
+    
+    
+    
+    
+    
+    
+    /*
+    * [Group] view by id
+    */
+    Route::get('/group/{id}', 'App\Http\Controllers\MessageController@index')->name('group');
+    
+    /*
+    * user view by id.
+    * Note : If you added routes after the [User] which is the below one,
+    * it will considered as user id.
+    *
+    * e.g. - The commented routes below :
+    */
+    // Route::get('/route', function(){ return 'Munaf'; }); // works as a route
+    Route::get('/{id}', 'App\Http\Controllers\MessageController@index')->name('user');
+    // Route::get('/route', function(){ return 'Munaf'; }); // works as a user id
+    
+    
+    
+    
+    
+
+ });  
 
 
 

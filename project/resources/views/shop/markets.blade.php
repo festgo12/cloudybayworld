@@ -72,15 +72,15 @@
                                 <div class="card mb-0">
                                     <div class="card-header d-flex">
                                         <h6 class="mb-0"><b><i class="icofont icofont-ui-clip-board"></i> Markets</b></h6>
-                                        <ul>
+                                        {{-- <ul>
                                             <li><a class="grid-bookmark-view" href="javascript:void(0)"><i
                                                 data-feather="grid"></i></a></li>
                                             <li><a class="list-layout-view" href="javascript:void(0)"><i
                                                 data-feather="list"></i></a></li>
-                                        </ul>
+                                        </ul> --}}
                                     </div>
                                     <div id="marketList" class="row">
-                                        <div class="col-sm-12 col-md-12">
+                                        {{-- <div class="col-sm-12 col-md-12">
                                             <div class="prooduct-details-box">
                                                 <div class="media">
                                                     <div class="row">
@@ -120,7 +120,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

@@ -39,4 +39,16 @@ class HomeController extends Controller
 
         return view('home', compact('products','cats', 'newProducts'));
     }
+
+
+    public function darkmode($mode)
+    {
+        $user = auth()->user();
+        $user->dark_mode = $mode ;
+        if($user->save()){
+            return $mode;
+        }
+        return ;
+
+    }
 }

@@ -211,7 +211,7 @@ Home
               </div>
         </div>
 
-        <div class="profile-bar">     
+        <div class="profile-bar {{ (Auth::user()->dark_mode) ? 'bar-dark' : ' ' }}">     
           <hr>
 
         </div>

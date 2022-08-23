@@ -409,6 +409,12 @@ const handleFollowShop = () => {
             })
         });
         const content = await rawResponse.json();
+        console.log(content);
+        console.log(userId.value);
+        console.log(shopSlug.value);
+        console.log(shopId.value);
+
+        // document.body.innerHTML = content
         // re-render the following count
         followersCount();
         // re-render the followButton
@@ -454,6 +460,7 @@ const handleFavoriteShop = () => {
             })
         });
         const content = await rawResponse.json();
+        console.log(content);
         // re-render the favoriteButton
         isFavoritedCheck();
     })();

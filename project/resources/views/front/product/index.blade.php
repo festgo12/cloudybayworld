@@ -220,8 +220,8 @@ Explore Product
                                     <i class="fa fa-star font-warning me-1"></i>
                                     <i class="fa fa-star font-dark"></i>
                                   </span>
-                                  <p class="mb-0">{{mb_strlen($prod->name,'utf-8')
-                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p>
+                                  <a href="{{ route('product.details', $prod->slug) }}"><p class="mb-0">{{mb_strlen($prod->name,'utf-8')
+                                    > 35 ? mb_substr($prod->name ,0,35,'utf-8').'...' : $prod->name}}</p></a>
                                   <div class="product-price">{{ $prod->showPrice() }}</div>
                                 </div>
                               </div>
