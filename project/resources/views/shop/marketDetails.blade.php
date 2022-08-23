@@ -89,8 +89,12 @@
                               class="fa fa-star font-warning-o"></i></span><span>(206)</span></div> -->
                            <div class="price d-flex">
                               <div class="text-muted me-2" style="text-align:center;">
-                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red"><b>Closed </b></span>
-                                 Opened {{ $shop->startTime }}am
+                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                 @if(((date('H') >= (int)explode(":",$shop->startTime)[0])) && ((date('H') <= (int)explode(":",$shop->closeTime)[0])))
+                                 <span style="color:green"><b>Opened </b></span>{{ $shop->startTime }}am
+                                 @else
+                                 <span style="color:red"><b>Closed </b></span>{{ $shop->closeTime }}am
+                                 @endif
                               </div>
                            </div>
                         </li>

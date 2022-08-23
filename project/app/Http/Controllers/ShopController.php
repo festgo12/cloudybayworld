@@ -194,7 +194,6 @@ class ShopController extends Controller
     public function isFavorited($slug, $userId)
     {
         $shop = Shop::where('slug', $slug)->first();
-        $user = User::find($userId);
-        return $user->favorites()->where('shop_id', $shop->id)->count();
+        return $shop->favorites()->where('user_id', $userId)->count();
     }
 }
