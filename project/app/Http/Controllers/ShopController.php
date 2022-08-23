@@ -138,7 +138,9 @@ class ShopController extends Controller
         $shop = Shop::where('slug', $request->post('shopSlug'))->first();
 
         // follow only the shop you have not followed before
+        // dd($user->shopFollowing()->where('shop_id', $shop->id)->exists());
         if (!$user->shopFollowing()->where('shop_id', $shop->id)->exists()) {
+            // if (False) {
             return $user->shopFollow($shop);
         }
         else {
@@ -150,6 +152,8 @@ class ShopController extends Controller
                 ->delete();
             return 0;
         }
+        // $data = $user->shopFollowing()->where('shop_id', $shop->id)->exists();
+        //     return $data;
     }
 
     // Get the number of followers the current shop has
@@ -173,6 +177,7 @@ class ShopController extends Controller
 
         // favorite only the shop you have not favorited before
         if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
+        
             return $user->favoriteShop($shop);
         }
         else {

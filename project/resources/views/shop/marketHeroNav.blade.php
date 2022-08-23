@@ -31,14 +31,14 @@
                      <div class="col-md-6">
                         <div class="ttl-info text-start">
                            <center>
-                              <h6><a href="market_product.html">Products</a></h6>
+                              <h6><a href="{{ route('market.product', $shop->slug ) }}">Products</a></h6>
                            </center>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="ttl-info text-start">
                            <center>
-                              <h6><a href="market_chat.html">Chats</a></h6>
+                              <h6><a href="{{ route('user', $shop->user_id) }}">Chats</a></h6>
                            </center>
                         </div>
                      </div>

@@ -105,7 +105,7 @@
                     <tbody>
                       <tr>
                         <td> <b>Brand Store &nbsp;&nbsp;&nbsp;:</b></td>
-                        <td>cloudbay store</td>
+                        <td>{{ $productt->shop->shopName }}</td>
                       </tr>
                       <tr>
                         <td> <b>Availability &nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp;</b></td>

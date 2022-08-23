@@ -41654,6 +41654,9 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     html[dir="rtl"] .page-wrapper.compact-sidebar .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .mega-menu-container {
         right: 112px
     }
+    .left-header h3 strong {
+        font-size: 20px;
+    }
 
     html[dir="rtl"] .page-wrapper.compact-small .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .sidebar-submenu,
     html[dir="rtl"] .page-wrapper.compact-small .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .mega-menu-container {

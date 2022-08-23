@@ -148,6 +148,15 @@ class Product extends Model
 		});
     }
 
+    public function shop()
+    {
+        return $this->belongsTo('App\Models\Shop')->withDefault(function ($data) {
+			foreach($data->getFillable() as $dt){
+				$data[$dt] = __('Deleted');
+			}
+		});
+    }
+
     public function checkVendor() {
         return $this->user_id != 0 ? '<small class="ml-2"> '.__("VENDOR").': <a href="'.route('admin-vendor-show',$this->user_id).'" target="_blank">'.$this->user->shop_name.'</a></small>' : '';
     }

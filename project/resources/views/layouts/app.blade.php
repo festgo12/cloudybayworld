@@ -1,3 +1,6 @@
+{{-- @php
+  $darkmode = (
+@endphp --}}
 <!DOCTYPE html>
 <html lang="en" >
   
@@ -38,7 +41,7 @@
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
   </head>
-  <body >
+  <body class="{{ (Auth::user()->dark_mode) ? 'dark-only' : ' ' }}">
     <div class="loader-wrapper">
       <div class="loader-index"><span></span></div>
       <svg>
@@ -51,7 +54,7 @@
     </div>
     <!-- tap on top starts-->
     <div class="tap-top"><i data-feather="chevrons-up"></i></div>
-    <a href="market_view.html"><div class=" shop-tap"><i class="icofont icofont-food-cart"></i></div></a>
+    <a href="{{ route('markets') }}"><div class=" shop-tap"><i class="icofont icofont-food-cart"></i></div></a>
     <!-- tap on tap ends-->
     <!-- page-wrapper Start-->
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
@@ -147,7 +150,7 @@
                   </div>
                 </li> --}}
                 <li>
-                  <div class="mode"><i class="fa fa-moon-o"></i></div>
+                  <div class="mode"  data-dark="{{ Auth::user()->dark_mode  }}"><i class="fa {{ (Auth::user()->dark_mode ) ? 'fa-lightbulb-o' : 'fa-moon-o'  }}"></i></div>
                 </li>
                 <li class="cart-nav onhover-dropdown">
                   <div class="cart-box"><i data-feather="shopping-cart"></i><span id="cart-count" class="badge rounded-pill badge-primary">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span></div>
@@ -194,7 +197,7 @@
                 </li>
                 <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
                 <li class="profile-nav onhover-dropdown p-0 me-0">
-                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? './assets/uploads/'.Auth::user()->attachments['path'] : './assets/images/dashboard/profile.jpg' }}" alt="">
+                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? asset('assets/uploads/').'/'.Auth::user()->attachments['path'] : asset('assets/images/dashboard/profile.jpg') }}" alt="">
                     <div class="media-body"><span>{{ Auth::user()->username }}</span>
                       <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                     </div>
@@ -444,11 +447,11 @@
       <script src="{{ asset('assets/js/script.js') }}"></script>
       @yield('script')
 
-      @if(Session::get('msg'))
+      {{-- @if(Session::get('msg'))
       <script>
         notice({{ Session::get('msg') }});
       </script>
-      @endif
+      @endif --}}
 
 
     </body>

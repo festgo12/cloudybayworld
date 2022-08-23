@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\Shop;
 use App\Models\Order;
 use App\Models\Rating;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Wishlist;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use App\Models\Childcategory;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -190,9 +191,96 @@ class CatalogController extends Controller
           // dd($data);
           return $data;
         }
-         //dd($data);
+        //  dd($data, $prods);
         
         return view('front.product.index', compact('data','newProducts', 'newProducts2'));
+      }
+
+ // ------------------ Shop Product SECTION --------------------
+
+
+
+      public function marketProduct(Request $request,$slug)
+      {
+        $shop = Shop::where('slug', $slug)->first();
+
+        if (Session::has('currency')) 
+        {
+          $curr = Currency::find(Session::get('currency'));
+        }
+        else
+        {
+            $curr = Currency::where('is_default','=',1)->first();
+        }
+        
+        $minprice = str_replace(' ','',$request->min);
+        $maxprice = str_replace(' ','',$request->max);
+        
+        $sort = $request->sort;
+        $search = $request->search;
+        $minprice = round((intval($minprice )/ $curr->value),2);
+        $maxprice = round((intval($maxprice) / $curr->value),2);
+
+        // dd($shop);
+
+
+        if($shop)
+        {
+
+
+        $prods = Product::where('shop_id', $shop->id)->when($search, function ($query, $search) {
+          return $query->where('name', 'like', '%' . $search . '%')->orWhere('details', 'like', '%' . $search . '%');
+      })
+      ->when($minprice, function($query, $minprice) {
+        return $query->where('price', '>=', $minprice);
+      })
+      ->when($maxprice, function($query, $maxprice) {
+        return $query->where('price', '<=', $maxprice);
+      })
+       ->when($sort, function ($query, $sort) {
+          if ($sort=='date_desc') {
+            return $query->orderBy('id', 'DESC');
+          }
+          elseif($sort=='date_asc') {
+            return $query->orderBy('id', 'ASC');
+          }
+          elseif($sort=='price_desc') {
+            return $query->orderBy('price', 'DESC');
+          }
+          elseif($sort=='price_asc') {
+            return $query->orderBy('price', 'ASC');
+          }
+       })
+      ->when(empty($sort), function ($query, $sort) {
+          return $query->orderBy('id', 'DESC');
+      })
+      ->where('status', 1)->paginate(5);
+
+
+          foreach($prods as $product){
+            $product->showprice = $product->showPrice();
+            $product->showprevprice = $product->showpreviousPrice();
+            $product->rating = Rating::rating($product->id);
+            $product->is_wish = count(Wishlist::where('user_id', Auth::user()->id)->where('product_id', $product->id)->get());
+          }
+  
+          $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
+          $newProducts2 = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
+          
+          $data['prods'] = $prods;
+  
+          
+          if($request->ajax()) {
+    
+           $data['ajax_check'] = 1;
+            // dd($data);
+            return $data;
+          }
+          //  dd($data, $prods);
+
+          return view('shop.marketProducts', compact('shop','data', 'newProducts', 'newProducts2'));
+        }
+        return redirect()->route('home')->with('Shop not Found');
       }
   
   

@@ -54,14 +54,14 @@
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
                                     <center>
-                                       <h6><a href="market_product.html">Products</a></h6>
+                                       <h6><a href="{{ route('market.product', $shop->slug ) }}">Products</a></h6>
                                     </center>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
                                     <center>
-                                       <h6><a href="market_chat.html">Chats</a></h6>
+                                       <h6><a href="{{ route('user', $shop->user_id) }}">Chats</a></h6>
                                     </center>
                                  </div>
                               </div>
@@ -133,7 +133,7 @@
                      </div>
                      <hr>
                      <div>
-                        <button id="favoriteButton" onclick="handleFavoriteShop()" class="btn btn-light active text-primary" type="button"><i class="fa fa-star"></i>
+                        <button id="favoriteButton" onclick="handleFavoriteShop()" class="btn btn-light active font-primary" type="button"><i class="fa fa-star"></i>
                         Favourite</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button id="followButton" onclick="handleFollowShop()" class="btn btn-info active txt-light" type="button">Follow</button>
                      </div>
