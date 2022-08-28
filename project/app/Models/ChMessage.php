@@ -93,6 +93,7 @@ class ChMessage extends Model
      */
     public function pusherAuth($channelName, $socket_id, $data = null){
         return $this->pusher->socket_auth($channelName, $socket_id, $data);
+        // return ;
     }
 
     /**
@@ -206,6 +207,15 @@ class ChMessage extends Model
     public function countUnseenMessages($user_id){
         return Message::where('from_id',$user_id)->where('to_id',Auth::user()->id)->where('seen',0)->count();
     }
+    /**
+     * Count Unread messages
+     *
+     * @param int $user_id
+     * @return Collection
+     */
+    public function countUnreadMessages(){
+        return Message::where('from_id', '!=' ,Auth::user()->id)->where('to_id',Auth::user()->id)->where('seen',0)->count();
+    }
 
     /**
      * Get user list's item data [Contact Itme]
@@ -284,5 +294,9 @@ class ChMessage extends Model
         }
     }
     
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'from_id');
+    }
 
 }

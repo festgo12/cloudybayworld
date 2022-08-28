@@ -54,14 +54,14 @@
                       {{-- change messenger color  --}}
                       <p class="divider"></p>
                       {{-- <p class="app-modal-header">Change {{ config('chat.name') }} Color</p> --}}
-                      <div class="update-messengerColor">
+                      {{-- <div class="update-messengerColor">
                       @foreach (config('chat.colors') as $color)
                         <span style="background-color: {{ $color}}" data-color="{{$color}}" class="color-btn"></span>
                         @if (($loop->index + 1) % 5 == 0)
                             <br/>
                         @endif
                       @endforeach
-                      </div>
+                      </div> --}}
                   </div>
                   <div class="app-modal-footer">
                       <a href="javascript:void(0)" class="app-btn cancel">Cancel</a>

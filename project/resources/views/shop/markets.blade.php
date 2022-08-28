@@ -131,7 +131,7 @@
 
             <div class="d-flex justify-content-center m-b-30">
 
-            <button class="btn btn-info text-white" data-bs-original-title="" title=""> <strong>Load More</strong></button>
+            {{-- <button class="btn btn-info text-white" data-bs-original-title="" title=""> <strong>Load More</strong></button> --}}
             </div>
         </div>
 

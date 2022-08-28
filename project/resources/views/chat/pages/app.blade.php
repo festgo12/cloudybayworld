@@ -5,7 +5,7 @@
         {{-- Header and search bar --}}
         <div class="m-header">
             <nav>
-                <a href="#"> <img class="img-fluid " src="http://cloudbay.test/assets/images/favicon.png" alt=""><span class="messenger-headTitle ml-2">MESSENGER</span> </a>
+                <a href="{{ route('home') }}"> <img class="img-fluid " src="http://cloudbay.test/assets/images/favicon.png" alt=""><span class="messenger-headTitle ml-2">MESSENGER</span> </a>
                 {{-- <a href="#"><i class="fas fa-inbox"></i> <img class="img-fluid " src="http://cloudbay.test/assets/images/logo/logo.png" alt=""><span class="messenger-headTitle">MESSAGES</span> </a> --}}
                 {{-- header buttons --}}
                 <nav class="m-header-right">
@@ -20,7 +20,7 @@
                 <a href="#" @if($type == 'user') class="active-tab" @endif data-view="users">
                     <span class="far fa-user"></span> People</a>
                 <a href="#" @if($type == 'group') class="active-tab" @endif data-view="groups">
-                    <span class="fas fa-users"></span> Groups</a>
+                    <span class="fas fa-users"></span> Chatrooms</a>
             </div>
         </div>
         {{-- tabs and lists --}}
@@ -47,7 +47,8 @@
            <div class="@if($type == 'group') show @endif messenger-tab groups-tab app-scroll" data-view="groups">
                 {{-- items --}}
                 <p style="text-align: center;color:grey;margin-top:30px">
-                    <a target="_blank" style="color:{{$messengerColor}};" href="#">Click here</a> for more info!
+                    {{-- <a target="_blank" style="color:{{$messengerColor}};" href="#">Click here</a> for more info! --}}
+                    Feature coming soon!!
                 </p>
              </div>
 

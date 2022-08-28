@@ -323,7 +323,7 @@ const toggleComment = (feedId) => {
                                     <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${profileAvatar.src}">
                                     <div class="media-body">
                                         <div class="input-group text-box">
-                                            <input postid="${feed.id}" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+                                            <input postid="${feed.id}" id="emojionearea1" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
                                             <div class="input-group-append">
                                                 <button class="btn btn-transparent" type="button"><i class="fa fa-smile-o"> </i></button>
                                             </div>

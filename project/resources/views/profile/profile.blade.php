@@ -2,6 +2,14 @@
 
 @extends('layouts.app')
 
+@section('title')
+Profile
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/emojionearea.min.css') }}">
+@endsection
+
 @section('content')
 <div class="page-body">
     <div class="container-fluid">
@@ -183,4 +191,8 @@
     <!-- Container-fluid Ends-->
     <script src="{{ asset('./assets/js/dashboard/profile.js') }}"></script>
 </div>
+@endsection
+
+@section('script')
+        <script src="{{ asset('assets/js/emojionearea.min.js') }}"></script>
 @endsection

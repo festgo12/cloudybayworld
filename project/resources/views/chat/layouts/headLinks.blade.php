@@ -35,6 +35,10 @@
     <link href="{{ asset('css/chat/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/chat/'.$dark_mode.'.mode.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/emojionearea.min.css') }}">
+    <!-- Begin emoji-picker Stylesheets -->
+    {{-- <link href="{{ asset('assets/css/emoji.css') }}" rel="stylesheet"> --}}
+    <!-- End emoji-picker Stylesheets -->
 
     {{-- Messenger Color Style--}}
     @include('chat.layouts.messengerColor')

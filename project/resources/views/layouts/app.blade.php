@@ -162,43 +162,15 @@
                   </li>
                   <li class="onhover-dropdown"><i data-feather="message-square"></i>
                   <ul class="chat-dropdown onhover-show-div">
-                    <li><i data-feather="message-square"></i>
-                      <h6 class="f-18 mb-0">Message Box                                    </h6>
-                    </li>
-                    <li>
-                      <div class="media"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/1.jpg') }}" alt="">
-                        <div class="status-circle online"></div>
-                        <div class="media-body"><span>Erica Hughes</span>
-                          <p>Lorem Ipsum is simply dummy...</p>
-                        </div>
-                        <p class="f-12 font-success">58 mins ago</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="media"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/2.jpg') }}" alt="">
-                        <div class="status-circle online"></div>
-                        <div class="media-body"><span>Kori Thomas</span>
-                          <p>Lorem Ipsum is simply dummy...</p>
-                        </div>
-                        <p class="f-12 font-success">1 hr ago</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="media"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/4.jpg') }}" alt="">
-                        <div class="status-circle offline"></div>
-                        <div class="media-body"><span>Ain Chavez</span>
-                          <p>Lorem Ipsum is simply dummy...</p>
-                        </div>
-                        <p class="f-12 font-danger">32 mins ago</p>
-                      </div>
-                    </li>
-                    <li class="text-center"> <a class="btn btn-info" href="#">View All     </a></li>
+                    
+                    
+                    
                   </ul>
                 </li>
                 <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
                 <li class="profile-nav onhover-dropdown p-0 me-0">
                   <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? asset('assets/uploads/').'/'.Auth::user()->attachments['path'] : asset('assets/images/dashboard/profile.jpg') }}" alt="">
-                    <div class="media-body"><span>{{ Auth::user()->username }}</span>
+                    <div class="media-body authuser" data-id="{{ Auth::user()->id }}"><span>{{ Auth::user()->username }}</span>
                       <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                     </div>
                   </div>
@@ -257,7 +229,7 @@
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('home') }}"><i data-feather="home"> </i><span>Home</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('feeds') }}"><i data-feather="list"> </i><span>Feeds</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="messaging.html"><i data-feather="message-circle" > </i><span class="msg-circle">Massaging</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Massaging</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"> </i><span>Profile</span></a></li>
 
@@ -437,6 +409,27 @@
     <script src="{{ asset('assets/js/touchspin/input-groups.min.js') }}"></script>
       <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
       <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+      <script src="{{ asset('js/chat/pusher.min.js') }}"></script>
+      <script>
+        // Enable pusher logging - don't include this in production
+          Pusher.logToConsole = true;
+
+        var pusher = new Pusher("{{ config('chat.pusher.key') }}", {
+          // encrypted: true,
+          cluster: "{{ config('chat.pusher.options.cluster') }}",
+          authEndpoint: '{{route("pusher.auth")}}',
+          // authEndpoint: '{{route("pusher.auth")}}',
+          forceTLS: false,
+          wsHost: window.location.hostname,
+          wsPort: 6001,
+          auth: {
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          }
+        });
+
+      </script>
       {{-- <script src="{{ asset('assets/js/notify/index.js') }}"></script> --}}
 
       
@@ -452,6 +445,8 @@
         notice({{ Session::get('msg') }});
       </script>
       @endif --}}
+
+      
 
 
     </body>

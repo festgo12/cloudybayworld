@@ -39,7 +39,7 @@
         </div>
         {{-- If attachment is an image --}}
         @if(@$attachment[2] == 'image')
-        <div class="image-file chat-image" style="margin-top:10px;width: 250px; height: 150px;background-image: url('{{ asset('/assets/uploads/' . config('chat.attachments.folder') . '/' . $attachment[0])}}')">
+        <div class="image-file chat-image" style="margin-top:1px;width: 250px; height: 150px;background-image: url('{{ asset('/assets/uploads/' . config('chat.attachments.folder') . '/' . $attachment[0])}}')">
         </div>
         @endif
     </div>

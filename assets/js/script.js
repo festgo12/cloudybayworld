@@ -128,7 +128,7 @@
        
             
 
-            console.log(dark_mode);
+            // console.log(dark_mode);
         $.get( mainurl + '/darkmode/'+ modeChange , function( data ) {
             console.log(data);
             
@@ -704,3 +704,134 @@ $(document).on('click', '.wishlist-remove', function(){
       });
   });
 
+/**
+ *-------------------------------------------------------------
+ * Pusher channels and event listening..
+ *-------------------------------------------------------------
+ */
+
+// subscribe to the channel
+var channel = pusher.subscribe("private-chat");
+
+
+var auth_id = $('.authuser').data('id');
+// Listen to messages, and append if data received
+// console.log(auth_id);
+channel.bind("client-messaging", function (data) {
+
+    // console.log(data);
+
+    if ( data.to_id == auth_id && data.from_id != auth_id) {
+        $('#message-sidebar').addClass('msg-circle');
+      
+        $.get( mainurl + '/min_msg' , function( data ) {
+            // console.log(data);
+
+            var msgs = data.msgs;
+            var content = '';
+        
+                content = `<li><i data-feather="message-square"></i>
+                                    <h6 class="f-18 mb-0">Message Box                                    </h6>
+                                </li>`;
+
+           msgs.map((item)=>{
+                imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+               content += ` <li>
+              <div class="media"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="">
+                <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
+                <div class="media-body"><span>${item.userName}</span>
+                  <p>${item.body}</p>
+                </div>
+                <p class="f-12 d-block font-success">${item.time}</p>
+              </div>
+            </li>`;
+           });
+            
+           content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+        
+            $('.chat-dropdown').html(content);
+    
+            if(data.unreadCount){
+    
+                $('#message-sidebar').addClass('msg-circle');
+            }
+    
+        });
+    }
+  });
+
+
+
+  
+  $(document).ready(function() {
+
+  
+    $.get( mainurl + '/min_msg' , function( data ) {
+        // console.log(data);
+        // console.log(data.msgs);
+        // $('.chat-dropdown').html('')
+        var content = '';
+        var msgs = data.msgs;
+        
+        content = `<li><i data-feather="message-square"></i>
+                            <h6 class="f-18 mb-0">Message Box                                    </h6>
+                        </li>`;
+
+
+                        msgs.map( item => {
+            let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+           content += ` <li>
+          <div class="media"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="">
+            <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
+            <div class="media-body"><span>${item.userName}</span>
+              <p>${item.body}</p>
+            </div>
+            <p class="f-12 d-block font-success">${item.time}</p>
+          </div>
+        </li>`;
+       });
+        
+       content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+    
+        $('.chat-dropdown').html(content);
+
+        if(data.unreadCount){
+
+            $('#message-sidebar').addClass('msg-circle');
+        }
+
+    });
+
+  });
+
+
+
+
+  $(document).ready(function() {
+	$("#emojionearea1").emojioneArea({
+  	pickerPosition: "left",
+    tonesStyle: "bullet"
+  });
+	$("#emojionearea2").emojioneArea({
+  	pickerPosition: "bottom",
+    tonesStyle: "radio"
+  });
+	$("#emojionearea3").emojioneArea({
+  	pickerPosition: "left",
+  	filtersPosition: "bottom",
+    tonesStyle: "square"
+  });
+	$("#emojionearea4").emojioneArea({
+  	pickerPosition: "bottom",
+  	filtersPosition: "bottom",
+    tonesStyle: "checkbox"
+  });
+	$("#emojionearea5").emojioneArea({
+  	pickerPosition: "top",
+  	filtersPosition: "bottom",
+    tones: false,
+    autocomplete: false,
+    inline: true,
+    hidePickerOnBlur: false
+  });
+});

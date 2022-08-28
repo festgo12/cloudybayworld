@@ -145,4 +145,10 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'shop_favorites', 'shop_id', 'user_id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('App\Models\ChMessage', 'from_id');
+    }
+
+
 }
