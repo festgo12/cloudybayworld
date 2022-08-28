@@ -105,7 +105,7 @@ Explore Product
     </div>
     <!-- Container-fluid starts-->
     <div class="container-fluid product-wrapper">
-      <div class="product-grid">
+      <div class="product-grid product-spacing">
         <div class="feature-products">
           <div class="row">
             <div class="col-md-6 products-total">

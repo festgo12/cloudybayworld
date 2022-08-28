@@ -50,6 +50,9 @@
 .messenger-infoView > p {
     color: #fff;
 }
+.messenger-infoView  {
+    color: #fff;
+}
 .divider {
     border-top: 1px solid #2f2f2f;
 }

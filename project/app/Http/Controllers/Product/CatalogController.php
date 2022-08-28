@@ -179,8 +179,8 @@ class CatalogController extends Controller
           $product->is_wish = count(Wishlist::where('user_id', Auth::user()->id)->where('product_id', $product->id)->get());
         }
 
-        $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
-        $newProducts2 = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(5)->get();
+        $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(3)->get();
+        $newProducts2 = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(3)->get();
         
         $data['prods'] = $prods;
 

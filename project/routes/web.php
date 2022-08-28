@@ -19,12 +19,13 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/darkmode/{mode}', [App\Http\Controllers\HomeController::class, 'darkmode'])->name('darkmode');
 
 
 
 
 Route::group(['middleware'=>'auth'],function(){
+  Route::get('/darkmode/{mode}', [App\Http\Controllers\HomeController::class, 'darkmode'])->name('darkmode');
+  Route::get('/min_msg', [App\Http\Controllers\HomeController::class, 'min_msg'])->name('min_msg');
     
     //------------ User SECTION ------------
     Route::get('/profile/{username}', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');

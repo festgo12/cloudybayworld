@@ -42750,7 +42750,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
 .feed-title{
     padding: 10px 20px 0px;
 }
-
+/* 
 .user-designation .title a::before {
     content: "";
     display: block;
@@ -42762,7 +42762,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     border-radius: 50%;
     right: 6rem;
     top: 0.5rem;
-}
+} */
 
 body.dark-only .modal-body .bottom {
     color: #fff;
@@ -42888,3 +42888,9 @@ i.wishcart {
     margin-right: 20px;
     cursor: pointer;
 }
+
+.product-spacing {
+    min-height: 80rem;
+}
+
+

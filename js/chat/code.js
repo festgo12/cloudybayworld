@@ -486,6 +486,9 @@ function sendMessage() {
           errorMessageCard(tempID);
           console.error(data.error_msg);
         } else {
+          console.log(data);
+          // sendmessage event
+          sendMessageEvent(data.eventdata);
           // update contact item
           updateContactItem(getMessengerId());
           // temporary message card
@@ -615,10 +618,10 @@ function cancelUpdatingAvatar() {
  */
 
 // subscribe to the channel
-var channel = pusher.subscribe("private-chatify");
+var channel = pusher.subscribe("private-chat");
 
 // Listen to messages, and append if data received
-channel.bind("messaging", function (data) {
+channel.bind("client-messaging", function (data) {
   if (data.from_id == getMessengerId() && data.to_id == auth_id) {
     $(".messages").find(".message-hint").remove();
     messagesContainer.find(".messages").append(data.message);
@@ -772,6 +775,18 @@ function sendContactItemUpdates(status) {
 function sendMessageDeleteEvent(messageId) {
   return channel.trigger("client-messageDelete", {
     id: messageId,
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Trigger message delete
+ *-------------------------------------------------------------
+ */
+function sendMessageEvent(eventdata) {
+  return channel.trigger("client-messaging", {
+    from_id: eventdata.from_id,
+    to_id: eventdata.to_id,
+    message: eventdata.message,
   });
 }
 

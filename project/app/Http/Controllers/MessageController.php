@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Events\sendMessage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Models\ChMessage as Message;
 // use Message\Facades\MessageMessenger as Message;
+use App\Models\ChMessage as Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\ChFavorite as Favorite;
@@ -40,6 +41,7 @@ class MessageController extends Controller
                 $request['socket_id'],
                 $authData
             );
+            return true;
         }
         // if not authorized
         return new Response('Unauthorized', 401);
@@ -182,11 +184,23 @@ class MessageController extends Controller
             $messageData = $message->fetchMessage($messageID);
 
             // send to user using pusher
-            $message->pushEvent('private-chatify', 'messaging', [
-                'from_id' => Auth::user()->id,
-                'to_id' => $request['id'],
-                'message' => $message->messageCard($messageData, 'default')
-            ]);
+            // $message->pushEvent('private-chat', 'messaging', [
+            //     'from_id' => Auth::user()->id,
+            //     'to_id' => $request['id'],
+            //     'message' => $message->messageCard($messageData, 'default')
+            // ]);
+            $data = [
+                        'from_id' => Auth::user()->id,
+                        'to_id' => $request['id'],
+                        'message' => $message->messageCard($messageData, 'default')
+                    ];
+
+            // event(new sendMessage($data));
+
+            // return $data;
+
+
+
         }
 
         // send the response
@@ -195,6 +209,7 @@ class MessageController extends Controller
             'error' => $error,
             'message' => $message->messageCard($message->fetchMessage($messageID)),
             'tempID' => $request['temporaryMsgId'],
+            'eventdata' => $data,
         ]);
     }
 

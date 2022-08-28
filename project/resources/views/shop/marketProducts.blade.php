@@ -29,7 +29,8 @@
         <div class="row">
           <!-- user profile first-style start-->
           <div class="col-sm-12 box-col-12">
-            <div class="card hovercard text-center" style="height:400px">
+            {{-- <div class="card hovercard text-center" style="height:400px"> --}}
+            <div class="card hovercard text-center" >
               <div class="info market-tabs p-0" style="margin:10px;">
                 <div class="row">
                   <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
@@ -37,14 +38,14 @@
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
-                            <h6><a href="market_view.html">About</a></h6>
+                            <h6><a href="market/{{ $shop->slug }}">About</a></h6>
                           </center>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
-                            <h6><a href="market_feeds.html">Feeds</a></h6>
+                            <h6><a href="market/feeds/{{ $shop->slug }}">Feeds</a></h6>
                           </center>
                         </div>
                       </div>
@@ -68,7 +69,7 @@
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
-                            <h6><a href="{{ route('user', $shop->user_id) }}">Chats</a></h6>
+                            <h6><a href="{{ route('user', $shop->user_id) }}">Chat</a></h6>
                           </center>
                         </div>
                       </div>
@@ -101,7 +102,7 @@
                   </div>
                   <div class="col-sm-12 col-lg-4 order-sm-0 order-xl-1">
                     <div class="user-designation"></div>
-                    <div class="title">{{ $shop->shopName }}</div>
+                    <div class="title">{{ $shop->shopName }} </div>
                     <div class="rating"><span><i class="fa fa-star font-warning"></i><i
                           class="fa fa-star font-warning"></i><i class="fa fa-star font-warning"></i><i
                           class="fa fa-star font-warning"></i><i
@@ -129,7 +130,8 @@
                     </div>
                   </div>
                 </div>
-                <hr>
+
+                {{-- <hr>
                 <div>
 
                     <button id="favoriteButton" onclick="handleFavoriteShop()" class="btn btn-light active font-primary" type="button"><i class="fa fa-star"></i>
@@ -138,17 +140,15 @@
 
 
 
-                  {{-- <button class="btn btn-light active text-in" type="button"><i class="fa fa-star"></i>
-                    Favourite</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="btn btn-info active txt-light" type="button">Follow</button> --}}
-                </div>
+                </div> --}}
+
               </div>
             </div>
           </div>
           <!-- user profile first-style end-->
           
           <div class="container-fluid product-wrapper">
-            <div class="product-grid">
+            <div class="product-grid product-spacing">
               <div class="feature-products">
                 <div class="row">
                   <div class="col-md-6 products-total">
@@ -348,7 +348,6 @@
 <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
 <script src="{{ asset('assets/js/product-tab.js') }}"></script>
-<script src="{{ asset('assets/js/dashboard/marketFeed.js') }}"></script>
     
     
 <script type="text/javascript">
@@ -567,7 +566,7 @@ $(document).ready(function () {
 
                   if ($("#prod_name").val() != '') {
                     if (filterlink == '') {
-                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?search='+$("#prod_name").val();
+                      filterlink += '{{route('market.product', [Request::route('shop')])}}' + '?search='+$("#prod_name").val();
                     } else {
                       filterlink += '&search='+$("#prod_name").val();
                     }
@@ -576,7 +575,7 @@ $(document).ready(function () {
                   $(".attribute-input").each(function() {
                     if ($(this).is(':checked')) {
                       if (filterlink == '') {
-                        filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+$(this).attr('name')+'='+$(this).val();
+                        filterlink += '{{route('market.product', [Request::route('shop')])}}' + '?'+$(this).attr('name')+'='+$(this).val();
                       } else {
                         filterlink += '&'+$(this).attr('name')+'='+$(this).val();
                       }
@@ -585,7 +584,7 @@ $(document).ready(function () {
           
                   if ($("#sortby").val() != '') {
                     if (filterlink == '') {
-                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+$("#sortby").attr('name')+'='+$("#sortby").val();
+                      filterlink += '{{route('market.product', [Request::route('shop')])}}' + '?'+$("#sortby").attr('name')+'='+$("#sortby").val();
                     } else {
                       filterlink += '&'+$("#sortby").attr('name')+'='+$("#sortby").val();
                     }
@@ -593,7 +592,7 @@ $(document).ready(function () {
           
                   if ($('.irs-from').html() != '') {
                     if (filterlink == '') {
-                      filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'min'+'='+$('.irs-from').html();
+                      filterlink += '{{route('market.product', [Request::route('shop')])}}' + '?'+'min'+'='+$('.irs-from').html();
                     } else {
                       filterlink += '&'+'min'+'='+$('.irs-from').html();
                     }
@@ -601,13 +600,13 @@ $(document).ready(function () {
           
                   // if ($('.irs-to').html() != '') {
                   //   if (filterlink == '') {
-                  //     filterlink += '{{route('product.index', [Request::route('category'), Request::route('subcategory'), Request::route('childcategory')])}}' + '?'+'max'+'='+$('.irs-to').html();
+                  //     filterlink += '{{route('market.product', [Request::route('shop')])}}' + '?'+'max'+'='+$('.irs-to').html();
                   //   } else {
                   //     filterlink += '&'+'max'+'='+$('.irs-to').html();
                   //   }
                   // }
           
-                  // console.log(encodeURI(filterlink));
+                  console.log(encodeURI(filterlink));
                  
                       $.ajax({
           

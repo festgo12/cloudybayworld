@@ -24,7 +24,7 @@
          <div class="row">
             <!-- user profile first-style start-->
             <div class="col-sm-12 box-col-12">
-               <div class="card hovercard text-center" style="height:400px">
+               <div class="card hovercard text-center" >
                   <div class="info market-tabs p-0" style="margin:10px;">
                      <div class="row">
                         <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
@@ -61,7 +61,7 @@
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
                                     <center>
-                                       <h6><a href="{{ route('user', $shop->user_id) }}">Chats</a></h6>
+                                       <h6><a href="{{ route('user', $shop->user_id) }}">Chat</a></h6>
                                     </center>
                                  </div>
                               </div>
