@@ -219,7 +219,7 @@ class CheckoutController extends Controller
         // $order['coupon_code'] = $request->coupon_code;
         // $order['coupon_discount'] = $request->coupon_discount;
         $order['dp'] = $request->dp;
-        $order['payment_status'] = "Pending";
+        $order['payment_status'] = $request->payment_status;
         $order['currency_sign'] = $curr->sign;
         $order['currency_value'] = $curr->value;
         $order['vendor_shipping_id'] = $request->vendor_shipping_id;

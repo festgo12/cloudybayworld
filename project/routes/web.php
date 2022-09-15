@@ -86,7 +86,9 @@ Route::group(['middleware'=>'auth'],function(){
  // CHECKOUT SECTION ENDS
 
 
-
+//------------ Wallet SECTION ------------
+Route::get('/wallet', [App\Http\Controllers\WalletController::class , 'index'])->name('wallet');
+Route::post('/fundWallet', [App\Http\Controllers\WalletController::class , 'fundWallet'])->name('fundWallet');
 
  
 
