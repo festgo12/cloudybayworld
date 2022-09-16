@@ -25,6 +25,13 @@ class CheckoutController extends Controller
     
     public function checkout()
     {
+        // check if current user has a wallet
+        $auth_user = Auth::user();
+        if(!$auth_user->wallet()->count()){
+            // create one if the doesn't
+            $auth_user->wallet()->create();
+        }
+
         if (!Session::has('cart')) {
             return redirect()->route('product.cart')->with('success',"You don't have any product to checkout.");
         }

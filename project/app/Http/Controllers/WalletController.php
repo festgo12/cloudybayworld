@@ -14,6 +14,7 @@ class WalletController extends Controller
         $user = Auth::user();
         // check if user has a wallet
         if(!$user->wallet()->count()){
+            // create one if the doesn't
             $user->wallet()->create();
         }
         return view('wallet.index')->with('user', $user);
