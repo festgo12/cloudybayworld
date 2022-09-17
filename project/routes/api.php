@@ -40,7 +40,7 @@ Route::get('/comment/{feedId}', [App\Http\Controllers\CommentController::class, 
 Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);
 
 //------------ Shop SECTION ------------
-Route::get('/shopCategories', [App\Http\Controllers\WalletController::class, 'categories']);
+Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
 Route::post('/createShop', [App\Http\Controllers\ShopController::class, 'store']);
 Route::get('/getShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getShops']);
 Route::post('/followShop', [App\Http\Controllers\ShopController::class, 'followShop']);
