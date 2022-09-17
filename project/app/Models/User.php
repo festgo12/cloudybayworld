@@ -150,5 +150,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\ChMessage', 'from_id');
     }
 
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
 }

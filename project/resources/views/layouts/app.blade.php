@@ -228,7 +228,7 @@
                  
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('home') }}"><i data-feather="home"> </i><span>Home</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('feeds') }}"><i data-feather="list"> </i><span>Feeds</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('wallet') }}"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Massaging</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"> </i><span>Profile</span></a></li>
@@ -258,7 +258,7 @@
                                 <li><a href="product-page.html" target="_blank">Product details</a></li>
                                 <li><a href="order-history.html" target="_blank">order-history</a></li>
                                 <li><a href="wishlist.html" target="_blank">wishlist</a></li>
-                                <li><a href="wallet.html" target="_blank">wallet</a></li>
+                                <li><a href="{{ route('wallet') }}" target="_blank">wallet</a></li>
                               </ul>
                             </div>
                           </div>

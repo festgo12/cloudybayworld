@@ -40,7 +40,7 @@ Route::get('/comment/{feedId}', [App\Http\Controllers\CommentController::class, 
 Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);
 
 //------------ Shop SECTION ------------
-Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
+Route::get('/shopCategories', [App\Http\Controllers\WalletController::class, 'categories']);
 Route::post('/createShop', [App\Http\Controllers\ShopController::class, 'store']);
 Route::get('/getShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getShops']);
 Route::post('/followShop', [App\Http\Controllers\ShopController::class, 'followShop']);
@@ -48,3 +48,7 @@ Route::get('/shopFollowers/{slug}', [App\Http\Controllers\ShopController::class,
 Route::get('/isFollowingShop/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFollowingShop']);
 Route::post('/favoriteShop', [App\Http\Controllers\ShopController::class, 'favoriteShop']);
 Route::get('/isFavorited/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFavorited']);
+
+//------------ Wallet SECTION ------------
+Route::post('/checkoutWithPaystack', [App\Http\Controllers\WalletController::class, 'checkoutWithPaystack']);
+Route::post('/checkoutWithWallet', [App\Http\Controllers\WalletController::class, 'checkoutWithWallet']);
