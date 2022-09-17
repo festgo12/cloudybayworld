@@ -50,6 +50,7 @@
                      </div>
                      <div class="table-responsive add-project mx-5">
                         <table class="table card-table table-vcenter text-nowrap">
+                        @if($user->transactions->count())
                            <thead>
                               <tr>
                                  <!-- <th> <strong>Name </strong> </th> -->
@@ -58,6 +59,7 @@
                                  <th> <strong> Amount</strong> </th>
                               </tr>
                            </thead>
+                           
                            <tbody>
                               @foreach($user->transactions->sortByDesc('created_at') as $transaction)
                               <tr>
@@ -70,6 +72,12 @@
                               </tr>
                               @endforeach
                            </tbody>
+                        @else
+                        <div class="avatar d-flex justify-content-center mt-2">
+                           <img id="tempAvatar" height="200" width="200" alt="" src="./assets/images/dashboard/no_transaction_waiting.svg">
+                        </div>
+                        <p class="text-center">Your transactions will appear hear</p>
+                        @endif
                         </table>
                      </div>
                   </div>
