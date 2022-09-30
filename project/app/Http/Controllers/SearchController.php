@@ -13,22 +13,24 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $query = $request->get('q');
-        // redirect to home page value is entered to search
-        if (!$query) {
-            return redirect()->route('home');
+        $page = $request->get('page');
+        
+        // return empty array when query value is empty
+        if (!$query && !$page) {
+            return view('search', ['query' => $query, 'products' => [], 'shops' => [], 'people' => []]);
         }
 
         // fetch matched products
-        $products = Product::where('name', 'like', '%' . $query . '%')->get();
+        $products = Product::where('name', 'like', '%' . $query . '%')->paginate(15);
         // fetch matched shops
-        $shops = Shop::where('shopName', 'like', '%' . $query . '%')->get();
+        $shops = Shop::where('shopName', 'like', '%' . $query . '%')->paginate(15);
 
         // fetch matched users
         // search based on username if search query starts with @
         if (str_starts_with($query, '@')) {
-            $people = User::where('username', 'like', '%' . substr($query,1) . '%')->get();
+            $people = User::where('username', 'like', '%' . substr($query,1) . '%')->paginate(15);
         }else{
-            $people = User::where('firstname', 'like', '%' . $query . '%')->get();
+            $people = User::where('firstname', 'like', '%' . $query . '%')->paginate(15);
         }
 
         return view('search', ['query' => $query, 'products' => $products, 'shops' => $shops, 'people' => $people]);

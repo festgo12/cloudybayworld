@@ -7,7 +7,20 @@ const realAvatar = document.querySelector('#realAvatar');
 const waitSpinner = document.querySelector('#waitSpinner') || '';
 const feedContainer = document.querySelector('#feedContainer');
 let commentInput = document.getElementsByClassName('commentInput');
+// user-tab button 
+const userTabBtn = document.querySelector('#people-link');
 
+// get search query paramaters
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+let query = params.q || 0; // "some_value"
+
+// open user tab if search query starts with @
+var tabTrigger = new bootstrap.Tab(userTabBtn)
+if(query.startsWith('@')){
+    tabTrigger.show();
+}
 
 /**
  * This function sends a post request to 
@@ -88,13 +101,7 @@ const toggleComment = (feedId) => {
 /**
  *  This function gets feeds based on the searched term
  */
- const loadFeeds = () => {
-    // get search query paramaters
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-    let query = params.q; // "some_value"
-      
+ const loadFeeds = () => {      
     // send a get request to the server to fetch feeds
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/search-feeds/${query}/${userId.value}`, {

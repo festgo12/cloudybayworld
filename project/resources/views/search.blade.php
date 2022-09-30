@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/user-search.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-page.css') }}">
 @endsection
 
 @section('content')
@@ -51,7 +51,7 @@
                                  
                                     <div class="product-wrapper-grid mx-auto">
                                     <div class="row">
-                                       @if($products->count())   
+                                       @if(count($products))   
                                        @foreach ($products as $product)
                                           
                                        <div class="col-xl-3 col-sm-6 xl-3">
@@ -142,13 +142,20 @@
                                  </div>
                               </div>
                            </div>
+                           <div class="col-xl-12 m-t-30">
+                              <div>
+                                 @if(count($products))
+                                    {!! $products->links() !!}
+                                 @endif
+                              </div>
+                           </div>
                         </div>
                      </div>
                      <div class="tab-pane fade" id="shop-links" role="tabpanel" aria-labelledby="shop-link">
                         <div>
                            <!-- <h6 class="mb-2">About 12,120 results (0.50 seconds)</h6> -->
                            <div class="col-sm-12 col-md-12">
-                           @if($shops->count())
+                           @if(count($shops))
                               @foreach($shops as $shop)
                               <div class="prooduct-details-box">
                                  <div class="media">
@@ -205,15 +212,9 @@
 
                         </div>
                         <div class="m-t-30">
-                           <nav aria-label="...">
-                              <ul class="pagination pagination-primary">
-                                 <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                 <li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>
-                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                              </ul>
-                           </nav>
+                           @if(count($shops))
+                              {!! $shops->links() !!}
+                           @endif
                         </div>
                      </div>
                      <div class="tab-pane fade" id="feed-links" role="tabpanel" aria-labelledby="feed-link">
@@ -231,19 +232,6 @@
                                  <div id="feedContainer"></div>      
                               </div>
                            </div>
-                           <div class="col-xl-12 m-t-30">
-                              <div>
-                                 <nav aria-label="...">
-                                    <ul class="pagination pagination-primary">
-                                       <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                                       <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                       <li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>
-                                       <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                       <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                    </ul>
-                                 </nav>
-                              </div>
-                           </div>
                         </div>
                      </div>
                      <div class="tab-pane fade" id="people-links" role="tabpanel" aria-labelledby="people-link">
@@ -256,7 +244,7 @@
                                  <div class="row">
                                     <div class="col-md-8 mx-auto">
                                           <div class="people-nearby">
-                                          @if($people->count())
+                                          @if(count($people))
                                              @foreach($people as $person)
                                              <div class="nearby-user">
                                                 <div class="row">
@@ -287,15 +275,9 @@
                            </div>
                            <div class="col-xl-12 m-t-30">
                               <div>
-                                 <nav aria-label="...">
-                                    <ul class="pagination pagination-primary">
-                                       <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                                       <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                       <li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>
-                                       <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                       <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                    </ul>
-                                 </nav>
+                                 @if(count($people))
+                                    {!! $people->links() !!}
+                                 @endif
                               </div>
                            </div>
                         </div>
@@ -307,6 +289,9 @@
       </div>
    </div>
    <!-- Container-fluid Ends-->
-   <script src="{{ asset('./assets/js/dashboard/search.js') }}"></script>
 </div>
+@endsection
+
+@section('script')
+   <script src="{{ asset('./assets/js/dashboard/search.js') }}"></script>
 @endsection
