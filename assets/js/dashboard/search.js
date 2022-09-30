@@ -313,3 +313,28 @@ const loadMoreComments = (feedId) => {
         commentList.innerHTML = commentContents;
     })();
 }
+
+const handleFollowUser = (element, username) => {
+    console.log(element.innerText, username);
+    // send a post request to the server with the form data
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/follow`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId.value,
+                followingUsername: username
+            })
+        });
+        const content = await rawResponse.json();
+        // re-render the followButton
+        if(element.innerText == 'Follow'){
+            element.innerText = 'Following';
+        }else{
+            element.innerText = 'Follow';
+        }
+    })();
+}

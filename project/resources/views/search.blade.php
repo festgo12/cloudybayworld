@@ -257,7 +257,11 @@
                                                    <p>{{ '@' }}{{ $person->username }}</p>
                                                    </div>
                                                    <div class="col-md-3 col-sm-3">
-                                                   <button class="btn btn-primary pull-right">Follow</button>
+                                                      <button 
+                                                         onclick="handleFollowUser(this, '{{ $person->username }}')" 
+                                                         class="btn btn-primary pull-right">
+                                                         {{ ($person->followers()->where('user_id', auth()->user()->id)->count()) ? "Following" : "Follow" }}
+                                                      </button>
                                                    </div>
                                                 </div>
                                              </div>
