@@ -13,12 +13,12 @@ const userTabBtn = document.querySelector('#people-link');
 // get search query paramaters
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
-  });
+});
 let query = params.q || 0; // "some_value"
 
 // open user tab if search query starts with @
 var tabTrigger = new bootstrap.Tab(userTabBtn)
-if(query.startsWith('@')){
+if (query.startsWith('@')) {
     tabTrigger.show();
 }
 
@@ -26,7 +26,7 @@ if(query.startsWith('@')){
  * This function sends a post request to 
  * the server to like a particular feed
  */
- const likeFeed = (feedId) => {
+const likeFeed = (feedId) => {
     // send a post request to the server with the form data
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/feed-like`, {
@@ -66,7 +66,7 @@ const toggleComment = (feedId) => {
  * This function formats date properly
  * similar to diffForHumans() function in Laravel
  */
- const getTimeAgo = (date) => {
+const getTimeAgo = (date) => {
     const MINUTE = 60,
         HOUR = MINUTE * 60,
         DAY = HOUR * 24,
@@ -101,7 +101,7 @@ const toggleComment = (feedId) => {
 /**
  *  This function gets feeds based on the searched term
  */
- const loadFeeds = () => {      
+const loadFeeds = () => {
     // send a get request to the server to fetch feeds
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/search-feeds/${query}/${userId.value}`, {
@@ -117,7 +117,7 @@ const toggleComment = (feedId) => {
                             <div class="post-border p-2">
                             <div class="row">
                             ${(feed.feedable_type == 'Shop') ? `
-                                <a href="${baseUrl+'/market/'+feed.shop.slug}" class="col-sm-8">
+                                <a href="${baseUrl + '/market/' + feed.shop.slug}" class="col-sm-8">
                                     <div class="media">
                                         <img style="width: 50px;" class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
                                         <div class="media-body align-self-center">
@@ -126,7 +126,7 @@ const toggleComment = (feedId) => {
                                     </div>
                                 </a>
                             ` : `
-                                <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
+                                <a href="${baseUrl + '/profile/' + feed.user.username}" class="col-sm-8">
                                     <div class="media">
                                         <img style="width: 50px;" class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
                                         <div class="media-body align-self-center">
@@ -143,8 +143,8 @@ const toggleComment = (feedId) => {
                             <hr>
 
                             ${feed.attachments ? (
-                                (feed.attachments.length > 1) ? (
-                                    `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                    (feed.attachments.length > 1) ? (
+                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
                                         <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
                                             <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
                                             ${(feed.attachments[0]['type'] == 'image') ? `
@@ -168,8 +168,8 @@ const toggleComment = (feedId) => {
                                             </a>
                                         </figure>
                                     </div>`
-                                ) : (
-                                    `<div class="img-container">
+                    ) : (
+                        `<div class="img-container">
                                         <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
                                             <figure itemprop="associatedMedia" itemscope="">
                                                 <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
@@ -184,11 +184,11 @@ const toggleComment = (feedId) => {
                                             </figure>
                                         </div>
                                     </div>`
-                                )
-                            ) : (
-                                ''
-                            )
-                        }
+                    )
+                ) : (
+                    ''
+                )
+                }
                             <p>${feed.content}</p>
                             
                             <div class="like-comment">
@@ -206,8 +206,8 @@ const toggleComment = (feedId) => {
                             <hr>
                             <div id="commentList-${feed.id}" class="social-chat d-none">
                                 ${
-                                    // if comment exist show the block below
-                                    (feed.total_comments) ? (feed.comments.slice(0, 2).map(comment => `
+                // if comment exist show the block below
+                (feed.total_comments) ? (feed.comments.slice(0, 2).map(comment => `
                                         <div class="your-msg">
                                             <div class="media">
                                                 <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${(comment.user.attachments) ? './assets/uploads/' + comment.user.attachments['path'] : './assets/images/avatar/default.jpg'}">
@@ -217,7 +217,7 @@ const toggleComment = (feedId) => {
                                             </div>
                                         </div>
                                     `)) : ''
-                                }
+                }
                                 ${(feed.total_comments > 2) ? `<div class="text-center"><a href="javascript:loadMoreComments(${feed.id});">More Commnets</a></div>` : ''}
                             </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
@@ -252,7 +252,7 @@ const handlePostComment = (event) => {
     // make sure an enter key was pressed before processing
     if (event.keyCode === 13) {
         // make sure comment is not an empty string
-        if(event.target.value){
+        if (event.target.value) {
             const feedId = event.target.attributes.postid.value;
             // send a post request to the server with the form data
             (async () => {

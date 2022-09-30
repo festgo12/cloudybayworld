@@ -31,7 +31,8 @@
     <!-- Plugins css start-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/scrollbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/owlcarousel.css') }}">
-    
+    <!-- search auto style -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-autocomplete.css') }}">
     @yield('style')
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
@@ -40,6 +41,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+    
   </head>
   <body class="{{ (Auth::user()->dark_mode) ? 'dark-only' : ' ' }}">
     <div class="loader-wrapper">
@@ -61,11 +63,11 @@
       <!-- Page Header Start-->
       <div class="page-header">
         <div class="header-wrapper row m-0">
-          <form class="form-inline search-full col" action="{{ route('general-search') }}" method="get">
+          <form name="globalSearchForm" autocomplete="off" class="form-inline search-full col" action="{{ route('general-search') }}" method="get">
             <div class="form-group w-100">
               <div class="Typeahead Typeahead--twitterUsers">
                 <div class="u-posRelative">
-                  <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Cloudbay .." name="q" title="" autofocus>
+                  <input id="global-search-input" class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Cloudbay .." name="q" title="" autofocus>
                   <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i class="close-search" data-feather="x"></i>
                 </div>
                 <div class="Typeahead-menu"></div>
@@ -438,6 +440,12 @@
       <!-- Plugins JS Ends-->
       <!-- Theme js-->
       <script src="{{ asset('assets/js/script.js') }}"></script>
+      <!-- search-autocomplete Js -->
+      <script src="{{ asset('./assets/js/dashboard/search-autocomplete.js') }}"></script>
+      <script>
+          /*initiate the autocomplete function on the "search-input" element*/
+          autocomplete(document.getElementById("global-search-input"), document.forms.globalSearchForm);
+      </script>
       @yield('script')
 
       {{-- @if(Session::get('msg'))

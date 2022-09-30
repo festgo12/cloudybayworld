@@ -2,6 +2,7 @@
 
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-page.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-autocomplete.css') }}"> -->
 @endsection
 
 @section('content')
@@ -26,10 +27,10 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-header">
-                  <form class="theme-form" action="{{ route('general-search') }}">
-                     <div class="input-group m-0">
-                        <input class="form-control-plaintext" type="search" name="q" placeholder="Cloudbay...">
-                        <span class="btn btn-primary input-group-text">Search</span>
+                  <form name="searchFrom" autocomplete="off" class="theme-form" action="{{ route('general-search') }}">
+                     <div class="input-group m-0 autocomplete">
+                        <input id="search-input" class="form-control-plaintext" type="search" name="q" placeholder="Cloudbay...">
+                        <span class="btn btn-primary input-group-text d-none d-md-block">Search</span>
                      </div>
                   </form>
                </div>
@@ -294,4 +295,8 @@
 
 @section('script')
    <script src="{{ asset('./assets/js/dashboard/search.js') }}"></script>
+   <script>
+      /*initiate the autocomplete function on the "search-input" element*/
+      autocomplete(document.getElementById("search-input"), document.forms.searchFrom);
+   </script>
 @endsection

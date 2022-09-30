@@ -58,4 +58,17 @@ class SearchController extends Controller
             ->get();
         return $feeds;
     }
+
+    public function searchAutocomplete($query)
+    {
+        // fetch matched data
+        if (str_starts_with($query, '@')) {
+            $users = User::where('username', 'like', '%' . substr($query,1) . '%')->pluck('username')->toArray();
+            $data = preg_filter('/^/', '@', $users);
+        }else{
+            $data = Product::where('name', 'like', '%' . $query . '%')->pluck('name');
+        }
+        
+        return $data;
+    }
 }

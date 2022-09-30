@@ -55,3 +55,4 @@ Route::post('/checkoutWithWallet', [App\Http\Controllers\WalletController::class
 
 //------------ Search SECTION ------------
 Route::get('/search-feeds/{query}/{userId}', [App\Http\Controllers\SearchController::class , 'searchFeed']);
+Route::get('/keyword-autocomplete/{query}', [App\Http\Controllers\SearchController::class , 'searchAutocomplete']);
