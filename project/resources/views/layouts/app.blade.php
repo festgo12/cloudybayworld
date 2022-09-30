@@ -61,7 +61,7 @@
       <!-- Page Header Start-->
       <div class="page-header">
         <div class="header-wrapper row m-0">
-          <form class="form-inline search-full col" action="#" method="get">
+          <form class="form-inline search-full col" action="{{ route('general-search') }}" method="get">
             <div class="form-group w-100">
               <div class="Typeahead Typeahead--twitterUsers">
                 <div class="u-posRelative">

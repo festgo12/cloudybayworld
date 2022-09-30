@@ -1,126 +1,13 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-// var baseUrl = getUrl.origin;
 
-const tempAvatar = document.querySelector('#tempAvatar');
-// get the current user profile picture
-const profileAvatar = document.querySelector('#profileAvatar');
-const avatarInput = document.querySelector('#avatarInput');
-const saveButton = document.querySelector('#saveButton');
-
-const waitSpinner = document.querySelector('#waitSpinner') || '';
-const errorMessage = document.querySelector('#errorMessage') || '';
-errorMessage ? errorMessage.style.display = 'none' : '';
-const feedContainer = document.querySelector('#feedContainer');
-// Get all the form input elements using a query selector
-const postInput = document.querySelector('#postInput');
-const fileInput = document.querySelector('#fileInput') || '';
-const postButton = document.querySelector('#postButton') || '';
 const userId = document.querySelector('#userId');
 // get the current user profile picture
 const realAvatar = document.querySelector('#realAvatar');
-const usernameHolder = document.querySelector('#usernameHolder');
+const waitSpinner = document.querySelector('#waitSpinner') || '';
+const feedContainer = document.querySelector('#feedContainer');
 let commentInput = document.getElementsByClassName('commentInput');
 
-
-// create formData object
-const formData = new FormData();
-let file;
-
-const handleSelectImage = (event) => {
-    file = event.target.files[0];
-    // display the uploaded image to tempAvatar element
-    tempAvatar.src = URL.createObjectURL(file);
-    tempAvatar.style.display = 'block';
-    // append the post files to the form data
-    formData.append('avatarInput', file, `Avatar-${userId.value}`)
-}
-
-const handleSaveAvatar = (event) => {
-    event.preventDefault();
-    // do nothing if input is empty
-    if(!avatarInput.value){
-        return;
-    }
-    profileAvatar.src = URL.createObjectURL(file);
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
-            method: 'POST',
-            body: formData
-        });
-        const content = await rawResponse.json();
-        console.log(content);
-        // clear form data
-        formData.delete('avatarInput')
-    })();
-}
-
-/**
- * listen for saveButton Onclick event and call 
- * the 'handleSaveAvatar' function when clicked
- * */
-saveButton.addEventListener('click', handleSaveAvatar);
-
- /**
-  * listen for avatarInput onChange event and call 
-  * the 'handleSelectImage' function when changed
-  * */
-avatarInput.addEventListener('change', handleSelectImage);
-
-
-const handleSelectImages = (event) => {
-    let files = event.target.files;
-    // append the post files to the form data
-    [...files].map((file, i) => formData.append('fileInput[]', file, `fileInput${i}`));
-    // formData.append('fileInput', files[0], 'fileInput');
-}
-
-const handleSavePost = (event) => {
-    event.preventDefault();
-    // do nothing if input is empty
-    if(!postInput.value){
-        return;
-    }
-    // show the spinner while the request is being processed
-    waitSpinner.style.display = 'block';
-    // append the post content to the form data
-    formData.append('postInput', postInput.value);
-    formData.append('postType', 'User');
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {
-            method: 'POST',
-            body: formData
-        });
-        const content = await rawResponse.json();
-        if(content.error){
-            errorMessage.style.display = 'block';
-            errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
-        }
-        // reset the input fields
-        fileInput.value = '';
-        postInput.value = '';
-        formData.delete('fileInput[]')
-        // re-render the feeds block
-        loadFeeds();
-        // hide the spinner after processing the request
-        waitSpinner.style.display = 'none';
-    })();
-}
-
-/**
- * listen for postButton Onclick event and call 
- * the 'handlePost' function when clicked
- * */
- postButton ? postButton.addEventListener('click', handleSavePost) : '';
-
- /**
-  * listen for fileInput onChange event and call 
-  * the 'handleSelectImages' function when changed
-  * */
- fileInput ? fileInput.addEventListener('change', handleSelectImages) : '';
- 
 
 /**
  * This function sends a post request to 
@@ -199,12 +86,18 @@ const toggleComment = (feedId) => {
 }
 
 /**
- *  This function gets feeds tailored forna particular user
+ *  This function gets feeds based on the searched term
  */
  const loadFeeds = () => {
+    // get search query paramaters
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+    let query = params.q; // "some_value"
+      
     // send a get request to the server to fetch feeds
     (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/profile-feeds/${usernameHolder.value}`, {
+        const rawResponse = await fetch(`${baseUrl}/api/search-feeds/${query}/${userId.value}`, {
             method: 'GET',
         });
         const content = await rawResponse.json();
@@ -218,18 +111,20 @@ const toggleComment = (feedId) => {
                             <div class="row">
                             ${(feed.feedable_type == 'Shop') ? `
                                 <a href="${baseUrl+'/market/'+feed.shop.slug}" class="col-sm-8">
-                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
-                                    <div class="media-body align-self-center">
-                                        <h5 class="mt-0 user-name">${feed.shop.shopName}</h5>
-                                    </div>
+                                    <div class="media">
+                                        <img style="width: 50px;" class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                        <div class="media-body align-self-center">
+                                            <h5 class="mt-0 user-name">${feed.shop.shopName}</h5>
+                                        </div>
                                     </div>
                                 </a>
                             ` : `
                                 <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
-                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
-                                    <div class="media-body align-self-center">
-                                        <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
-                                    </div>
+                                    <div class="media">
+                                        <img style="width: 50px;" class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                        <div class="media-body align-self-center">
+                                            <h5 class="mt-0 user-name text-dark">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
+                                        </div>
                                     </div>
                                 </a>
                             `}
@@ -246,7 +141,7 @@ const toggleComment = (feedId) => {
                                         <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
                                             <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
                                             ${(feed.attachments[0]['type'] == 'image') ? `
-                                                <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                <imgclass="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
                                             ` : `
                                                 <video class="img-fluid rounded" itemprop="thumbnail" controls>
                                                     <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
@@ -320,7 +215,7 @@ const toggleComment = (feedId) => {
                             </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
                                 <div class="media">
-                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${profileAvatar.src}">
+                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${realAvatar.src}">
                                     <div class="media-body">
                                         <div class="input-group text-box">
                                             <input postid="${feed.id}" id="emojionearea1" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
@@ -344,84 +239,6 @@ const toggleComment = (feedId) => {
     })();
 }
 loadFeeds();
-
-/**
- * This function gets the number followers of the 
- * current user from the server
- */
-const followersCount = () => {
-    const followersCountEl = document.querySelector('#followersCountEl');
-    // send a get request to the server
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/followers/${usernameHolder.value}`, {
-            method: 'GET',
-        });
-        const content = await rawResponse.json();
-        followersCountEl.innerHTML = content;
-    })();
-}
-followersCount();
-
-/**
- * This function gets the number of 
- * persons the current user is following from the server
- */
-const followingCount = () => {
-    const followingCountEl = document.querySelector('#followingCountEl');
-    // send a get request to the server
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/following/${usernameHolder.value}`, {
-            method: 'GET',
-        });
-        const content = await rawResponse.json();
-        followingCountEl.innerHTML = content;
-    })();
-}
-followingCount();
-
-/**
- * This function gets the number of 
- * persons the current user is following from the server
- */
- const isFollowingCheck = () => {
-    const followButton = document.querySelector('#followButton');
-    // send a get request to the server
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/isFollowing/${userId.value}/${usernameHolder.value}`, {
-            method: 'GET',
-        });
-        const content = await rawResponse.json();
-        if(content){
-            followButton.innerHTML = 'Following';
-        }else{
-            followButton.innerHTML = 'Follow';
-        }
-    })();
-}
-isFollowingCheck();
-
-const handleFollowUser = (username) => {
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/follow`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: userId.value,
-                followingUsername: username
-            })
-        });
-        const content = await rawResponse.json();
-        // re-render the following count
-        followingCount();
-        followersCount();
-        // re-render the followButton
-        isFollowingCheck();
-    })();
-}
 
 const handlePostComment = (event) => {
     event.preventDefault();
