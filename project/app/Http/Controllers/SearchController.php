@@ -66,7 +66,10 @@ class SearchController extends Controller
             $users = User::where('username', 'like', '%' . substr($query,1) . '%')->pluck('username')->toArray();
             $data = preg_filter('/^/', '@', $users);
         }else{
-            $data = Product::where('name', 'like', '%' . $query . '%')->pluck('name');
+            $products = Product::where('name', 'like', '%' . $query . '%')->pluck('name');
+            $shops = Shop::where('shopName', 'like', '%' . $query . '%')->pluck('shopName');
+            $merged = $shops->merge($products);
+            $data = $merged->all();
         }
         
         return $data;
