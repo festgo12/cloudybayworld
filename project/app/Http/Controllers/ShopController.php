@@ -25,13 +25,21 @@ class ShopController extends Controller
     public function marketDetails($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        return view('shop.marketDetails')->with('shop', $shop);
+        if($shop){
+            return view('shop.marketDetails')->with('shop', $shop);
+        }else{
+            return view('404');
+        }
     }
 
     public function marketfeeds($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        return view('shop.marketFeeds')->with('shop', $shop);
+        if($shop){
+            return view('shop.marketFeeds')->with('shop', $shop);
+        }else{
+            return view('404');
+        }
     }
     /**
      * Get all categories
