@@ -11,6 +11,7 @@ use App\Models\ProductClick;
 use Illuminate\Http\Request;
 use App\Models\Generalsetting;
 use App\Http\Controllers\Controller;
+use App\Notifications\newRatingCreated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -51,7 +52,7 @@ class ProductController extends Controller
          {
              $vendors = Product::where('status','=',1)->where('user_id','=',0)->take(8)->get();
          }
-         return view('front.product.details',compact('productt','curr','gs','vendors'));
+         return view('product.details',compact('productt','curr','gs','vendors'));
  
      }
 
@@ -94,6 +95,9 @@ public function reviewsubmit(Request $request)
      $Rating->fill($request->all());
      $Rating['review_date'] = date('Y-m-d H:i:s');
      $Rating->save();
+     
+    //  $user->notify(new newRatingCreated(''));
+
      $data[0] = 'Your Rating Submitted Successfully.';
      $data[1] = Rating::rating($request->product_id);
      return response()->json($data);

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Follow;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Notifications\followProfile;
+use App\Notifications\UpdateProfile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
 {
@@ -21,14 +25,21 @@ class UserProfileController extends Controller
         // if (!($user->homeAddress) || !($user->contactNo)) {
         //     return redirect('/editProfile?force=1');
         // }
-        return view('profile.profile')->with('user', $user);
+        if($user){
+            return view('profile.profile')->with('user', $user);
+        }else{
+            return view('404');
+        }
+        
     }
 
     public function editProfile()
     {   
         // return the view with the authenticated user
         $user = Auth::user();
-        return view('profile.editProfile')->with('user', $user);
+        $countries = DB::table('countries')->get();
+        
+        return view('profile.editProfile', compact('countries'))->with('user', $user);
     }
 
     public function apiGetProfileByUsername($username){
@@ -78,6 +89,7 @@ class UserProfileController extends Controller
                 $user->$key = $value;
             }
             $user->save();
+            $user->notify(new UpdateProfile($user)) ;
             // set response message to success
             $response['message'] = "User credentials updated successfully";     
         }
@@ -91,7 +103,8 @@ class UserProfileController extends Controller
         $response = array('message' => '', 'error' => false);
 
         $validator = Validator::make($request->all(), [
-            'avatarInput' => 'required|image|max:2048',
+            'avatarInput' => 'image|max:2048',
+            'coverInput' => 'image|max:2048',
         ]);
 
         /**
@@ -109,7 +122,30 @@ class UserProfileController extends Controller
             if ($request->hasfile('avatarInput')) {
                 $file = $request->file('avatarInput');
 
-                $path = $file->store('/avatar', 'uploads');
+               
+                
+
+                $ext = 'yu'.$file->getClientOriginalName();
+                // $ext = $file->getClientOriginalExtension();
+                // store the image path, name and type on the DB
+
+                $avatarName = Str::uuid() . "." . $ext;
+                // $file->move( public_path() . '/assets/uploads/avatar/' , $avatarName);
+                // $path = $file->store('/avatar', $avatarName ,'uploads/');
+
+                $user->avatar = $avatarName;
+
+                
+
+                
+                
+            }
+
+            // cover update
+            if ($request->hasfile('coverInput')) {
+                $file = $request->file('coverInput');
+
+                $path = $file->store('/avatar/cover', 'uploads');
                 $name = $file->getClientOriginalName();
                 // store the image path, name and type on the DB
                 $attachments = [
@@ -140,6 +176,9 @@ class UserProfileController extends Controller
         }
         // follow only the user have not been followed before
         if(!$user->following()->where('following_user_id', $following->id)->exists()){
+            
+            // notify the followed user
+            $following->notify(new followProfile($user));
             return $user->follow($following);
         }else{
             // unfollow user if already following

@@ -25,7 +25,7 @@ class CatalogController extends Controller
 
       public function categories()
       {
-          return view('front.product.index');
+          return view('product.index');
       }
   
       // -------------------------------- CATEGORY SECTION ----------------------------------------
@@ -193,7 +193,7 @@ class CatalogController extends Controller
         }
         //  dd($data, $prods);
         
-        return view('front.product.index', compact('data','newProducts', 'newProducts2'));
+        return view('product.index', compact('data','newProducts', 'newProducts2'));
       }
 
  // ------------------ Shop Product SECTION --------------------

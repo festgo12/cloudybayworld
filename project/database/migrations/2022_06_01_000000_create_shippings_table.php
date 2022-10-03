@@ -15,7 +15,7 @@ class CreateShippingsTable extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
              $table->increments('id');
-             $table->integer('user_id')->unsigned();
+             $table->integer('user_id')->unsigned()->nullable();
              $table->text('title')->nullable();
              $table->text('subtitle')->nullable();
              $table->decimal('price')->default(0);

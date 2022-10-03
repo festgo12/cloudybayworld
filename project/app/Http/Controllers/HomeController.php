@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use App\Models\User;
+use App\Models\Follow;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ChMessage;
+use App\Models\ShopFollow;
 use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
 use Illuminate\Http\Request;
+use App\Models\Generalsetting;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -40,14 +44,22 @@ class HomeController extends Controller
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->take(5)->get();
 
-        // $user = User::find($user->id);
-        // $shop = Shop::where('slug', '24fa0d181dc9a277ec9c234475d2d505c4e8c7ec')->first();
+        // $user = User::where('id', 29)->first();
+       
 
-        // $da = $user->shopFollowing()->where('shop_id', $shop->id)->first();
-        // $shF = ShopFavorite::where('user_id', $user->id)->where('shop_id', $shop->id)->exists();
+        // // $followers = Follow::where('following_user_id',29)->get()->pluck('user_id');
+        // $shopfollows = ShopFollow::where('shop_id',4)->get()->pluck('user_id');
+        // $users = User::whereIn('id', $shopfollows)->get();
 
-        // dd($user,$shop->id, $da ,$shF);
+        // // $follows = Follow::where('following_user_id',$feed->feedable_id)->get();
 
+        // $user = auth()->user();
+        // $shop = Shop::where('id', 2)->get();
+        // $user = User::where('id', $shop->user_id)->first();
+        //         // $user = $shop->owner;
+        //  dd( $shop, $user);
+
+      
         
 
         return view('home', compact('products','cats', 'newProducts'));
@@ -84,6 +96,73 @@ class HomeController extends Controller
         ];
 
         // dd($data);
-        return $data;
+        return response()->json($data);
+        // return $data;
+    }
+
+    public function noti(){
+        $user = auth()->user();
+        
+        // $notifications =$user->unreadNotifications;
+        // $activities =$user->notifications;
+        
+        $notifications = $user->unreadNotifications;
+        $notiCount = $user->unreadNotifications->count();
+        
+        foreach($notifications as $noti){
+            if(isset($noti->data['user_id'])){
+
+                $puser = User::where('id', $noti->data['user_id'])->get();
+                $noti->puser = $puser; 
+            }
+            
+            if(isset($noti->data->shop_id)){
+
+                $shop = Shop::where('id', $noti->data['shop_id'])->get();
+                // $puser = $shop->user;
+                $noti->$shop = $shop; 
+            }
+            $noti->userName = $user->firstname;
+            $noti->userImage = $user->avatar;
+            $noti->time = $noti->created_at->diffForHumans();
+        }
+
+        
+        $data = [
+            'notis' => $notifications,
+            'notiCount' => $notiCount,
+        ];
+
+        // dd($data);
+        return response()->json($data);
+        // return $data;
+    }
+
+    public function config(Request $request)
+    {
+        
+        $gs = Generalsetting::where('id', 1)->first()->tojson();
+        $wsconfig = [
+            'key' => config('chat.pusher.key'),
+            'cluster' => config('chat.pusher.options.cluster'),
+            'authEndpoint' => route("pusher.auth"),
+        ];
+
+        // dd($wsconfig, $gs);
+
+            return ['wsconfig' => $wsconfig, 'gs' => $gs];
+    
+        
+    }
+
+    public function markasread(Request $request)
+    {
+        $user = auth()->user();
+
+        $user->unreadNotifications->markAsRead();
+
+            return redirect()->back();
+    
+        
     }
 }

@@ -1,6 +1,6 @@
 var getUrl = window.location;
-// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-var baseUrl = getUrl.origin;
+var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.origin;
 
 const waitSpinner = document.querySelector('#waitSpinner') || '';
 const errorMessage = document.querySelector('#errorMessage') || '';
@@ -236,7 +236,7 @@ const loadFeeds = () => {
                             <div class="like-comment">
                                 <ul class="list-inline">
                                     <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                        <label onclick="likeFeed(${feed.id})" class="m-0 btn"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
                                         <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">
@@ -409,10 +409,10 @@ const handleFollowShop = () => {
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
-        console.log(userId.value);
-        console.log(shopSlug.value);
-        console.log(shopId.value);
+        // console.log(content);
+        // console.log(userId.value);
+        // console.log(shopSlug.value);
+        // console.log(shopId.value);
 
         // document.body.innerHTML = content
         // re-render the following count
@@ -434,19 +434,24 @@ const handleFollowShop = () => {
             method: 'GET',
         });
         const content = await rawResponse.json();
+        // console.log(content);
         if (content) {
-            favoriteButton.classList.remove('text-primary');
-            favoriteButton.classList.add('text-warning');
+            favoriteButton.innerHTML = `<i class="fa fa-star"></i> Favourited`;
+            favoriteButton.classList.remove('font-primary');
+            favoriteButton.classList.add('font-warning');
         } else {
-            favoriteButton.classList.remove('text-warning');
-            favoriteButton.classList.add('text-primary');
+            favoriteButton.innerHTML = `<i class="fa fa-star"></i> Favourite`;
+            favoriteButton.classList.remove('font-warning');
+            favoriteButton.classList.add('font-primary');
         }
     })();
 }
+
 isFavoritedCheck();
 
 const handleFavoriteShop = () => {
     // send a post request to the server with the form data
+
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/favoriteShop`, {
             method: 'POST',
@@ -460,7 +465,8 @@ const handleFavoriteShop = () => {
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
+        // console.log(content);
+
         // re-render the favoriteButton
         isFavoritedCheck();
     })();

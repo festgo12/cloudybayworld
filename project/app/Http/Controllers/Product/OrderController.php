@@ -19,7 +19,7 @@ class OrderController extends Controller
         $user = Auth::guard('web')->user();
         $orders = Order::where('user_id','=',$user->id)->orderBy('id','desc')->get();
         
-        return view('front.product.order.history',compact('user','orders'));
+        return view('product.order.history',compact('user','orders'));
         
     }
 
@@ -28,6 +28,6 @@ class OrderController extends Controller
         $user = Auth::guard('web')->user();
         $order = Order::findOrfail($id);
         $cart = unserialize(bzdecompress(utf8_decode($order->cart)));
-        return view('front.product.order.details',compact('user','order','cart'));
+        return view('product.order.details',compact('user','order','cart'));
     }
 }

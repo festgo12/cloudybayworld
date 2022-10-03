@@ -20871,7 +20871,7 @@ footer.blockquote-footer {
 }
 
 .error-wrapper .error-heading .headline {
-    font-size: 285px;
+    font-size: 250px;
     font-weight: 700;
     letter-spacing: 1px;
     margin-top: -130px
@@ -27268,7 +27268,8 @@ footer {
 }
 
 .user-profile .profile-img-style .media img {
-    width: 50px
+    width: 50px;
+    height: 50px;
 }
 
 .user-profile .like-comment a {
@@ -35364,6 +35365,7 @@ body[class*='dark-'] .for-light {
 
 .page-wrapper .page-header .header-wrapper .nav-right .onhover-show-div li .media img {
     width: 40px;
+    height: 40px;
     position: relative
 }
 
@@ -42894,3 +42896,20 @@ i.wishcart {
 }
 
 
+
+p.o-time{
+    opacity : 0.4 !important;
+}
+
+ul#notis-items {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    margin-bottom: 4px;
+}
+ul#msgs-items {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    margin-bottom: 4px;
+}

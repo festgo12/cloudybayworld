@@ -32,11 +32,11 @@ class Shop extends Model
 
     public function followers()
     {
-        return $this->hasMany(ShopFollow::class, 'shop_id', 'user_id');
+        return $this->hasMany(ShopFollow::class, 'shop_id');
     }
 
     public function favorites()
     {
-        return $this->hasMany(ShopFavorite::class, 'shop_id', 'user_id');
+        return $this->hasMany(ShopFavorite::class, 'shop_id');
     }
 }

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feed;
+use App\Models\Shop;
+use App\Models\User;
+use App\Models\Follow;
+use App\Models\ShopFollow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\feedPostCreated;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Feed;
-use App\Models\User;
-use App\Models\Shop;
+use Illuminate\Support\Facades\Notification;
 
 class FeedsController extends Controller
 {
@@ -122,7 +126,7 @@ class FeedsController extends Controller
         $response = array('message' => '', 'error' => false);
 
         $validator = Validator::make($request->all(), [
-            'postInput' => 'required|string|max:255',
+            'postInput' => 'required|string',
             'fileInput' => 'max:2048',
         ]);
 
@@ -173,6 +177,35 @@ class FeedsController extends Controller
             }
 
             $feed->save();
+
+            
+            // $response['message'] = "Post added successfully";
+            // $response['data'] = $feed;
+            // getting the notifiable profile/shop followers  
+
+            // if($feed->feedable_type == 'User'){
+            if($request->post('postType') == 'User'){
+
+                $user = User::where('id', $ownerId)->first();
+
+               $name = $user->firstname.' '.$user->lastname;
+
+                $follows = Follow::where('following_user_id',$ownerId)->get()->pluck('user_id');
+                $followers = User::whereIn('id', $follows)->get();
+                Notification::send($followers, new feedPostCreated($feed, $name, $ownerId));
+                
+            }else
+            {
+                $name = Shop::where('id', $ownerId)->get()->pluck('shopName');
+                
+                $shopfollows = ShopFollow::where('shop_id', $ownerId)->get()->pluck('user_id');
+                $shopfollowers = User::whereIn('id', $shopfollows)->get();
+                
+                Notification::send($shopfollowers, new feedPostCreated($feed, $name, $ownerId));
+                
+            }
+
+
             $response['message'] = "Post added successfully";
             $response['data'] = $feed;
         }

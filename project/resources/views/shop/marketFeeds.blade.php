@@ -61,7 +61,7 @@
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
                                     <center>
-                                       <h6><a href="{{ route('user', $shop->user_id) }}">Chat</a></h6>
+                                       <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
                                     </center>
                                  </div>
                               </div>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="col-sm-12 col-lg-4 order-sm-0 order-xl-1">
                            <div class="user-designation"></div>
-                           <div class="title"><a target="_blank" href="#">Shop Rite Mall</a></div>
+                           <div class="title"><a target="_blank" href="#">{{ $shop->shopName }}</a></div>
                            <!-- <div class="rating"><span><i class="fa fa-star font-warning"></i><i
                               class="fa fa-star font-warning"></i><i class="fa fa-star font-warning"></i><i
                               class="fa fa-star font-warning"></i><i

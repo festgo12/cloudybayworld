@@ -360,12 +360,14 @@ Home
                                         </div>
                                         <div class="product-size">
                                           <ul>
-                                           
+                                           @if ($prod->size)
+                                               
                                             @foreach( $prod->size as $size)
                                             <li> 
                                               <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
                                             @endforeach
+                                           @endif
 
                                           </ul>
                                         </div>
@@ -503,11 +505,14 @@ Home
                                         <div class="product-size">
                                           <ul>
                                            
+                                            @if ($prod->size)
+                                               
                                             @foreach( $prod->size as $size)
                                             <li> 
                                               <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
                                             @endforeach
+                                           @endif
 
                                             
                                           </ul>
