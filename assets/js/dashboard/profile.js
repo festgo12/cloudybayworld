@@ -5,7 +5,9 @@ var baseUrl = getUrl.origin;
 const tempAvatar = document.querySelector('#tempAvatar');
 // get the current user profile picture
 const profileAvatar = document.querySelector('#profileAvatar');
+const profileCover = document.querySelector('.cardheader');
 const avatarInput = document.querySelector('#avatarInput');
+const coverInput = document.querySelector('#coverInput');
 const saveButton = document.querySelector('#saveButton');
 
 const waitSpinner = document.querySelector('#waitSpinner') || '';
@@ -29,32 +31,57 @@ let file;
 
 const handleSelectImage = (event) => {
     file = event.target.files[0];
+    // clear coverInput value
+    coverInput.value = '';
     // display the uploaded image to tempAvatar element
     tempAvatar.src = URL.createObjectURL(file);
     tempAvatar.style.display = 'block';
     // append the post files to the form data
     formData.append('avatarInput', file, `Avatar-${userId.value}`)
 }
+const handleSelectCover = (event) => {
+    file = event.target.files[0];
+    // clear avatarInput value
+    avatarInput.value = '';
+    // display the uploaded image to tempAvatar element
+    tempAvatar.src = URL.createObjectURL(file);
+    tempAvatar.style.display = 'block';
+    // append the post files to the form data
+    formData.append('coverInput', file, `Cover-${userId.value}`)
+}
 
 const handleSaveAvatar = (event) => {
     event.preventDefault();
-    // do nothing if input is empty
-    if(!avatarInput.value){
-        return;
+    // check if input is empty or not
+    if(avatarInput.value || coverInput.value ){
+        
+        if(avatarInput.value){
+
+            profileAvatar.src = URL.createObjectURL(file);
+        }
+        if(coverInput.value){
+                link = URL.createObjectURL(file);
+            profileCover.style.background = URL.createObjectURL(file);
+            // profileCover.style.background = url(`${URL.createObjectURL(file)}`);
+            console.log(link);
+
+        }
+        // send a post request to the server with the form data
+        (async () => {
+            const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
+                method: 'POST',
+                body: formData
+            });
+            const content = await rawResponse.json();
+            console.log(content);
+            // clear form data
+            formData.delete('avatarInput')
+            formData.delete('coverInput')
+        })();
     }
-    profileAvatar.src = URL.createObjectURL(file);
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
-            method: 'POST',
-            body: formData
-        });
-        const content = await rawResponse.json();
-        console.log(content);
-        // clear form data
-        formData.delete('avatarInput')
-    })();
-}
+
+    return;
+    }
 
 /**
  * listen for saveButton Onclick event and call 
@@ -67,6 +94,11 @@ saveButton.addEventListener('click', handleSaveAvatar);
   * the 'handleSelectImage' function when changed
   * */
 avatarInput.addEventListener('change', handleSelectImage);
+ /**
+  * listen for coverInput onChange event and call 
+  * the 'handleSelectImage' function when changed
+  * */
+coverInput.addEventListener('change', handleSelectCover);
 
 
 const handleSelectImages = (event) => {
@@ -98,6 +130,8 @@ const handleSavePost = (event) => {
             errorMessage.style.display = 'block';
             errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
         }
+
+        console.log(content);
         // reset the input fields
         fileInput.value = '';
         postInput.value = '';
@@ -291,8 +325,8 @@ const toggleComment = (feedId) => {
                             
                             <div class="like-comment">
                                 <ul class="list-inline">
-                                    <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                    <li class="list-inline-item  border-right pe-3">
+                                        <label onclick="likeFeed(${feed.id})" class="m-0 btn"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
                                         <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">
@@ -393,6 +427,7 @@ followingCount();
         const content = await rawResponse.json();
         if(content){
             followButton.innerHTML = 'Following';
+            
         }else{
             followButton.innerHTML = 'Follow';
         }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Admin;
+use App\Http\Controllers\Controller;
+use App\Notifications\UserCreated;
+use App\Notifications\UserCreatedAdmin;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -66,7 +69,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
@@ -74,5 +77,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'isVendor' => 0,
         ]);
+        $user->pass = $data['password'];
+        $superAdmin= Admin::where('id', 1)->first();
+        $superAdmin->notify(new UserCreatedAdmin($user)) ;
+        $user->notify(new UserCreated($user)) ;
+        return $user;
     }
 }

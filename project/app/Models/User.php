@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use App\Models\Shop;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -20,6 +23,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'email',
+        'avatar',
         'username',
         'is_vendor',
         'password',
@@ -53,6 +57,7 @@ class User extends Authenticatable
         return false;
     }
 
+   
 
     public function orders()
     {
@@ -96,6 +101,11 @@ class User extends Authenticatable
     public function feeds()
     {
         return $this->hasMany(Feed::class);
+    }
+
+    public function shop()
+    {
+        return $this->hasOne(Shop::class, 'user_id');
     }
 
     public function likes()

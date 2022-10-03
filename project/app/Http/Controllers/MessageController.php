@@ -524,7 +524,6 @@ class MessageController extends Controller
                     // upload
                     $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
                     $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
-                    // $file->storeAs("public/" . config('chat.user_avatar.folder'), $avatar);
                     $file->move( public_path() . '/assets/uploads/' . config('chat.user_avatar.folder'), $avatar);
                     $success = $update ? 1 : 0;
                 } else {

@@ -20,7 +20,11 @@ class CreateGeneralsettingsTable extends Migration
             $table->double('shipping_cost')->default(0);
             $table->double('fixed_commission')->default(0);
             $table->double('percentage_commission')->default(0);
+            $table->string('admin_loader')->default('xloading.gif');
             $table->tinyInteger('currency_format')->default(0);
+            $table->tinyInteger('is_secure')->default(0);
+            $table->tinyInteger('is_admin_loader')->default(0);
+            $table->tinyInteger('is_maintain')->default(0);
             $table->timestamps();
         });
 
@@ -32,6 +36,8 @@ class CreateGeneralsettingsTable extends Migration
                 'fixed_commission' => '0.5',
                 'percentage_commission' => '0',
                 'currency_format' => '0',
+                'is_secure' => '0',
+                'is_maintain' => '0',
 
             ],
             

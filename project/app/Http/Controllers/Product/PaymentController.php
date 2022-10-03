@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\newOrderCreated;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Notification;
 
 class PaymentController extends Controller
 {
@@ -20,7 +24,7 @@ class PaymentController extends Controller
     
      public function payreturn(){
          //return success payment
-        //  dd($_GET);
+      
 
         if(Session::has('temporder_id')){
             $order_id = Session::get('temporder_id');
@@ -31,10 +35,18 @@ class PaymentController extends Controller
             $tempcart = '';
             return redirect()->back();
         }
+        // $user = User::where('id', Auth::user()->id);
+        $user = auth()->user();
+        // $user->notify( new newOrderCreated($tempcart, $order));
+
+        Notification::send($user, new newOrderCreated($tempcart, $order));
+
+        
+       
         // dd($tempcart, $order);
 
-        //  return view('front.product.order.success');
-         return view('front.product.order.success',compact('tempcart','order'));
+        //  return view('product.order.success');
+         return view('product.order.success',compact('tempcart','order'));
      }
 
 

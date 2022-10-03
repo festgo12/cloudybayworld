@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\ShopCategory;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\ShopFollow;
+use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
+use Illuminate\Http\Request;
+use App\Notifications\favShop;
+use App\Notifications\followShop;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -24,7 +26,10 @@ class ShopController extends Controller
 
     public function marketDetails($slug)
     {
-        $shop = Shop::where('slug', $slug)->first();
+        $shop = Shop::where('status', 1)->where('slug', $slug)->first();
+        if(!$shop){
+            return redirect()->back()->with('msg', 'Shop is Deactivated');
+        }
         return view('shop.marketDetails')->with('shop', $shop);
     }
 
@@ -121,7 +126,7 @@ class ShopController extends Controller
     {
         $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
         // shop object
-        $shops = Shop::whereIn('category_id', $categories->pluck('id'))
+        $shops = Shop::where('status', 1)->whereIn('category_id', $categories->pluck('id'))
             ->with([
             'favorites' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
@@ -141,6 +146,10 @@ class ShopController extends Controller
         // dd($user->shopFollowing()->where('shop_id', $shop->id)->exists());
         if (!(ShopFollow::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
             
+            // $vendorUser = User::where('id', $shop->user_id)->first();
+            $vendorUser = $shop->owner;
+            // notify the followed shop vendoruser
+            $vendorUser->notify(new followShop($user));
             return $user->shopFollow($shop);
         }
         else {
@@ -178,6 +187,10 @@ class ShopController extends Controller
         // if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
         if (!(ShopFavorite::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
         
+            // $vendorUser = User::where('id', $shop->user_id)->first();
+            $vendorUser = $shop->owner;
+            // notify the followed shop vendoruser
+            $vendorUser->notify(new favShop($user));
             return $user->favoriteShop($shop);
         }
         else {

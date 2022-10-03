@@ -37,5 +37,13 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+      
+        $this->renderable(function (\Exception $e) {
+            if($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException){
+
+                return redirect()->back()->with('msg', 'Form Expired, Please Fill Again');
+            }
+            
+        });
     }
 }

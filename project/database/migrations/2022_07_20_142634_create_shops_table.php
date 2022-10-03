@@ -38,6 +38,7 @@ class CreateShopsTable extends Migration
             $table->string('startTime')->nullable();
             $table->string('closeTime')->nullable();
             $table->json('attachments')->nullable();
+            $table->integer('status')->default(1);
             $table->string('slug')->unique();
             $table->timestamps();
         });

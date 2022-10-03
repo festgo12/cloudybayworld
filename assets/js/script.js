@@ -723,40 +723,55 @@ channel.bind("client-messaging", function (data) {
 
     if ( data.to_id == auth_id && data.from_id != auth_id) {
         $('#message-sidebar').addClass('msg-circle');
+
+        
       
-        $.get( mainurl + '/min_msg' , function( data ) {
-            // console.log(data);
-
-            var msgs = data.msgs;
-            var content = '';
         
+        $.ajax({
+            type: "GET",
+            url:mainurl+"/min_msg",
+            success:function(data){
+                var content = '';
+                 var msgs = data.msgs;
+    
                 content = `<li><i data-feather="message-square"></i>
-                                    <h6 class="f-18 mb-0">Message Box                                    </h6>
+                               <h6 class="f-18 mb-0">Message Box </h6>
+                            </li>`;
+    
+    
+                            
+                            $.map(msgs, function(item) {
+                                
+                                
+                                let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="">
+                                    <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
+                                    <div class="media-body"><span>${item.userName}</span>
+                                    <p>${item.body}</p>
+                                    </div>
+                                    <p class="f-12 d-block font-success">${item.time}</p>
+                                </div>
                                 </li>`;
-
-           msgs.map((item)=>{
-                imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
-               content += ` <li>
-              <div class="media"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="">
-                <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
-                <div class="media-body"><span>${item.userName}</span>
-                  <p>${item.body}</p>
-                </div>
-                <p class="f-12 d-block font-success">${item.time}</p>
-              </div>
-            </li>`;
-           });
-            
-           content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+                            });
+    
+    
+            content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+    
+                $('.chat-dropdown').html(content);
         
-            $('.chat-dropdown').html(content);
-    
-            if(data.unreadCount){
-    
-                $('#message-sidebar').addClass('msg-circle');
-            }
-    
-        });
+                if(data.unreadCount){
+        
+                    $('#message-sidebar').addClass('msg-circle');
+                }
+ 
+                
+              },
+              error: function(err){
+                // console.log(err);
+              }
+      });
+
     }
   });
 
@@ -765,73 +780,253 @@ channel.bind("client-messaging", function (data) {
   
   $(document).ready(function() {
 
-  
-    $.get( mainurl + '/min_msg' , function( data ) {
-        // console.log(data);
-        // console.log(data.msgs);
-        // $('.chat-dropdown').html('')
-        var content = '';
-        var msgs = data.msgs;
-        
-        content = `<li><i data-feather="message-square"></i>
-                            <h6 class="f-18 mb-0">Message Box                                    </h6>
+    $.ajax({
+        type: "GET",
+        url:mainurl+"/min_msg",
+        success:function(data){
+            var content = '';
+             var msgs = data.msgs;
+
+
+            content = `<li><i data-feather="message-square"></i>
+                           <h6 class="f-18 mb-0">Message Box </h6>
                         </li>`;
 
 
-                        msgs.map( item => {
-            let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
-           content += ` <li>
-          <div class="media"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="">
-            <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
-            <div class="media-body"><span>${item.userName}</span>
-              <p>${item.body}</p>
-            </div>
-            <p class="f-12 d-block font-success">${item.time}</p>
-          </div>
-        </li>`;
-       });
-        
-       content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+                        
+                        $.map(msgs, function(item) {
+                            // console.log(item);
+                            
+                            let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                            content += ` <li><a class="msg-link" href="#">
+                            <div class="media" style="display: block;">
+                            <img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" >
+                                <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
+                                <div class="media-body"><span>${item.userName}</span>
+                                <p>${item.body}</p>
+                                </div>
+                                <p class="f-12 d-block font-success">${item.time}</p>
+                            </div></a>
+                            </li>`;
+                        });
+
+
+        content += `<li class="text-center"> <a class="btn btn-info" href="${mainurl}/chat">View All     </a></li>`;
+
+            $('.chat-dropdown').html(content);
     
-        $('.chat-dropdown').html(content);
+            if(data.unreadCount){
+    
+                $('#message-sidebar').addClass('msg-circle');
+            }
+                    
 
-        if(data.unreadCount){
 
-            $('#message-sidebar').addClass('msg-circle');
-        }
 
-    });
+            
+          },
+          error: function(err){
+            // console.log(err);
+          }
+  });
+
+  
+  
+    $.ajax({
+        type: "GET",
+        url:mainurl+"/noti",
+        success:function(data){
+            var content = '';
+             var notis = data.notis;
+            //  console.log(notis);
+
+            content = `<li><i data-feather="bell"></i>
+                        <h6 class="f-18 mb-0">Notitications</h6>
+                    </li>`;
+
+
+                   
+
+
+                        $.map(notis, function(item) {
+                            // console.log(item.puser);
+                            // console.log(item.shop);
+
+                            if (item.type == "App\\Notifications\\commentCreated") {
+                                
+                                let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${item.userName}</span>
+                                    <div class="status-circle  ${(item.puser[0].active_status) ? 'online': ' '}"></div></a>
+                                    <div class="media-body">
+                                    <p>commented on your post <a class="msg-link" href="${item.data.url}">${item.data.postFeed}</a></p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+                            }
+
+                            if (item.type == "App\\Notifications\\feedPostCreated" && item.data['user_id']) {
+                                
+                                let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${item.userName}</span>
+                                    <div class="status-circle  ${(item.puser[0].active_status) ? 'online': ' '}"></div></a>
+                                    <div class="media-body">
+                                    <p>Made a post <a class="msg-link" href="${item.data.url}">${item.data.post}</a></p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+                            }
+
+                            if (item.type == "App\\Notifications\\feedPostCreated" && item.data['shop_id']) {
+                                
+                                let imageurl = false ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${ item.data.name}</span>
+                                    <div class="status-circle  "></div></a>
+                                    <div class="media-body">
+                                    <p>Made a post <a class="msg-link" href="${item.data.url}">${item.data.post}</a></p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+                            }
+
+
+                            if (item.type == "App\\Notifications\\followProfile") {
+                                
+                                let imageurl = item.puser[0].avatar ? `${mainurl}/assets/uploads/avatar/${item.puser[0].avatar}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${item.puser[0].username}</span>
+                                    <div class="status-circle  ${(item.puser[0].active_status) ? 'online': ' '}"></div></a>
+                                    <div class="media-body">
+                                    <p><a class="msg-link" href="/profile/${item.puser[0].username}">${item.puser[0].username}</a> is Following you</p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+                            }
+
+
+
+                            if (item.type == "App\\Notifications\\followShop") {
+                                
+                                let imageurl = item.puser[0].avatar ? `${mainurl}/assets/uploads/avatar/${item.puser[0].avatar}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${item.puser[0].username}</span>
+                                    <div class="status-circle  ${(item.puser[0].active_status) ? 'online': ' '}"></div></a>
+                                    <div class="media-body">
+                                    <p><a class="msg-link" href="/profile/${item.puser[0].username}">${item.puser[0].username}</a> is Following your Shop</p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+                            }
+                            
+
+
+                            if (item.type == "App\\Notifications\\favShop") {
+                                
+                                let imageurl = item.puser[0].avatar ? `${mainurl}/assets/uploads/avatar/${item.puser[0].avatar}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
+                                content += ` <li>
+                                <div class="media" style="display: block;">
+                                <a class="msg-link" href="#"><img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" ><span>${item.puser[0].username}</span>
+                                    <div class="status-circle  ${(item.puser[0].active_status) ? 'online': ' '}"></div></a>
+                                    <div class="media-body">
+                                    <p><a class="msg-link" href="/profile/${item.puser[0].username}">${item.puser[0].username}</a> Just Favorited your Shop</p>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <p class="o-time d-block" >${item.time}</p>
+                                </li>`;
+
+                            }
+                            
+                          
+
+                            if (item.type == "App\\Notifications\\UpdateProfile") {
+                                content += `<li>
+                    <p><i class="fa fa-circle-o me-3 font-primary"> </i>Your profile was updated! <p class="pull-right o-time" style="float: none;">${item.time}</p></p>
+                  </li>`;
+                            }
+
+                            if (item.type == "App\\Notifications\\newOrderCreated") {
+                                content += `<li>
+                    <p><i class="fa fa-circle-o me-3 font-primary"> </i>You Have Created a New Order! No: <a href="/orders">${item.data.orderNo}</a><p class="pull-right o-time" style="float: none;">${item.time}</p></p>
+                  </li>`;
+                            }
+
+                            if (item.type == "App\\Notifications\\OrderUpdated") {
+                                content += `<li>
+                    <p><i class="fa fa-circle-o me-3 font-primary"> </i>Your Order was Updated! No: <a href="/orders">${item.data.orderNo}</a><p class="pull-right o-time" style="float: none;">${item.time}</p></p>
+                  </li>`;
+                            }
+                            
+                            if (item.type == "App\\Notifications\\addWishlist") {
+                                content += `<li>
+                    <p><i class="fa fa-circle-o me-3 font-primary"> </i><a href="/wishlists">${item.data.name}</a> is add to your Wishlist!<p class="pull-right o-time" style="float: none;">${item.time}</p></p>
+                  </li>`;
+                            }
+
+                            
+
+                           
+
+
+
+                            
+
+
+
+
+                        });
+
+
+        content += `<li><a class="btn btn-info" href="${mainurl}/noti-markAll">Mark As Read</a></li>`;
+
+            $('.notification-dropdown').html(content);
+    
+            if(data.notiCount){
+    
+                $('.notiCount').append(`<span class="badge rounded-pill badge-secondary">${data.notiCount}</span>`);
+            }
+                    
+  
+          },
+          error: function(err){
+            // console.log(err);
+          }
+  });
+  
+   
 
   });
 
 
 
 
-  $(document).ready(function() {
-	$("#emojionearea1").emojioneArea({
-  	pickerPosition: "left",
-    tonesStyle: "bullet"
-  });
-	$("#emojionearea2").emojioneArea({
-  	pickerPosition: "bottom",
-    tonesStyle: "radio"
-  });
-	$("#emojionearea3").emojioneArea({
-  	pickerPosition: "left",
-  	filtersPosition: "bottom",
-    tonesStyle: "square"
-  });
-	$("#emojionearea4").emojioneArea({
-  	pickerPosition: "bottom",
-  	filtersPosition: "bottom",
-    tonesStyle: "checkbox"
-  });
-	$("#emojionearea5").emojioneArea({
-  	pickerPosition: "top",
-  	filtersPosition: "bottom",
-    tones: false,
-    autocomplete: false,
-    inline: true,
-    hidePickerOnBlur: false
-  });
-});
+//   $(document).ready(function() {
+// 	$("#emojionearea1").emojioneArea({
+//   	pickerPosition: "left",
+//     tonesStyle: "bullet"
+//   });
+
+// });
