@@ -69,7 +69,7 @@ const handleSubmit = (event) => {
                 body: JSON.stringify(changedData)
             });
             const content = await rawResponse.json();
-            console.log(content); 
+            // console.log(content); 
             /**
              * check the response status and message
              * map through and display the response messages

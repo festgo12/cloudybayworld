@@ -17,7 +17,9 @@ use App\Models\Generalsetting;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\newOrderCreated;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Notification;
 // use Illuminate\Support\Facades\Notification;
 
 class CheckoutController extends Controller
@@ -120,7 +122,7 @@ class CheckoutController extends Controller
                 }
 // dd($dp, $shipping_data);
 
-        return view('front.product.checkout', ['products' => $cart->items, 'countries' => $countries ,'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id]);             
+        return view('product.checkout', ['products' => $cart->items, 'countries' => $countries ,'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id]);             
         // }
 
         
@@ -194,8 +196,8 @@ class CheckoutController extends Controller
         // create order
         $order = new Order;
         $success_url = action('App\Http\Controllers\Product\PaymentController@payreturn');
-        $item_name = "CloudBay World Order";
-        $item_number = Str::random(10);
+        // $item_name = "CloudBay World Order";
+        // $item_number = Str::random(10);
         $order['user_id'] = $request->user_id;
         $order['cart'] = utf8_encode( bzcompress(serialize($cart), 9)); 
         $order['totalQty'] = $request->totalQty;
@@ -330,8 +332,10 @@ class CheckoutController extends Controller
 
 
 
-        //Sending Email To Buyer
-
+        //Sending Notification  and Email To Buyer
+        $user = User::where('id', Auth::user()->id)->first();
+        // $user->notify(new newOrderCreated($cart, $order));
+        // Notification::send($user, new newOrderCreated($cart, $order));
       
         // redirect to payment.return Route
 

@@ -36,7 +36,7 @@
                                 <div class="row mb-2">
                                     <div class="profile-title">
                                         <div class="media"> <img class="img-70 rounded-circle" alt=""
-                                                src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                                src="{{ ($user->attachments) ? './assets/uploads/avatar/'.$user->avatar : './assets/uploads/avatar/avatar.png' }}">
                                             <div class="media-body">
                                                 <h5 class="mb-1">{{ $user->firstname }} {{ $user->lastname }}</h5>
                                                 <p>DESIGNER</p>
@@ -142,11 +142,12 @@
                                     <div class="mb-3">
                                         <label class="form-label">Country</label>
                                         <select id="countryId" class="form-control btn-square">
-                                            <option value="0">--Select--</option>
-                                            <option value="1">Germany</option>
-                                            <option value="2">Canada</option>
-                                            <option value="3">Usa</option>
-                                            <option value="4">Aus</option>
+                                            
+                                            <option value="">--Select--</option>
+                                            @foreach ($countries as $co)
+                                            <option value="{{ $co->id }}">{{ $co->country_name }}</option>
+                                            @endforeach
+                                            
                                         </select>
                                     </div>
                                 </div>

@@ -69,7 +69,7 @@
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
-                            <h6><a href="{{ route('user', $shop->user_id) }}">Chat</a></h6>
+                            <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
                           </center>
                         </div>
                       </div>
@@ -368,12 +368,14 @@ $(document).ready(function () {
 
         prods.data.map(item => {
           let sizes = '';
+          if(item['size']){
           item['size'].map(item => {
             sizes +=`
             <li> 
               <button class="btn btn-outline-light" data-size='${item}' type="button" data-bs-original-title="" title="">${item}</button>
             </li>`
           });
+        }
 
         //  /
 

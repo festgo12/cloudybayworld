@@ -57,10 +57,9 @@ const getMarketList = (hash) => {
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="col-md-12">${(market.favorites.length > 0) ? '<span class="fa fa-check-square font-warning">' : ''}<span>
+                                        <div class="col-md-12">${(market.favorites.length > 0) ? '<i class="fa fa-star font-warning"></i>' : ''}
                                         </div>
-                                        <div class="col-md-12"><a class="btn btn-default text-primary" href="#"><span
-                                            class="fa fa-paper-plane">DIRECTION<span> </a></div>
+                                        
                                     </div>
                                     </div>
                                 </div>

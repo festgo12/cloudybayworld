@@ -1,6 +1,4 @@
-{{-- @php
-  $darkmode = (
-@endphp --}}
+
 <!DOCTYPE html>
 <html lang="en" >
   
@@ -12,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Cloudbay ">
     <meta name="keywords" content=" Cloudbay ">
-    <meta name="author" content="Cloudbay">
+    <meta name="base" content="{{ url('/') }}">
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <title>Cloudbay- @yield('title')</title>
@@ -56,7 +54,9 @@
     </div>
     <!-- tap on top starts-->
     <div class="tap-top"><i data-feather="chevrons-up"></i></div>
-    <a href="{{ route('markets') }}"><div class=" shop-tap"><i class="icofont icofont-food-cart"></i></div></a>
+    @if(Auth::user()->is_vendor)
+    <a href="{{ route('marketDetails', Auth::user()->shop->slug ) }}"><div class=" shop-tap"><i class="icofont icofont-food-cart"></i></div></a>
+    @endif
     <!-- tap on tap ends-->
     <!-- page-wrapper Start-->
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
@@ -90,67 +90,12 @@
                 <li>                         
                   <span class="header-search"><i data-feather="search"></i></span></li>
                 <li class="onhover-dropdown">
-                  <div class="notification-box"><i data-feather="bell"> </i><span class="badge rounded-pill badge-secondary">4                                </span></div>
-                  <ul class="notification-dropdown onhover-show-div">
-                    <li><i data-feather="bell"></i>
-                      <h6 class="f-18 mb-0">Notitications</h6>
-                    </li>
-                    <li>
-                      <p><i class="fa fa-circle-o me-3 font-primary"> </i>Delivery processing <span class="pull-right">10 min.</span></p>
-                    </li>
-                    <li>
-                      <p><i class="fa fa-circle-o me-3 font-success"></i>Order Complete<span class="pull-right">1 hr</span></p>
-                    </li>
-                    <li>
-                      <p><i class="fa fa-circle-o me-3 font-info"></i>Tickets Generated<span class="pull-right">3 hr</span></p>
-                    </li>
-                    <li>
-                      <p><i class="fa fa-circle-o me-3 font-danger"></i>Delivery Complete<span class="pull-right">6 hr</span></p>
-                    </li>
-                    <li><a class="btn btn-info" href="#">Check all notification</a></li>
+                  <div class="notification-box notiCount"><i data-feather="bell"> </i></div>
+                  <ul id="notis-items" class="notification-dropdown onhover-show-div">
+                    
                   </ul>
                 </li>
-                {{-- <li class="onhover-dropdown">
-                  <div class="notification-box"><i data-feather="star"></i></div>
-                  <div class="onhover-show-div bookmark-flip">
-                    <div class="flip-card">
-                      <div class="flip-card-inner">
-                        <div class="front">
-                          <ul class="droplet-dropdown bookmark-dropdown">
-                            <li class="gradient-primary"><i data-feather="star"></i>
-                              <h6 class="f-18 mb-0">Bookmark</h6>
-                            </li>
-                            <li>
-                              <div class="row">
-                                <div class="col-4 text-center"><i data-feather="file-text"></i></div>
-                                <div class="col-4 text-center"><i data-feather="activity"></i></div>
-                                <div class="col-4 text-center"><i data-feather="users"></i></div>
-                                <div class="col-4 text-center"><i data-feather="clipboard"></i></div>
-                                <div class="col-4 text-center"><i data-feather="anchor"></i></div>
-                                <div class="col-4 text-center"><i data-feather="settings"></i></div>
-                              </div>
-                            </li>
-                            <li class="text-center">
-                              <button class="flip-btn" id="flip-btn">Add New Bookmark</button>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="back">
-                          <ul>
-                            <li>
-                              <div class="droplet-dropdown bookmark-dropdown flip-back-content">
-                                <input type="text" placeholder="search...">
-                              </div>
-                            </li>
-                            <li>
-                              <button class="d-block flip-back" id="flip-back">Back</button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li> --}}
+               
                 <li>
                   <div class="mode"  data-dark="{{ Auth::user()->dark_mode  }}"><i class="fa {{ (Auth::user()->dark_mode ) ? 'fa-lightbulb-o' : 'fa-moon-o'  }}"></i></div>
                 </li>
@@ -158,12 +103,12 @@
                   <div class="cart-box"><i data-feather="shopping-cart"></i><span id="cart-count" class="badge rounded-pill badge-primary">{{ Session::has('cart') ? count(Session::get('cart')->items) : '0' }}</span></div>
                   <ul id="cart-items" class="cart-dropdown list-scroll onhover-show-div" >
 
-                      @include('front.product.load.mini-cart')
+                      @include('product.load.mini-cart')
 
                   </ul>
                   </li>
                   <li class="onhover-dropdown"><i data-feather="message-square"></i>
-                  <ul class="chat-dropdown onhover-show-div">
+                  <ul id="msgs-items" class="chat-dropdown onhover-show-div">
                     
                     
                     
@@ -171,13 +116,13 @@
                 </li>
                 <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
                 <li class="profile-nav onhover-dropdown p-0 me-0">
-                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? asset('assets/uploads/').'/'.Auth::user()->attachments['path'] : asset('assets/images/dashboard/profile.jpg') }}" alt="">
+                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->avatar) ? asset('assets/uploads/avatar').'/'.Auth::user()->avatar : asset('assets/uploads/avatar/avatar.png') }}" alt="">
                     <div class="media-body authuser" data-id="{{ Auth::user()->id }}"><span>{{ Auth::user()->username }}</span>
                       <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                     </div>
                   </div>
                   <ul class="profile-dropdown onhover-show-div">
-                    <li><a href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"></i><span>Account </span></a></li>
+                    <li><a href="{{ route('profile', Auth::user()->username )}}"><i data-feather="user"></i><span>Account </span></a></li>
                     <li><a href="{{ route('editProfile') }}"><i data-feather="settings"></i><span>Settings</span></a></li>
                     <li>
                         <a class="" href="{{ route('logout') }}"
@@ -244,109 +189,7 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('editProfile') }}"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
 
-                  <li class="mega-menu"><a class="sidebar-link sidebar-title" href="#"><i data-feather="layers"></i><span>Pages</span></a>
-                    <div class="mega-menu-container menu-content">
-                      <div class="container-fluid">
-                        <div class="row">
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5>Product Page</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="cart.html" target="_blank">Cart</a></li>
-                                <li><a href="checkout.html" target="_blank">checkout</a></li>
-                                <li><a href="product.html" target="_blank">Products</a></li>
-                                <li><a href="product-page.html" target="_blank">Product details</a></li>
-                                <li><a href="order-history.html" target="_blank">order-history</a></li>
-                                <li><a href="wishlist.html" target="_blank">wishlist</a></li>
-                                <li><a href="{{ route('wallet') }}" target="_blank">wallet</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5> Other Pages</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="landing-page.html" target="_blank">Landing Page</a></li>
-                                <li><a href="user-profile.html" target="_blank">profile page</a></li>
-                                <li><a href="feed.html" target="_blank">Feed page</a></li>
-                                <li><a href="messaging.html" target="_blank">Message</a></li>
-                                <li><a href="login.html" target="_blank">Login</a></li>
-                                <li><a href="sign-up.html" target="_blank">Register</a></li>
-                                <li><a href="unlock.html" target="_blank">Unlock User</a></li>
-                                <li><a href="forget-password.html" target="_blank">Forget Password</a></li>
-                                <li><a href="reset-password.html" target="_blank">Reset Password</a></li>
-                                <li><a href="maintenance.html" target="_blank">Maintenance</a></li>
-                                <li><a href="comingsoon.html" target="_blank">Coming Simple</a></li>
-                                <li><a href="error-400.html" target="_blank">Error 400</a></li>
-                                <li><a href="search.html" target="_blank">Search</a></li>
-                                <li><a href="settings.html" target="_blank">Setting</a></li>
-                                <li><a href="pricing.html" target="_blank">Become a Seller</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5>Local Business</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="favorite.html" target="_blank">Favorite</a></li>
-                                <li><a href="market.html" target="_blank">Market</a></li>
-                                <li><a href="market_view.html" target="_blank">Store</a></li>
-                                <li><a href="market_feeds.html" target="_blank">store feed</a></li>
-                                <li><a href="market_product.html" target="_blank">store product</a></li>
-                                <li><a href="hotels.html" target="_blank">Hotels</a></li>
-                                <li><a href="hotel_view.html" target="_blank">Hotel view</a></li>
-                                <li><a href="hotel_feeds.html" target="_blank">Hotel feed</a></li>
-                                <li><a href="hotel-reviews.html" target="_blank">Hotel reveiws</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5>Find Ride</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="find-ride.html" target="_blank">Find rides</a></li>
-                                <li><a href="riders-profile-link.html" target="_blank">rider view</a></li>
-                                <li><a href="pickups.html" target="_blank">pickups</a></li>
-                                <li><a href="pickups_profile.html" target="_blank">pickups view</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5>Find Skill</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="artist.html" target="_blank">Artists</a></li>
-                                <li><a href="artist-profile.html" target="_blank">Artist profile</a></li>
-                                <li><a href="artist-feeds.html" target="_blank">Artist feeds</a></li>
-                                <li><a href="artist-reviews.html" target="_blank">Artist reviews</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col mega-box">
-                            <div class="link-section">
-                              <div class="submenu-title">
-                                <h5>Chat</h5>
-                              </div>
-                              <ul class="submenu-content opensubmegamenu">
-                                <li><a href="chatroom.html" target="_blank">Chatrooms</a></li>
-                                <li><a href="chatscreen.html" target="_blank">Chat</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
+                 
 
                   <li class="sidebar-main-title m-t-50">
                     <div>
@@ -386,21 +229,22 @@
       </div>
      
       <script type="text/javascript">
-        var mainurl = "{{url('/')}}";
+        // var mainurl = "{{url('/')}}";
         var gs      = {!! json_encode(\App\Models\Generalsetting::first()) !!};
-      </script>
+        </script>
 
-      <!-- latest jquery-->
-      <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
-      <!-- Bootstrap js-->
-      <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-      <!-- feather icon js-->
+<!-- latest jquery-->
+<script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
+<!-- Bootstrap js-->
+<script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+<!-- feather icon js-->
       <script src="{{ asset('assets/js/icons/feather-icon/feather.min.js') }}"></script>
       <script src="{{ asset('assets/js/icons/feather-icon/feather-icon.js') }}"></script>
       <!-- scrollbar js-->
       <script src="{{ asset('assets/js/scrollbar/simplebar.js') }}"></script>
       <script src="{{ asset('assets/js/scrollbar/custom.js') }}"></script>
       <!-- Sidebar jquery-->
+      <script src="{{ asset('js/chat/pusher.min.js') }}"></script>
       <script src="{{ asset('assets/js/config.js') }}"></script>
       <!-- Plugins JS start-->
       <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
@@ -411,7 +255,6 @@
     <script src="{{ asset('assets/js/touchspin/input-groups.min.js') }}"></script>
       <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
       <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
-      <script src="{{ asset('js/chat/pusher.min.js') }}"></script>
       <script>
         // Enable pusher logging - don't include this in production
           Pusher.logToConsole = true;
@@ -432,10 +275,7 @@
         });
 
       </script>
-      {{-- <script src="{{ asset('assets/js/notify/index.js') }}"></script> --}}
-
       
-      {{-- <script src="{{ asset('assets/js/dashboard/default.js') }}"></script> --}}
   
       <!-- Plugins JS Ends-->
       <!-- Theme js-->

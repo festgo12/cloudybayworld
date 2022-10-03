@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use App\Notifications\addWishlist;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,35 +22,7 @@ class WishlistController extends Controller
         $sort = '';
         $user = Auth::guard('web')->user();
 
-        // Search By Sort
-
-        // if(!empty($request->sort))
-        // {
-        //         $sort = $request->sort;
-        //         $wishes = Wishlist::where('user_id','=',$user->id)->pluck('product_id');
-        //         if($sort == "date_desc")
-        //         {
-        //         $wishlists = Product::where('status','=',1)->whereIn('id',$wishes)->orderBy('id','desc')->paginate(8);
-        //         }
-        //         else if($sort == "date_asc")
-        //         {
-        //         $wishlists = Product::where('status','=',1)->whereIn('id',$wishes)->paginate(8);
-        //         }
-        //         else if($sort == "price_asc")
-        //         {
-        //         $wishlists = Product::where('status','=',1)->whereIn('id',$wishes)->orderBy('price','asc')->paginate(8);
-        //         }
-        //         else if($sort == "price_desc")
-        //         {
-        //         $wishlists = Product::where('status','=',1)->whereIn('id',$wishes)->orderBy('price','desc')->paginate(8);
-        //         }
-        // // if($request->ajax())
-        // // {
-        // //     return view('front.pagination.wishlist',compact('user','wishlists','sort'));
-        // // }
-        //     return view('front.product.wishlist',compact('user','wishlists','sort'));
-
-        // }
+       
 
 
         $wishlists = Wishlist::where('user_id','=',$user->id)->with(['product'])->whereHas('product', function($query) {
@@ -56,7 +30,7 @@ class WishlistController extends Controller
          })->get();
         //  dd($wishlists);
          
-        return view('front.product.wishlist',compact('user','wishlists','sort'));
+        return view('product.wishlist',compact('user','wishlists','sort'));
     }
 
     public function addwish($id)
@@ -72,6 +46,13 @@ class WishlistController extends Controller
         $wish->user_id = $user->id;
         $wish->product_id = $id;
         $wish->save();
+
+        $product = Product::where('id', $id)->first();
+        // notify the user
+        $user = User::where('id', $user->id)->first();
+        $user->notify(new addWishlist($product));
+
+
         $data[0] = 1;
         $data[1] = count($user->wishlists);
         return response()->json($data);
