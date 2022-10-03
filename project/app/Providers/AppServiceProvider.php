@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
-       
+    
+        Paginator::useBootstrap();
 
         view()->composer('*',function($settings){
 
@@ -37,11 +38,6 @@ class AppServiceProvider extends ServiceProvider
                 return DB::table('generalsettings')->first();
             }));
 
-            // $settings->with('seo', cache()->remember('seotools', now()->addDay(), function () {
-            //     return DB::table('seotools')->first();
-            // }));
-            
-           
 
             $settings->with('categories', cache()->remember('categories', now()->addDay(), function () {
                 return Category::with('subs')->where('status','=',1)->get();

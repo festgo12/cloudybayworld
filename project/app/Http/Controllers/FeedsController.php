@@ -126,7 +126,7 @@ class FeedsController extends Controller
         $response = array('message' => '', 'error' => false);
 
         $validator = Validator::make($request->all(), [
-            'postInput' => 'required|string|max:255',
+            'postInput' => 'required|string',
             'fileInput' => 'max:2048',
         ]);
 

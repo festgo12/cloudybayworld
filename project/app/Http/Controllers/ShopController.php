@@ -27,16 +27,21 @@ class ShopController extends Controller
     public function marketDetails($slug)
     {
         $shop = Shop::where('status', 1)->where('slug', $slug)->first();
-        if(!$shop){
-            return redirect()->back()->with('msg', 'Shop is Deactivated');
+        if($shop){
+            return view('shop.marketDetails')->with('shop', $shop);
+        }else{
+            return view('404');
         }
-        return view('shop.marketDetails')->with('shop', $shop);
     }
 
     public function marketfeeds($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        return view('shop.marketFeeds')->with('shop', $shop);
+        if($shop){
+            return view('shop.marketFeeds')->with('shop', $shop);
+        }else{
+            return view('404');
+        }
     }
     /**
      * Get all categories

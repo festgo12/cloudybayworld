@@ -25,7 +25,12 @@ class UserProfileController extends Controller
         // if (!($user->homeAddress) || !($user->contactNo)) {
         //     return redirect('/editProfile?force=1');
         // }
-        return view('profile.profile')->with('user', $user);
+        if($user){
+            return view('profile.profile')->with('user', $user);
+        }else{
+            return view('404');
+        }
+        
     }
 
     public function editProfile()

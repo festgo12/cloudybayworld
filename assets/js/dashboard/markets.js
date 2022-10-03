@@ -1,6 +1,6 @@
 var getUrl = window.location;
-// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-var baseUrl = getUrl.origin;
+var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.origin;
 
 // get category from url #hash
 const requestCategory = decodeURIComponent(window.location.hash);
@@ -27,9 +27,10 @@ const getMarketList = (hash) => {
                                 <div class="media">
                                     <div class="row">
                                     <div class="col-md-4">
-                                        <a href="market_view.html"><img class="align-self-center img-fluid img-60"
+                                        <a href="market_view.html">
+                                        <img class="align-self-center img-fluid img-60"
                                             src="./assets/uploads/${market.attachments['path']}" alt="#"
-                                            style="width:100%!important; height:100%;"></a>
+                                            style="width:100%!important; max-height:200px;"></a>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="product-name">

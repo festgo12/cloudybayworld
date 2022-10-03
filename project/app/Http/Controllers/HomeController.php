@@ -54,10 +54,10 @@ class HomeController extends Controller
         // // $follows = Follow::where('following_user_id',$feed->feedable_id)->get();
 
         // $user = auth()->user();
-        $shop = Shop::where('id', 2)->get();
-        $user = User::where('id', $shop->user_id)->first();
-                // $user = $shop->owner;
-         dd( $shop, $user);
+        // $shop = Shop::where('id', 2)->get();
+        // $user = User::where('id', $shop->user_id)->first();
+        //         // $user = $shop->owner;
+        //  dd( $shop, $user);
 
       
         

@@ -48,3 +48,11 @@ Route::get('/shopFollowers/{slug}', [App\Http\Controllers\ShopController::class,
 Route::get('/isFollowingShop/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFollowingShop']);
 Route::post('/favoriteShop', [App\Http\Controllers\ShopController::class, 'favoriteShop']);
 Route::get('/isFavorited/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFavorited']);
+
+//------------ Wallet SECTION ------------
+Route::post('/checkoutWithPaystack', [App\Http\Controllers\WalletController::class, 'checkoutWithPaystack']);
+Route::post('/checkoutWithWallet', [App\Http\Controllers\WalletController::class, 'checkoutWithWallet']);
+
+//------------ Search SECTION ------------
+Route::get('/search-feeds/{query}/{userId}', [App\Http\Controllers\SearchController::class , 'searchFeed']);
+Route::get('/keyword-autocomplete/{query}', [App\Http\Controllers\SearchController::class , 'searchAutocomplete']);

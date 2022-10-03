@@ -31,7 +31,7 @@ Checkout
         <h5>Order Details</h5>
       </div>
       <div class="card-body">
-        <form action="{{ route('cash.submit') }}" method="post">
+        <form name="checkOutFrom" action="{{ route('cash.submit') }}" method="post">
           @csrf
 
           <div class="row">
@@ -207,20 +207,25 @@ Checkout
                   <div class="animate-chk">
                     <div class="row">
                       <div class="col">
-                        <input class="form-control" hidden name="method" value="cash" type="text">
+                        <input type="hidden" name="walletBalance" value="{{ Auth::user()->wallet['balance'] }}">
+                        <input type="hidden" name="totalPrice" value="{{round($totalPrice * $curr->value,2)}}">
+                        <input type="hidden" name="payment_status" value="Pending">
                         <label class="d-block" for="wallet">
-                          <input class="radio_animated" id="wallet" type="radio" name="rdo-ani"  data-original-title="" title="">Pay with wallet
+                          <input class="radio_animated" id="wallet" value="wallet" type="radio" name="method"  data-original-title="" title="">Pay with wallet
                         </label>
                         <label class="d-block" for="cash">
-                          <input class="radio_animated" id="cash" type="radio" name="rdo-ani" checked="" data-original-title="" title="">Cash On Delivery
+                          <input class="radio_animated" id="cash" value="cash" type="radio" name="method" checked="" data-original-title="" title="">Cash On Delivery
                         </label>
-                        <label class="d-block" for="paypal">
-                          <input class="radio_animated" id="paypal" type="radio" name="rdo-ani"  data-original-title="" title="">PayPal<img class="img-paypal" src="./assets/images/checkout/paypal.png" alt="">
+                        <label class="d-block" for="paystack">
+                          <input class="radio_animated" id="paystack" value="paystack" type="radio" name="method"  data-original-title="" title="">PayStack<img class="img-paypal" src="./assets/images/checkout/paypal.png" alt="">
                         </label>
                       </div>
                     </div>
                   </div>
-                  <div class="order-place"><button class="btn btn-info">Place Order  </button></div>
+                  <p id="alertMessage" class="text-center"></p>
+                  <div class="order-place">
+                    <button id="placeOrderButton" class="btn btn-info">Place Order  </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -234,32 +239,13 @@ Checkout
 @endsection
 
 @section('script')
- 
-<script type="text/javascript">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="{{ asset('./assets/js/dashboard/checkout.js') }}"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
 
-$(document).ready(function () {
-
-
-
-
-
-
-
-
-    });
-
-
-  
-
-
-
-
-
-
-
-  
-    
-  
-</script>
+    });  
+  </script>
 
 @endsection

@@ -1,6 +1,4 @@
-{{-- @php
-  $darkmode = (
-@endphp --}}
+
 <!DOCTYPE html>
 <html lang="en" >
   
@@ -31,7 +29,8 @@
     <!-- Plugins css start-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/scrollbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/owlcarousel.css') }}">
-    
+    <!-- search auto style -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-autocomplete.css') }}">
     @yield('style')
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
@@ -40,6 +39,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+    
   </head>
   <body class="{{ (Auth::user()->dark_mode) ? 'dark-only' : ' ' }}">
     <div class="loader-wrapper">
@@ -63,11 +63,11 @@
       <!-- Page Header Start-->
       <div class="page-header">
         <div class="header-wrapper row m-0">
-          <form class="form-inline search-full col" action="#" method="get">
+          <form name="globalSearchForm" autocomplete="off" class="form-inline search-full col" action="{{ route('general-search') }}" method="get">
             <div class="form-group w-100">
               <div class="Typeahead Typeahead--twitterUsers">
                 <div class="u-posRelative">
-                  <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Cloudbay .." name="q" title="" autofocus>
+                  <input id="global-search-input" class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Cloudbay .." name="q" title="" autofocus>
                   <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i class="close-search" data-feather="x"></i>
                 </div>
                 <div class="Typeahead-menu"></div>
@@ -175,7 +175,7 @@
                  
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('home') }}"><i data-feather="home"> </i><span>Home</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('feeds') }}"><i data-feather="list"> </i><span>Feeds</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="wallet.html"><i data-feather="book"> </i><span>Wallet</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('wallet') }}"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Massaging</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"> </i><span>Profile</span></a></li>
@@ -189,7 +189,8 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('editProfile') }}"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
 
-                  
+                 
+
                   <li class="sidebar-main-title m-t-50">
                     <div>
                       <h6>Contact</h6>
@@ -227,10 +228,10 @@
         </div>
       </div>
      
-      {{-- <script type="text/javascript">
+      <script type="text/javascript">
         // var mainurl = "{{url('/')}}";
         var gs      = {!! json_encode(\App\Models\Generalsetting::first()) !!};
-        </script> --}}
+        </script>
 
 <!-- latest jquery-->
 <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
@@ -254,8 +255,7 @@
     <script src="{{ asset('assets/js/touchspin/input-groups.min.js') }}"></script>
       <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
       <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
-      {{-- <script src="{{ asset('js/chat/pusher.min.js') }}"></script> --}}
-      {{-- <script>
+      <script>
         // Enable pusher logging - don't include this in production
           Pusher.logToConsole = true;
 
@@ -274,15 +274,18 @@
           }
         });
 
-      </script> --}}
-      {{-- <script src="{{ asset('assets/js/notify/index.js') }}"></script> --}}
-
+      </script>
       
-      {{-- <script src="{{ asset('assets/js/dashboard/default.js') }}"></script> --}}
   
       <!-- Plugins JS Ends-->
       <!-- Theme js-->
       <script src="{{ asset('assets/js/script.js') }}"></script>
+      <!-- search-autocomplete Js -->
+      <script src="{{ asset('./assets/js/dashboard/search-autocomplete.js') }}"></script>
+      <script>
+          /*initiate the autocomplete function on the "search-input" element*/
+          autocomplete(document.getElementById("global-search-input"), document.forms.globalSearchForm);
+      </script>
       @yield('script')
 
       {{-- @if(Session::get('msg'))
