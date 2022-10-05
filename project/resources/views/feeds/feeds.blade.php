@@ -28,9 +28,11 @@
             </div>
             <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-high">
-                <div class="item"><img src="./assets/images/social-app/post-27.jpg"  alt=""></div>
-                <div class="item"><img src="./assets/images/social-app/post-24.jpeg"  alt=""></div>
-                <div class="item"><img src="./assets/images/social-app/post-26.jpg"  alt=""></div>
+                    @foreach($blogList as $blog)
+                    <div class="item">
+                        <img src="./assets/uploads/blogs/{{$blog->photo}}" alt="">
+                    </div>
+                    @endforeach
                 </div>
             </div>
             </div>

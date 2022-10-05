@@ -7,6 +7,7 @@ use App\Models\Shop;
 use App\Models\User;
 use App\Models\Follow;
 use App\Models\ShopFollow;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\feedPostCreated;
@@ -18,7 +19,10 @@ class FeedsController extends Controller
     public function getFeeds()
     {
         $user = Auth::user();
-        return view('feeds.feeds')->with('user', $user);
+        $blogList = Blog::whereIn('shop_id', $user->shopFollowing->pluck('id'))
+            ->orderByDesc('id')
+            ->get();
+        return view('feeds.feeds', ['user' => $user, 'blogList' => $blogList]);
     }
 
 
@@ -178,31 +182,31 @@ class FeedsController extends Controller
 
             $feed->save();
 
-            
+
             // $response['message'] = "Post added successfully";
             // $response['data'] = $feed;
             // getting the notifiable profile/shop followers  
 
             // if($feed->feedable_type == 'User'){
-            if($request->post('postType') == 'User'){
+            if ($request->post('postType') == 'User') {
 
                 $user = User::where('id', $ownerId)->first();
 
-               $name = $user->firstname.' '.$user->lastname;
+                $name = $user->firstname . ' ' . $user->lastname;
 
-                $follows = Follow::where('following_user_id',$ownerId)->get()->pluck('user_id');
+                $follows = Follow::where('following_user_id', $ownerId)->get()->pluck('user_id');
                 $followers = User::whereIn('id', $follows)->get();
                 Notification::send($followers, new feedPostCreated($feed, $name, $ownerId));
-                
-            }else
-            {
+
+            }
+            else {
                 $name = Shop::where('id', $ownerId)->get()->pluck('shopName');
-                
+
                 $shopfollows = ShopFollow::where('shop_id', $ownerId)->get()->pluck('user_id');
                 $shopfollowers = User::whereIn('id', $shopfollows)->get();
-                
+
                 Notification::send($shopfollowers, new feedPostCreated($feed, $name, $ownerId));
-                
+
             }
 
 

@@ -63,6 +63,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/market/p/{shop}', [App\Http\Controllers\Product\CatalogController::class, 'marketProduct'])->name('market.product');
     Route::get('/market/{slug}', [App\Http\Controllers\ShopController::class, 'marketDetails'])->name('marketDetails');
     Route::get('/market/feeds/{slug}', [App\Http\Controllers\ShopController::class, 'marketfeeds']);    
+    Route::post('/market/blog/create', [App\Http\Controllers\ShopController::class, 'createBlog'])->name('market-blog-create');
     
     //------------ Products SECTION ------------
 

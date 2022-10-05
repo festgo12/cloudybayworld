@@ -2,6 +2,10 @@
 
 @extends('layouts.app')
 
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/market-feed-new-blog.css') }}">
+@endsection
+
 @section('content')
 <div class="page-body">
    <div class="container-fluid">
@@ -146,10 +150,18 @@
                   <div class="col-sm-12">
                      <div class="card">
                         <div class="card-body">
+                           @if($shop->user_id == auth()->user()->id)
+                           <div data-bs-toggle="modal" data-bs-target="#newBlogPostModal" class="btn m-2 border border-primary rounded">
+                              <i class="icofont icofont-ui-add"></i>
+                              Add New Blog Post
+                           </div>
+                           @endif
                            <div class="owl-carousel owl-theme" id="carousel-high">
-                              <div class="item"><img src="./assets/images/social-app/post-27.jpg" alt=""></div>
-                              <div class="item"><img src="./assets/images/social-app/post-24.jpeg" alt=""></div>
-                              <div class="item"><img src="./assets/images/social-app/post-26.jpg" alt=""></div>
+                              @foreach($blogList as $blog)
+                              <div class="item">
+                                 <img src="./assets/uploads/blogs/{{$blog->photo}}" alt="">
+                              </div>
+                              @endforeach
                            </div>
                         </div>
                      </div>
@@ -218,7 +230,138 @@
          </div>
       </div>
    </div>
+
+   <!-- The newBlogPost Modal -->
+   <div class="modal" id="newBlogPostModal">
+      <div class="modal-dialog">
+         <div class="modal-content">
+
+               <!-- Modal Header -->
+               <div class="modal-header">
+                  <h6 class="modal-title">Add New Blog Post</h6>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+               </div>
+
+               <!-- Modal body -->
+               <div class="modal-body p-auto">
+               <div class="content-area">
+                  <div class="add-product-content1">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <div class="product-description">   
+                              <div class="body-area">
+                              
+                                 <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <p class="text-left"></p> 
+                                 </div>
+                                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <ul class="text-left"></ul>
+                                 </div>
+
+                                 <form id="geniusform" action="{{route('market-blog-create')}}" method="POST" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                             <p class="heading">{{ __('Category') }}*</p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <select  class="form-control my-2"  name="category_id" required="">
+                                             <option value="">{{ __('Select Category') }}</option>
+                                             @foreach($blogCategories as $category)
+                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                             @endforeach
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <input type="hidden" name="shop_id" value="{{ $shop->id }}" />
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                             <p class="heading">{{ __('Title') }} *</p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <input type="text" class="input-field form-control my-2" name="title" placeholder="{{ __('Title') }}" required="" value="">
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                             <p class="heading">{{ __('Current Featured Image') }} *</p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <div class="img-upload">
+                                             <div id="blog-image-preview" class="img-preview" style="background: url({{ asset('assets/admin/images/upload.png') }});">
+                                                <label for="image-upload" class="img-label" id="image-label">
+                                                   <i class="icofont icofont-upload-alt"></i>{{ __('Upload Image') }}
+                                                </label>
+                                                <input type="file" name="photo" class="img-upload my-2" id="blog-image-upload">
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                             <p class="heading">
+                                                {{ __('Description') }} *
+                                             </p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <textarea  class="nic-edit-p form-control my-2" name="details"></textarea> 
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                             <p class="heading">{{ __('Tags') }} *</p>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <input type="text" name="tags" class="form-control my-2" autocomplete="off" placeholder="Add Tags (seperated with commas)">
+                                          <ul id="tags" class="myTags">
+                                          </ul>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-lg-4">
+                                          <div class="left-area">
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-7">
+                                          <button class="addProductSubmit-btn form-control btn btn-primary" type="submit">{{ __('Create Post') }}</button>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               </div>
+
+               <!-- Modal footer -->
+               <div class="modal-footer">
+                  <!-- // -->
+               </div>
+
+         </div>
+      </div>
+    </div>
    <!-- Container-fluid Ends-->
-   <script src="{{ asset('./assets/js/dashboard/marketFeed.js') }}"></script>
 </div>
+@endsection
+
+@section('script')
+<script src="{{ asset('./assets/js/dashboard/marketFeed.js') }}"></script>
 @endsection
