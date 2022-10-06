@@ -183,43 +183,58 @@ Home
 
         </div>
 
-         <!-- Updates Starts -->
-      <div class="updates ">
-        <h4>Updates</h4>
-        <div class="profile-container">
-              <div class="owl-carousel owl-theme" id="carousel-profile">
-               
-                <div class="item profile d-inline-block">
-                  <a href="#"><img src="assets/images/avatar/11.jpg" alt="" srcset=""></a>
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/16.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/4.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/7.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/8.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
+        <!-- Updates Starts -->
+        <div class="updates ">
+          <h4>Updates</h4>
+          <!-- <div class="profile-container"> -->
+            <div class="scroller">
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+
+              <div class="profile-bar">     
+                <hr>
 
               </div>
-        </div>
+               
+          </div> 
 
-        <div class="profile-bar {{ (Auth::user()->dark_mode) ? 'bar-dark' : ' ' }}">     
-          <hr>
-
+          
         </div>
-      </div>
-      <!-- Updates Ends -->
+        <!-- Updates Ends -->
 
 
           <div class="col-xl-12 xl-100 box-col-12">
