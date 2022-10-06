@@ -42696,6 +42696,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     bottom: 1px;
     position: absolute;
     z-index: 7;
+    right: 1px;
 }
 .bar-dark {
     background: #1b1d22;
