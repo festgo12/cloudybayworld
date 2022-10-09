@@ -4,6 +4,7 @@
 
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/market-feed-new-blog.css') }}">
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 @endsection
 
 @section('content')
@@ -315,7 +316,7 @@
                                              </p>
                                           </div>
                                        </div>
-                                       <div class="col-lg-7">
+                                       <div class="col-lg-12">
                                           <textarea  class="nic-edit-p form-control my-2" name="details"></textarea> 
                                        </div>
                                     </div>
@@ -363,5 +364,8 @@
 @endsection
 
 @section('script')
+<script>
+   CKEDITOR.replace( 'details' );
+</script>
 <script src="{{ asset('./assets/js/dashboard/marketFeed.js') }}"></script>
 @endsection
