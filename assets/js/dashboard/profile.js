@@ -1,14 +1,26 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.origin;
 
 const tempAvatar = document.querySelector('#tempAvatar');
 // get the current user profile picture
-const realAvatar = document.querySelector('#realAvatar');
+const profileAvatar = document.querySelector('#profileAvatar');
+const profileCover = document.querySelector('.cardheader');
 const avatarInput = document.querySelector('#avatarInput');
+const coverInput = document.querySelector('#coverInput');
 const saveButton = document.querySelector('#saveButton');
 
+const waitSpinner = document.querySelector('#waitSpinner') || '';
+const errorMessage = document.querySelector('#errorMessage') || '';
+errorMessage ? errorMessage.style.display = 'none' : '';
 const feedContainer = document.querySelector('#feedContainer');
+// Get all the form input elements using a query selector
+const postInput = document.querySelector('#postInput');
+const fileInput = document.querySelector('#fileInput') || '';
+const postButton = document.querySelector('#postButton') || '';
 const userId = document.querySelector('#userId');
+// get the current user profile picture
+const realAvatar = document.querySelector('#realAvatar');
 const usernameHolder = document.querySelector('#usernameHolder');
 let commentInput = document.getElementsByClassName('commentInput');
 
@@ -19,30 +31,57 @@ let file;
 
 const handleSelectImage = (event) => {
     file = event.target.files[0];
+    // clear coverInput value
+    coverInput.value = '';
     // display the uploaded image to tempAvatar element
     tempAvatar.src = URL.createObjectURL(file);
     tempAvatar.style.display = 'block';
     // append the post files to the form data
     formData.append('avatarInput', file, `Avatar-${userId.value}`)
 }
+const handleSelectCover = (event) => {
+    file = event.target.files[0];
+    // clear avatarInput value
+    avatarInput.value = '';
+    // display the uploaded image to tempAvatar element
+    tempAvatar.src = URL.createObjectURL(file);
+    tempAvatar.style.display = 'block';
+    // append the post files to the form data
+    formData.append('coverInput', file, `Cover-${userId.value}`)
+}
 
 const handleSaveAvatar = (event) => {
     event.preventDefault();
-    // do nothing if input is empty
-    if(!avatarInput.value){
-        return;
+    // check if input is empty or not
+    if(avatarInput.value || coverInput.value ){
+        
+        if(avatarInput.value){
+
+            profileAvatar.src = URL.createObjectURL(file);
+        }
+        if(coverInput.value){
+                link = URL.createObjectURL(file);
+            profileCover.style.background = URL.createObjectURL(file);
+            // profileCover.style.background = url(`${URL.createObjectURL(file)}`);
+            console.log(link);
+
+        }
+        // send a post request to the server with the form data
+        (async () => {
+            const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
+                method: 'POST',
+                body: formData
+            });
+            const content = await rawResponse.json();
+            console.log(content);
+            // clear form data
+            formData.delete('avatarInput')
+            formData.delete('coverInput')
+        })();
     }
-    realAvatar.src = URL.createObjectURL(file);
-    // send a post request to the server with the form data
-    (async () => {
-        const rawResponse = await fetch(`${baseUrl}/api/updateAvatar/${userId.value}`, {
-            method: 'POST',
-            body: formData
-        });
-        const content = await rawResponse.json();
-        console.log(content);
-    })();
-}
+
+    return;
+    }
 
 /**
  * listen for saveButton Onclick event and call 
@@ -52,10 +91,70 @@ saveButton.addEventListener('click', handleSaveAvatar);
 
  /**
   * listen for avatarInput onChange event and call 
-  * the 'handleSelectImages' function when changed
+  * the 'handleSelectImage' function when changed
   * */
 avatarInput.addEventListener('change', handleSelectImage);
+ /**
+  * listen for coverInput onChange event and call 
+  * the 'handleSelectImage' function when changed
+  * */
+coverInput.addEventListener('change', handleSelectCover);
 
+
+const handleSelectImages = (event) => {
+    let files = event.target.files;
+    // append the post files to the form data
+    [...files].map((file, i) => formData.append('fileInput[]', file, `fileInput${i}`));
+    // formData.append('fileInput', files[0], 'fileInput');
+}
+
+const handleSavePost = (event) => {
+    event.preventDefault();
+    // do nothing if input is empty
+    if(!postInput.value){
+        return;
+    }
+    // show the spinner while the request is being processed
+    waitSpinner.style.display = 'block';
+    // append the post content to the form data
+    formData.append('postInput', postInput.value);
+    formData.append('postType', 'User');
+    // send a post request to the server with the form data
+    (async () => {
+        const rawResponse = await fetch(`${baseUrl}/api/feed/${userId.value}`, {
+            method: 'POST',
+            body: formData
+        });
+        const content = await rawResponse.json();
+        if(content.error){
+            errorMessage.style.display = 'block';
+            errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
+        }
+
+        console.log(content);
+        // reset the input fields
+        fileInput.value = '';
+        postInput.value = '';
+        formData.delete('fileInput[]')
+        // re-render the feeds block
+        loadFeeds();
+        // hide the spinner after processing the request
+        waitSpinner.style.display = 'none';
+    })();
+}
+
+/**
+ * listen for postButton Onclick event and call 
+ * the 'handlePost' function when clicked
+ * */
+ postButton ? postButton.addEventListener('click', handleSavePost) : '';
+
+ /**
+  * listen for fileInput onChange event and call 
+  * the 'handleSelectImages' function when changed
+  * */
+ fileInput ? fileInput.addEventListener('change', handleSelectImages) : '';
+ 
 
 /**
  * This function sends a post request to 
@@ -151,13 +250,24 @@ const toggleComment = (feedId) => {
                         <div class="profile-img-style">
                             <div class="post-border p-2">
                             <div class="row">
-                            <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
-                                <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
-                                <div class="media-body align-self-center">
-                                    <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
-                                </div>
-                                </div>
-                            </a>
+                            ${(feed.feedable_type == 'Shop') ? `
+                                <a href="${baseUrl+'/market/'+feed.shop.slug}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.shop.attachments) ? './assets/uploads/' + feed.shop.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.shop.shopName}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            ` : `
+                                <a href="${baseUrl+'/profile/'+feed.user.username}" class="col-sm-8">
+                                    <div class="media"><img class="img-thumbnail rounded-circle me-3" src="${(feed.user.attachments) ? './assets/uploads/' + feed.user.attachments['path'] : './assets/images/avatar/default.jpg'}" alt="Generic placeholder image">
+                                    <div class="media-body align-self-center">
+                                        <h5 class="mt-0 user-name">${feed.user.firstname + ' ' + feed.user.lastname}</h5>
+                                    </div>
+                                    </div>
+                                </a>
+                            `}
+
                             <div class="col-sm-4 align-self-center">
                                 <div class="float-sm-end"><small>${getTimeAgo(new Date(feed.created_at))}</small></div>
                             </div>
@@ -165,31 +275,58 @@ const toggleComment = (feedId) => {
                             <hr>
 
                             ${feed.attachments ? (
-                                    (feed.attachments.length > 1) ? (
-                                        `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                            </figure>
-                                            <figure class="col-sm-6" itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                            </figure>
-                                        </div>`
-                                    ) : (
-                                        `<div class="img-container">
-                                            <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
-                                                <figure itemprop="associatedMedia" itemscope=""><a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery"></a>
-                                                </figure>
-                                            </div>
-                                        </div>`
-                                    )
+                                (feed.attachments.length > 1) ? (
+                                    `<div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                            <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                            ${(feed.attachments[0]['type'] == 'image') ? `
+                                                <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                            ` : `
+                                                <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                    <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                </video>
+                                            ` }
+                                            </a>
+                                        </figure>
+                                        <figure class="col-sm-6" itemprop="associatedMedia" itemscope="">
+                                            <a href="./assets/uploads/${feed.attachments[1]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                            ${(feed.attachments[1]['type'] == 'image') ? `
+                                                <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[1]['path']}" itemprop="thumbnail" alt="gallery">
+                                            ` : `
+                                                <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                    <source src="./assets/uploads/${feed.attachments[1]['path']}" type="video/mp4">
+                                                </video>
+                                            ` }
+                                            </a>
+                                        </figure>
+                                    </div>`
                                 ) : (
-                                    ''
+                                    `<div class="img-container">
+                                        <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
+                                            <figure itemprop="associatedMedia" itemscope="">
+                                                <a href="./assets/uploads/${feed.attachments[0]['path']}" itemprop="contentUrl" data-size="1600x950">
+                                                ${(feed.attachments[0]['type'] == 'image') ? `
+                                                    <img class="img-fluid rounded" src="./assets/uploads/${feed.attachments[0]['path']}" itemprop="thumbnail" alt="gallery">
+                                                ` : `
+                                                    <video class="img-fluid rounded" itemprop="thumbnail" controls>
+                                                        <source src="./assets/uploads/${feed.attachments[0]['path']}" type="video/mp4">
+                                                    </video>
+                                                ` }                                                            
+                                                </a>
+                                            </figure>
+                                        </div>
+                                    </div>`
                                 )
-                            }
+                            ) : (
+                                ''
+                            )
+                        }
                             <p>${feed.content}</p>
                             
                             <div class="like-comment">
                                 <ul class="list-inline">
-                                    <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                    <li class="list-inline-item  border-right pe-3">
+                                        <label onclick="likeFeed(${feed.id})" class="m-0 btn"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
                                         <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">
@@ -217,10 +354,10 @@ const toggleComment = (feedId) => {
                             </div>
                             <div id="commentBox-${feed.id}" class="comments-box d-none">
                                 <div class="media">
-                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${realAvatar.src}">
+                                    <img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="${profileAvatar.src}">
                                     <div class="media-body">
                                         <div class="input-group text-box">
-                                            <input postid="${feed.id}" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+                                            <input postid="${feed.id}" id="emojionearea1" class="commentInput form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
                                             <div class="input-group-append">
                                                 <button class="btn btn-transparent" type="button"><i class="fa fa-smile-o"> </i></button>
                                             </div>
@@ -243,7 +380,7 @@ const toggleComment = (feedId) => {
 loadFeeds();
 
 /**
- * This function gets the number of the 
+ * This function gets the number followers of the 
  * current user from the server
  */
 const followersCount = () => {
@@ -290,6 +427,7 @@ followingCount();
         const content = await rawResponse.json();
         if(content){
             followButton.innerHTML = 'Following';
+            
         }else{
             followButton.innerHTML = 'Follow';
         }
@@ -308,13 +446,13 @@ const handleFollowUser = (username) => {
             },
             body: JSON.stringify({
                 userId: userId.value,
-                followerUsername: username
+                followingUsername: username
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
         // re-render the following count
         followingCount();
+        followersCount();
         // re-render the followButton
         isFollowingCheck();
     })();

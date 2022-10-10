@@ -2,6 +2,14 @@
 
 @extends('layouts.app')
 
+@section('title')
+Profile
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/emojionearea.min.css') }}">
+@endsection
+
 @section('content')
 <div class="page-body">
     <div class="container-fluid">
@@ -25,12 +33,15 @@
                 <!-- user profile first-style start-->
                 <div class="col-sm-12">
                     <div class="card hovercard text-center">
-                        <div class="cardheader"></div>
+                        {{-- <div class="cardheader" style="background: url({{ asset('assets/images/other-images/bg-profile.png') }})"></div> --}}
+                        <div class="cardheader" style="background: url({{ ($user->attachments) ? asset('assets/uploads/'.$user->attachments['path']) :  asset('assets/images/other-images/default-cover.jpg') }})"></div>
                         <div class="user-image">
                             <div class="avatar">
-                                <img id="realAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                <img id="profileAvatar" alt="" src="{{ ($user->avatar) ? asset('assets/uploads/avatar/'.$user->avatar) : asset('assets/uploads/avatar/avatar.png') }}">
                             </div>
+                            @if($user->id == auth()->user()->id)
                             <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+                            @endif
                         </div>
                         <div class="info">
                             <input id="usernameHolder" type="hidden" name="username" value="{{ $user->username }}" />
@@ -44,7 +55,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del>
+                                                {{-- <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del> --}}
+                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del> {{ $user->dateOfBirth }}</del>
                                             </div>
                                         </div>
                                     </div>
@@ -59,12 +71,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>{{ $user->contactNo }}</span>
+                                                <h6><i class="fa fa-phone"></i>   Contact Us</h6><span>{{ ($user->contactNo) ? $user->contactNo : '-------------' }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>{{ $user->homeAddress }}</span>
+                                                <h6><i class="fa fa-location-arrow"></i>   Location</h6><span>{{ ($user->homeAddress) ? $user->homeAddress : '-----------' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -72,8 +84,12 @@
                             </div>
                             <hr>
                             <div class="social-media">
+                                @if (Auth::user()->id != $user->id)
                                 <button id="followButton" onclick="handleFollowUser('{{ $user->username }}')" class="btn mrl5 btn-lg btn-info default-view"> Follow</button>
-                                <button class="btn mrl5 btn-lg btn-info default-view"> Message</button>
+
+                                    
+                                <button onclick="location.href='{{ route('chat.user', $user->id) }}';" class="btn mrl5 btn-lg btn-info default-view"> Message</button>
+                                @endif
                                 <!-- <a class="btn mrl5 btn-lg btn-info-gradien default-view" target="_blank" href="index.html" data-bs-original-title="" title="">Check Now</a> -->
                             </div>
                             <div class="follow">
@@ -96,7 +112,25 @@
                             <div class="feed-title">
                                 <h4>Feed Update</h4>
                             </div>
+                            @if($user->id == auth()->user()->id)
+                            <div class="px-4">
+                                <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                                <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                <textarea id="postInput" placeholder="What's happening?"  class="form-control"></textarea>
+                                <div class="form-group">
+                                    <div>
+                                        <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
+                                    </div>
+                                    <p id="errorMessage" class="text-center">Message</p>
+                                    <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                            @else
                             <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
+                            <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                            @endif
                             <div class="d-flex justify-content-center">
                                 <div id="waitSpinner" class="spinner-border" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -143,8 +177,19 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body">
-                <input id="avatarInput" class="form-control form-control-sm" id="formFileSm" type="file">
+            <div class="modal-body p-auto">
+                <div>
+
+                    <label  class="profileImage-upload">Cover image
+                    <input id="coverInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
+                    </label>
+                </div>
+                <div>
+
+                    <label  class="profileImage-upload mt-2">Profile Image
+                    <input id="avatarInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
+                    </label>
+                </div>
                 <div class="avatar d-flex justify-content-center mt-2">
                     <img id="tempAvatar" style="display:none" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">
                 </div>
@@ -163,4 +208,8 @@
     <!-- Container-fluid Ends-->
     <script src="{{ asset('./assets/js/dashboard/profile.js') }}"></script>
 </div>
+@endsection
+
+@section('script')
+        <script src="{{ asset('assets/js/emojionearea.min.js') }}"></script>
 @endsection

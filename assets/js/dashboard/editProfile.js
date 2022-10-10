@@ -1,5 +1,7 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.protocol + "//" + getUrl.host ;
+// var baseUrl = getUrl.origin;
 
 // Get all the form input elements using a query selector
 const userBio = document.querySelector('#userBio');
@@ -15,7 +17,9 @@ const city = document.querySelector('#city');
 const zipCode = document.querySelector('#zipCode');
 const countryId = document.querySelector('#countryId');
 const aboutUser = document.querySelector('#aboutUser');
+// get the submit button elements
 let submitButtons = document.getElementsByClassName('submitButtons');
+// get the authenticated user Id
 const userId = document.querySelector('#userId');
 
 // store the current input data in a object
@@ -65,8 +69,11 @@ const handleSubmit = (event) => {
                 body: JSON.stringify(changedData)
             });
             const content = await rawResponse.json();
-            console.log(content); 
-            // check if the response retured an error
+            // console.log(content); 
+            /**
+             * check the response status and message
+             * map through and display the response messages
+             */
             if(content.error){
                 const elCollection = document.getElementsByClassName('serverMessage');
                 ([...elCollection].map(el => el.innerHTML = `<strong class="text-danger">${content.message}</strong>`))

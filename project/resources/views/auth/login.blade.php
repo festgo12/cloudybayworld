@@ -18,7 +18,6 @@
     <!-- ico-font-->
     <link rel="stylesheet" type="text/css" href="./assets/css/vendors/icofont.css">
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="./assets/css/vendors/themify.css">
     <!-- Flag icon-->
     <link rel="stylesheet" type="text/css" href="./assets/css/vendors/flag-icon.css">
     <!-- Feather icon-->
@@ -75,7 +74,7 @@
                       {{-- <input id="checkbox1" type="checkbox"> --}}
                       <input class="form-check-input" type="checkbox" name="remember" id="checkbox1" {{ old('remember') ? 'checked' : '' }}>
                       <label class="text-muted" for="checkbox1">Remember password</label>
-                    </div><a class="link" href="forget-password.html">Forgot password?</a>
+                    </div><a class="link" href="{{ route('password.request') }}">Forgot password?</a>
                     <div class="text-end mt-3">
                       <button class="btn btn-info btn-block w-100" type="submit">Sign in</button>
                     </div>
@@ -84,7 +83,7 @@
                   <div class="social mt-4">
                     <div class="btn-showcase"><a class="btn btn-light" href="https://www.linkedin.com/login" target="_blank"><i class="txt-linkedin" data-feather="linkedin"></i> LinkedIn </a><a class="btn btn-light" href="https://twitter.com/login?lang=en" target="_blank"><i class="txt-twitter" data-feather="twitter"></i>twitter</a><a class="btn btn-light" href="https://www.facebook.com/" target="_blank"><i class="txt-fb" data-feather="facebook"></i>facebook</a></div>
                   </div>
-                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="sign-up.html">Create Account</a></p>
+                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="{{ route('register') }}">Create Account</a></p>
                 </form>
               </div>
             </div>

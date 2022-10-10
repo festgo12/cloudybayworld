@@ -1,0 +1,20 @@
+DATA SEGMENT
+ENDS
+CODE SEGMENT
+    
+    ASSUME CS:CODE, DS: DATA
+    START:
+    
+    MOV AL,5
+    ADD BL,2 
+    ADD AL,BL
+    ADD AL, 30H ;converts to ascii
+    MOV DL,AL
+    MOV AH,02H  ;2 is the print character function
+    INT 21H     ;hands over to DOS
+    MOV AH,4CH  ;request to return to DOS 
+    INT 21H
+    
+ENDS
+
+END START

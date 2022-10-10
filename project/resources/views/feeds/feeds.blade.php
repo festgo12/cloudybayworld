@@ -28,14 +28,15 @@
             </div>
             <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-high">
-                <div class="item"><img src="./assets/images/social-app/post-27.jpg"  alt=""></div>
-                <div class="item"><img src="./assets/images/social-app/post-24.jpeg"  alt=""></div>
-                <div class="item"><img src="./assets/images/social-app/post-26.jpg"  alt=""></div>
+                    @foreach($blogList as $blog)
+                    <div class="item">
+                        <img src="./assets/uploads/blogs/{{$blog->photo}}" alt="">
+                    </div>
+                    @endforeach
                 </div>
             </div>
             </div>
         </div>
-        <!-- user profile first-style end-->
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -51,6 +52,7 @@
                             <div>
                                 <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
                             </div>
+                            <p id="errorMessage" class="text-center">Message</p>
                             <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
                                 Post
                             </button>
