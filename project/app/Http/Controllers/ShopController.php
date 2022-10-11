@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\ShopFollow;
 use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use App\Notifications\favShop;
 use App\Notifications\followShop;
@@ -26,10 +28,11 @@ class ShopController extends Controller
 
     public function marketDetails($slug)
     {
-        $shop = Shop::where('status', 1)->where('slug', $slug)->first();
-        if($shop){
+        $shop = Shop::where('slug', $slug)->first();
+        if ($shop) {
             return view('shop.marketDetails')->with('shop', $shop);
-        }else{
+        }
+        else {
             return view('404');
         }
     }
@@ -37,9 +40,12 @@ class ShopController extends Controller
     public function marketfeeds($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        if($shop){
-            return view('shop.marketFeeds')->with('shop', $shop);
-        }else{
+        $blogCategories = BlogCategory::all();
+        $blogList = Blog::where('shop_id', $shop->id)->orderByDesc('id')->get();
+        if ($shop) {
+            return view('shop.marketFeeds', ['shop' => $shop, 'blogCategories' => $blogCategories, 'blogList' => $blogList]);
+        }
+        else {
             return view('404');
         }
     }
@@ -131,7 +137,7 @@ class ShopController extends Controller
     {
         $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
         // shop object
-        $shops = Shop::where('status', 1)->whereIn('category_id', $categories->pluck('id'))
+        $shops = Shop::whereIn('category_id', $categories->pluck('id'))
             ->with([
             'favorites' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
@@ -150,7 +156,7 @@ class ShopController extends Controller
         // follow only the shop you have not followed before
         // dd($user->shopFollowing()->where('shop_id', $shop->id)->exists());
         if (!(ShopFollow::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
-            
+
             // $vendorUser = User::where('id', $shop->user_id)->first();
             $vendorUser = $shop->owner;
             // notify the followed shop vendoruser
@@ -166,7 +172,7 @@ class ShopController extends Controller
                 ->delete();
             return 0;
         }
-        
+
     }
 
     // Get the number of followers the current shop has
@@ -191,7 +197,7 @@ class ShopController extends Controller
         // favorite only the shop you have not favorited before
         // if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
         if (!(ShopFavorite::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
-        
+
             // $vendorUser = User::where('id', $shop->user_id)->first();
             $vendorUser = $shop->owner;
             // notify the followed shop vendoruser
@@ -213,5 +219,46 @@ class ShopController extends Controller
     {
         $shop = Shop::where('slug', $slug)->first();
         return $shop->favorites()->where('user_id', $userId)->count();
+    }
+
+    public function createBlog(Request $request)
+    {
+        //--- Validation Section
+        $rules = [
+            'photo' => 'required|mimes:jpeg,jpg,png,svg',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+        }
+        //--- Validation Section Ends
+
+        //--- Logic Section
+        $data = new Blog();
+        $input = $request->all();
+        if ($file = $request->file('photo')) {
+            $name = time() . str_replace(' ', '', $file->getClientOriginalName());
+            $file->move('assets/uploads/blogs', $name);
+            $input['photo'] = $name;
+        }
+        if (!empty($request->meta_tag)) {
+            $input['meta_tag'] = implode(',', $request->meta_tag);
+        }
+        if (!empty($request->tags)) {
+            $input['tags'] = $request->tags;
+        }
+        if ($request->secheck == "") {
+            $input['meta_tag'] = null;
+            $input['meta_description'] = null;
+        }
+        $data->fill($input)->save();
+        //--- Logic Section Ends
+
+        //--- Redirect Section        
+        $msg = 'Blog Post Created Successfully';
+        return response()->json($msg);
+    //--- Redirect Section Ends    
     }
 }

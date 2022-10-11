@@ -471,3 +471,78 @@ const handleFavoriteShop = () => {
         isFavoritedCheck();
     })();
 }
+
+
+$(document).on('submit','#geniusform',function(e){
+    e.preventDefault();
+
+    var fd = new FormData(this);
+
+    if ($('.attr-checkbox').length > 0) {
+       $('.attr-checkbox').each(function() {
+
+          // if checkbox checked then take the value of corresponsig price input (if price input exists)
+          if($(this).prop('checked') == true) {
+
+          if ($("#"+$(this).attr('id')+'_price').val().length > 0) {
+             // if price value is given
+             fd.append($("#"+$(this).attr('id')+'_price').data('name'), $("#"+$(this).attr('id')+'_price').val());
+          } else {
+             // if price value is not given then take 0
+             fd.append($("#"+$(this).attr('id')+'_price').data('name'), 0.00);
+          }
+
+          // $("#"+$(this).attr('id')+'_price').val(0.00);
+          }
+       });
+    }
+
+    var geniusform = $(this);
+    $('button.addProductSubmit-btn').prop('disabled',true);
+       $.ajax({
+       method:"POST",
+       url:$(this).prop('action'),
+       data:fd,
+       contentType: false,
+       cache: false,
+       processData: false,
+       success:function(data)
+       {
+          console.log(data);
+          if ((data.errors)) {
+          geniusform.parent().find('.alert-success').hide();
+          geniusform.parent().find('.alert-danger').show();
+          geniusform.parent().find('.alert-danger ul').html('');
+             for(var error in data.errors)
+             {
+                $('.alert-danger ul').append('<li>'+ data.errors[error] +'</li>')
+             }
+             geniusform.find('input , select , textarea').eq(1).focus();
+          }
+          else
+          {
+             geniusform.parent().find('.alert-danger').hide();
+             geniusform.parent().find('.alert-success').show();
+             geniusform.parent().find('.alert-success p').html(data);
+             geniusform.find('input , select , textarea').eq(1).focus();
+          }
+
+          $('button.addProductSubmit-btn').prop('disabled',false);
+
+
+          $(window).scrollTop(0);
+          // reset form
+          $('#geniusform')[0].reset();
+
+       },
+       error: function(error){
+          console.log(error);
+       }
+
+       });
+
+    });
+
+    $('#blog-image-upload').on('change', (e) => {
+       document.querySelector('#blog-image-preview').style.backgroundImage = `url('${URL.createObjectURL(e.target.files[0])}')`;
+    });
