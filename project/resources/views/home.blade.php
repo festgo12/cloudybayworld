@@ -167,7 +167,7 @@ Home
                 <div class="dropdown">
                   <div class="dropbtn2  d-flex  align-items-center m-t-10 "   data-bs-original-title="" title="">
                     <span class="cli-bg cli-bg6"><i class="icofont icofont-star"></i></span>
-                   <a href="favorite.html" class="f-ch text-dark">
+                   <a href="{{ route('market.favorites') }}" class="f-ch text-dark">
                      <div class="m-l-30 m-t-20">
                        <h5>Favorite</h5>
                        <p><strong>Favorite Star</strong></p>
