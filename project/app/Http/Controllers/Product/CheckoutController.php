@@ -17,7 +17,9 @@ use App\Models\Generalsetting;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\newOrderCreated;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Notification;
 // use Illuminate\Support\Facades\Notification;
 
 class CheckoutController extends Controller
@@ -25,6 +27,13 @@ class CheckoutController extends Controller
     
     public function checkout()
     {
+        // check if current user has a wallet
+        $auth_user = Auth::user();
+        if(!$auth_user->wallet()->count()){
+            // create one if the doesn't
+            $auth_user->wallet()->create();
+        }
+
         if (!Session::has('cart')) {
             return redirect()->route('product.cart')->with('success',"You don't have any product to checkout.");
         }
@@ -113,7 +122,7 @@ class CheckoutController extends Controller
                 }
 // dd($dp, $shipping_data);
 
-        return view('front.product.checkout', ['products' => $cart->items, 'countries' => $countries ,'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id]);             
+        return view('product.checkout', ['products' => $cart->items, 'countries' => $countries ,'totalPrice' => $total, 'pickups' => $pickups, 'totalQty' => $cart->totalQty, 'shipping_cost' => 0, 'digital' => $dp, 'curr' => $curr,'shipping_data' => $shipping_data, 'vendor_shipping_id' => $vendor_shipping_id]);             
         // }
 
         
@@ -187,8 +196,8 @@ class CheckoutController extends Controller
         // create order
         $order = new Order;
         $success_url = action('App\Http\Controllers\Product\PaymentController@payreturn');
-        $item_name = "CloudBay World Order";
-        $item_number = Str::random(10);
+        // $item_name = "CloudBay World Order";
+        // $item_number = Str::random(10);
         $order['user_id'] = $request->user_id;
         $order['cart'] = utf8_encode( bzcompress(serialize($cart), 9)); 
         $order['totalQty'] = $request->totalQty;
@@ -219,7 +228,7 @@ class CheckoutController extends Controller
         // $order['coupon_code'] = $request->coupon_code;
         // $order['coupon_discount'] = $request->coupon_discount;
         $order['dp'] = $request->dp;
-        $order['payment_status'] = "Pending";
+        $order['payment_status'] = $request->payment_status;
         $order['currency_sign'] = $curr->sign;
         $order['currency_value'] = $curr->value;
         $order['vendor_shipping_id'] = $request->vendor_shipping_id;
@@ -323,8 +332,10 @@ class CheckoutController extends Controller
 
 
 
-        //Sending Email To Buyer
-
+        //Sending Notification  and Email To Buyer
+        $user = User::where('id', Auth::user()->id)->first();
+        // $user->notify(new newOrderCreated($cart, $order));
+        // Notification::send($user, new newOrderCreated($cart, $order));
       
         // redirect to payment.return Route
 

@@ -32,13 +32,16 @@ Home
                     
                   </div>
                   <div id="tagList" class="drop-left dropdown-content  p-b-10">
-                    <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>
+
+                   
+
+                    {{-- <h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-hanger m-r-10"></i> Clothing</a>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-fast-food m-r-10"></i> Food & Drinks</a>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-food-basket m-r-10"></i> Markets</a>
                     <a href="hotels.html" data-bs-original-title="" title=""><i class="icofont icofont-hotel m-r-10"></i> Hotels & suites</a>
                     <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-hospital m-r-10"></i> Hospitals</a>
-                    <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-ui-touch-phone m-r-10"></i> Phones</a>
+                    <a href="market.html" data-bs-original-title="" title=""><i class="icofont icofont-ui-touch-phone m-r-10"></i> Phones</a> --}}
                   </div>
                 </div>
               </div>
@@ -164,7 +167,7 @@ Home
                 <div class="dropdown">
                   <div class="dropbtn2  d-flex  align-items-center m-t-10 "   data-bs-original-title="" title="">
                     <span class="cli-bg cli-bg6"><i class="icofont icofont-star"></i></span>
-                   <a href="favorite.html" class="f-ch text-dark">
+                   <a href="{{ route('market.favorites') }}" class="f-ch text-dark">
                      <div class="m-l-30 m-t-20">
                        <h5>Favorite</h5>
                        <p><strong>Favorite Star</strong></p>
@@ -180,43 +183,58 @@ Home
 
         </div>
 
-         <!-- Updates Starts -->
-      <div class="updates ">
-        <h4>Updates</h4>
-        <div class="profile-container">
-              <div class="owl-carousel owl-theme" id="carousel-profile">
-               
-                <div class="item profile d-inline-block">
-                  <a href="#"><img src="assets/images/avatar/11.jpg" alt="" srcset=""></a>
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/16.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/4.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/7.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/8.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
+        <!-- Updates Starts -->
+        <div class="updates ">
+          <h4>Updates</h4>
+          <!-- <div class="profile-container"> -->
+            <div class="scroller">
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+              <div class="scroller-item">
+                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
+              </div>
+
+              <div class="profile-bar">     
+                <hr>
 
               </div>
-        </div>
+               
+          </div> 
 
-        <div class="profile-bar">     
-          <hr>
-
+          
         </div>
-      </div>
-      <!-- Updates Ends -->
+        <!-- Updates Ends -->
 
 
           <div class="col-xl-12 xl-100 box-col-12">
@@ -357,12 +375,14 @@ Home
                                         </div>
                                         <div class="product-size">
                                           <ul>
-                                           
+                                           @if ($prod->size)
+                                               
                                             @foreach( $prod->size as $size)
                                             <li> 
                                               <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
                                             @endforeach
+                                           @endif
 
                                           </ul>
                                         </div>
@@ -500,11 +520,14 @@ Home
                                         <div class="product-size">
                                           <ul>
                                            
+                                            @if ($prod->size)
+                                               
                                             @foreach( $prod->size as $size)
                                             <li> 
                                               <button class="btn btn-outline-light" type="button" data-bs-original-title="" title="">{{ $size }}</button>
                                             </li>
                                             @endforeach
+                                           @endif
 
                                             
                                           </ul>
@@ -602,6 +625,7 @@ Home
               </div>
             </div>
             <!-- Bonanza Offers And Gift Surprises -->
+            @if($bonanzaBlogList->count())
             <div class="mt-3">
               <div class="heading d-flex justify-content-between">
                 <h4>Bonanza Offers And Gift Surprises</h4>
@@ -615,13 +639,17 @@ Home
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-3">
-                  <div class="item"><img src="assets/images/social-app/post-31.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                    @foreach($bonanzaBlogList as $blog)
+                    <div class="item">
+                        <img src="./assets/uploads/blogs/{{$blog->photo}}" alt="">
+                        <a href="#"><p class="mt-2">{{$blog->title}}</p></a>
+                    </div>
+                    @endforeach
 
                 </div>
               </div>
             </div>
+            @endif
 
             <!-- Brand Newsfeed -->
             <div class="mt-3">

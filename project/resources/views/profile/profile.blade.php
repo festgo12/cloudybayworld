@@ -2,6 +2,14 @@
 
 @extends('layouts.app')
 
+@section('title')
+Profile
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/emojionearea.min.css') }}">
+@endsection
+
 @section('content')
 <div class="page-body">
     <div class="container-fluid">
@@ -25,10 +33,11 @@
                 <!-- user profile first-style start-->
                 <div class="col-sm-12">
                     <div class="card hovercard text-center">
-                        <div class="cardheader"></div>
+                        {{-- <div class="cardheader" style="background: url({{ asset('assets/images/other-images/bg-profile.png') }})"></div> --}}
+                        <div class="cardheader" style="background: url({{ ($user->attachments) ? asset('assets/uploads/'.$user->attachments['path']) :  asset('assets/images/other-images/default-cover.jpg') }})"></div>
                         <div class="user-image">
                             <div class="avatar">
-                                <img id="profileAvatar" alt="" src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path'] : './assets/images/avatar/default.jpg' }}">
+                                <img id="profileAvatar" alt="" src="{{ ($user->avatar) ? asset('assets/uploads/avatar/'.$user->avatar) : asset('assets/uploads/avatar/avatar.png') }}">
                             </div>
                             @if($user->id == auth()->user()->id)
                             <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
@@ -46,7 +55,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del>
+                                                {{-- <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del> --}}
+                                                <h6><i class="fa fa-calendar"></i> DOB</h6><del> {{ $user->dateOfBirth }}</del>
                                             </div>
                                         </div>
                                     </div>
@@ -74,8 +84,12 @@
                             </div>
                             <hr>
                             <div class="social-media">
+                                @if (Auth::user()->id != $user->id)
                                 <button id="followButton" onclick="handleFollowUser('{{ $user->username }}')" class="btn mrl5 btn-lg btn-info default-view"> Follow</button>
-                                <button class="btn mrl5 btn-lg btn-info default-view"> Message</button>
+
+                                    
+                                <button onclick="location.href='{{ route('chat.user', $user->id) }}';" class="btn mrl5 btn-lg btn-info default-view"> Message</button>
+                                @endif
                                 <!-- <a class="btn mrl5 btn-lg btn-info-gradien default-view" target="_blank" href="index.html" data-bs-original-title="" title="">Check Now</a> -->
                             </div>
                             <div class="follow">
@@ -163,8 +177,19 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body">
-                <input id="avatarInput" class="form-control form-control-sm" id="formFileSm" type="file">
+            <div class="modal-body p-auto">
+                <div>
+
+                    <label  class="profileImage-upload">Cover image
+                    <input id="coverInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
+                    </label>
+                </div>
+                <div>
+
+                    <label  class="profileImage-upload mt-2">Profile Image
+                    <input id="avatarInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
+                    </label>
+                </div>
                 <div class="avatar d-flex justify-content-center mt-2">
                     <img id="tempAvatar" style="display:none" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">
                 </div>
@@ -183,4 +208,8 @@
     <!-- Container-fluid Ends-->
     <script src="{{ asset('./assets/js/dashboard/profile.js') }}"></script>
 </div>
+@endsection
+
+@section('script')
+        <script src="{{ asset('assets/js/emojionearea.min.js') }}"></script>
 @endsection

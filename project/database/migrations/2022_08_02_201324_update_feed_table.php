@@ -14,7 +14,7 @@ class UpdateFeedTable extends Migration
     public function up()
     {
         Schema::table('feeds', function(Blueprint $table) {
-            $table->renameColumn('user_id', 'feedable_id');
+            // $table->renameColumn('user_id', 'feedable_id');
             $table->string('feedable_type');
         });
     }

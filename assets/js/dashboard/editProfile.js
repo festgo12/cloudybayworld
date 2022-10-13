@@ -1,5 +1,7 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.protocol + "//" + getUrl.host ;
+// var baseUrl = getUrl.origin;
 
 // Get all the form input elements using a query selector
 const userBio = document.querySelector('#userBio');
@@ -67,7 +69,7 @@ const handleSubmit = (event) => {
                 body: JSON.stringify(changedData)
             });
             const content = await rawResponse.json();
-            console.log(content); 
+            // console.log(content); 
             /**
              * check the response status and message
              * map through and display the response messages

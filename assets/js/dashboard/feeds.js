@@ -1,7 +1,7 @@
 var getUrl = window.location;
-// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 // var baseUrl = getUrl.pathname.split('/')[1];
-var baseUrl = getUrl.origin;
+// var baseUrl = getUrl.origin;
 
 const waitSpinner = document.querySelector('#waitSpinner');
 const errorMessage = document.querySelector('#errorMessage');
@@ -246,7 +246,7 @@ const loadFeeds = () => {
                             <div class="like-comment">
                                 <ul class="list-inline">
                                     <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                        <label onclick="likeFeed(${feed.id})" class="m-0 btn"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
                                         <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">

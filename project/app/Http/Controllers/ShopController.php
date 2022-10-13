@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\ShopCategory;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\ShopFollow;
+use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
+use App\Models\Blog;
+use App\Models\BlogCategory;
+use Illuminate\Http\Request;
+use App\Notifications\favShop;
+use App\Notifications\followShop;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -22,16 +26,33 @@ class ShopController extends Controller
         return view('shop.markets');
     }
 
+    public function favorites()
+    {
+        return view('shop.favorites');
+    }
+
     public function marketDetails($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        return view('shop.marketDetails')->with('shop', $shop);
+        if ($shop) {
+            return view('shop.marketDetails')->with('shop', $shop);
+        }
+        else {
+            return view('404');
+        }
     }
 
     public function marketfeeds($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
-        return view('shop.marketFeeds')->with('shop', $shop);
+        $blogCategories = BlogCategory::all();
+        $blogList = Blog::where('shop_id', $shop->id)->orderByDesc('id')->get();
+        if ($shop) {
+            return view('shop.marketFeeds', ['shop' => $shop, 'blogCategories' => $blogCategories, 'blogList' => $blogList]);
+        }
+        else {
+            return view('404');
+        }
     }
     /**
      * Get all categories
@@ -132,13 +153,36 @@ class ShopController extends Controller
         return $shops;
     }
 
+    public function getFavoriteShops($categoryHash, $userId)
+    {
+        $user = User::find($userId);
+        $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
+        // shop object
+        $shops = Shop::whereIn('category_id', $categories->pluck('id'))
+            ->whereIn('id', $user->shopFavorites()->pluck('shop_id'))
+            ->with([
+            'favorites' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
+            ->get();
+
+        return $shops;
+    }
+
     public function followShop(Request $request)
     {
         $user = User::find($request->post('userId'));
         $shop = Shop::where('slug', $request->post('shopSlug'))->first();
 
         // follow only the shop you have not followed before
-        if (!$user->shopFollowing()->where('shop_id', $shop->id)->exists()) {
+        // dd($user->shopFollowing()->where('shop_id', $shop->id)->exists());
+        if (!(ShopFollow::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
+
+            // $vendorUser = User::where('id', $shop->user_id)->first();
+            $vendorUser = $shop->owner;
+            // notify the followed shop vendoruser
+            $vendorUser->notify(new followShop($user));
             return $user->shopFollow($shop);
         }
         else {
@@ -150,6 +194,7 @@ class ShopController extends Controller
                 ->delete();
             return 0;
         }
+
     }
 
     // Get the number of followers the current shop has
@@ -172,7 +217,13 @@ class ShopController extends Controller
         $shop = Shop::where('slug', $request->post('shopSlug'))->first();
 
         // favorite only the shop you have not favorited before
-        if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
+        // if (!$user->shopFavorites()->where('shop_id', $shop->id)->exists()) {
+        if (!(ShopFavorite::where('user_id', $user->id)->where('shop_id', $shop->id)->exists())) {
+
+            // $vendorUser = User::where('id', $shop->user_id)->first();
+            $vendorUser = $shop->owner;
+            // notify the followed shop vendoruser
+            $vendorUser->notify(new favShop($user));
             return $user->favoriteShop($shop);
         }
         else {
@@ -190,5 +241,46 @@ class ShopController extends Controller
     {
         $shop = Shop::where('slug', $slug)->first();
         return $shop->favorites()->where('user_id', $userId)->count();
+    }
+
+    public function createBlog(Request $request)
+    {
+        //--- Validation Section
+        $rules = [
+            'photo' => 'required|mimes:jpeg,jpg,png,svg',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+        }
+        //--- Validation Section Ends
+
+        //--- Logic Section
+        $data = new Blog();
+        $input = $request->all();
+        if ($file = $request->file('photo')) {
+            $name = time() . str_replace(' ', '', $file->getClientOriginalName());
+            $file->move('assets/uploads/blogs', $name);
+            $input['photo'] = $name;
+        }
+        if (!empty($request->meta_tag)) {
+            $input['meta_tag'] = implode(',', $request->meta_tag);
+        }
+        if (!empty($request->tags)) {
+            $input['tags'] = $request->tags;
+        }
+        if ($request->secheck == "") {
+            $input['meta_tag'] = null;
+            $input['meta_description'] = null;
+        }
+        $data->fill($input)->save();
+        //--- Logic Section Ends
+
+        //--- Redirect Section        
+        $msg = 'Blog Post Created Successfully';
+        return response()->json($msg);
+    //--- Redirect Section Ends    
     }
 }

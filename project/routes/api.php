@@ -43,8 +43,17 @@ Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeCo
 Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
 Route::post('/createShop', [App\Http\Controllers\ShopController::class, 'store']);
 Route::get('/getShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getShops']);
+Route::get('/getFavoriteShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getFavoriteShops']);
 Route::post('/followShop', [App\Http\Controllers\ShopController::class, 'followShop']);
 Route::get('/shopFollowers/{slug}', [App\Http\Controllers\ShopController::class, 'shopFollowers']);
 Route::get('/isFollowingShop/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFollowingShop']);
 Route::post('/favoriteShop', [App\Http\Controllers\ShopController::class, 'favoriteShop']);
 Route::get('/isFavorited/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFavorited']);
+
+//------------ Wallet SECTION ------------
+Route::post('/checkoutWithPaystack', [App\Http\Controllers\WalletController::class, 'checkoutWithPaystack']);
+Route::post('/checkoutWithWallet', [App\Http\Controllers\WalletController::class, 'checkoutWithWallet']);
+
+//------------ Search SECTION ------------
+Route::get('/search-feeds/{query}/{userId}', [App\Http\Controllers\SearchController::class , 'searchFeed']);
+Route::get('/keyword-autocomplete/{query}', [App\Http\Controllers\SearchController::class , 'searchAutocomplete']);

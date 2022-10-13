@@ -18,7 +18,8 @@ class CreateFeedsTable extends Migration
             $table->longText('content');
             $table->string('slug')->unique();
             $table->json('attachments')->nullable();
-            $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
+            // $table->foreignIdFor(User::class)->constrained('users')->cascadeOnDelete();
+            $table->integer('feedable_id')->unsigned();
             $table->timestamps();
         });
     }

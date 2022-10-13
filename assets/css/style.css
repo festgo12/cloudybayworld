@@ -20871,7 +20871,7 @@ footer.blockquote-footer {
 }
 
 .error-wrapper .error-heading .headline {
-    font-size: 285px;
+    font-size: 250px;
     font-weight: 700;
     letter-spacing: 1px;
     margin-top: -130px
@@ -27268,7 +27268,8 @@ footer {
 }
 
 .user-profile .profile-img-style .media img {
-    width: 50px
+    width: 50px;
+    height: 50px;
 }
 
 .user-profile .like-comment a {
@@ -35364,6 +35365,7 @@ body[class*='dark-'] .for-light {
 
 .page-wrapper .page-header .header-wrapper .nav-right .onhover-show-div li .media img {
     width: 40px;
+    height: 40px;
     position: relative
 }
 
@@ -41654,6 +41656,9 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     html[dir="rtl"] .page-wrapper.compact-sidebar .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .mega-menu-container {
         right: 112px
     }
+    .left-header h3 strong {
+        font-size: 20px;
+    }
 
     html[dir="rtl"] .page-wrapper.compact-small .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .sidebar-submenu,
     html[dir="rtl"] .page-wrapper.compact-small .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links li .mega-menu-container {
@@ -42691,6 +42696,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     bottom: 1px;
     position: absolute;
     z-index: 7;
+    right: 1px;
 }
 .bar-dark {
     background: #1b1d22;
@@ -42747,7 +42753,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
 .feed-title{
     padding: 10px 20px 0px;
 }
-
+/* 
 .user-designation .title a::before {
     content: "";
     display: block;
@@ -42759,7 +42765,7 @@ html[dir="rtl"] body.dark-only .page-wrapper .page-body-wrapper .page-body .card
     border-radius: 50%;
     right: 6rem;
     top: 0.5rem;
-}
+} */
 
 body.dark-only .modal-body .bottom {
     color: #fff;
@@ -42884,4 +42890,27 @@ i.wishcart {
     font-size: 2rem;
     margin-right: 20px;
     cursor: pointer;
+}
+
+.product-spacing {
+    min-height: 80rem;
+}
+
+
+
+p.o-time{
+    opacity : 0.4 !important;
+}
+
+ul#notis-items {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    margin-bottom: 4px;
+}
+ul#msgs-items {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    margin-bottom: 4px;
 }

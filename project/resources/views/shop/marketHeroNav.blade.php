@@ -1,7 +1,7 @@
 <div class="row">
    <!-- user profile first-style start-->
    <div class="col-sm-12 box-col-12">
-      <div class="card hovercard text-center" style="height:400px">
+      <div class="card hovercard text-center" >
          <div class="info market-tabs p-0" style="margin:10px;">
             <div class="row">
                <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
@@ -9,7 +9,7 @@
                      <div class="col-md-6">
                         <div class="ttl-info text-start">
                            <center>
-                              <h6><a href="market_view.html">About</a></h6>
+                              <h6><a href="market/{{ $shop->slug }}">About</a></h6>
                            </center>
                         </div>
                      </div>
@@ -31,14 +31,14 @@
                      <div class="col-md-6">
                         <div class="ttl-info text-start">
                            <center>
-                              <h6><a href="market_product.html">Products</a></h6>
+                              <h6><a href="{{ route('market.product', $shop->slug ) }}">Products</a></h6>
                            </center>
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="ttl-info text-start">
                            <center>
-                              <h6><a href="market_chat.html">Chats</a></h6>
+                              <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
                            </center>
                         </div>
                      </div>

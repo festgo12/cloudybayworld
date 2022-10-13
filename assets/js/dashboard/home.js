@@ -1,5 +1,6 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.origin;
 
 const getShopCategories = () => {
     // send a get request to the server
@@ -11,7 +12,7 @@ const getShopCategories = () => {
         // add the fetched categories to the category list
         const tagList = document.querySelector(`#tagList`);
         // map through the categories
-        let categories = '<h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>';
+        let categories = `<a href="markets" ><h6  data-bs-original-title="" style="margin: auto;" class="text-center p-t-5 m-b-10" title=""><strong> Select Catlog</strong></h4>`;
         content.map(category => {
             categories += `<a href="markets#${category.category_name}" data-bs-original-title="" title="">
                                 ${category.icon_path} 

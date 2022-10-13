@@ -24,7 +24,7 @@ class CartController extends Controller
         $wishCount = count(Wishlist::all());
 
         if (!Session::has('cart')) {
-            return view('front.product.cart', compact('wishCount'));
+            return view('product.cart', compact('wishCount'));
         }
         if (Session::has('already')) {
             Session::forget('already');
@@ -54,14 +54,14 @@ class CartController extends Controller
             $mainTotal = $totalPrice + $tax;
         }
         // dd($products);
-        return view('front.product.cart', compact('products','totalPrice','mainTotal','tx', 'wishCount')); 
+        return view('product.cart', compact('products','totalPrice','mainTotal','tx', 'wishCount')); 
     }
 
     public function cartview()
     {
         // load the min cart on top nav
 
-        return view('front.product.load.mini-cart'); 
+        return view('product.load.mini-cart'); 
     }
 
     public function addtocart($id)

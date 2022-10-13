@@ -1,5 +1,6 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.origin;
 
 const waitSpinner = document.querySelector('#waitSpinner') || '';
 const errorMessage = document.querySelector('#errorMessage') || '';
@@ -235,7 +236,7 @@ const loadFeeds = () => {
                             <div class="like-comment">
                                 <ul class="list-inline">
                                     <li class="list-inline-item border-right pe-3">
-                                        <label onclick="likeFeed(${feed.id})" class="m-0"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
+                                        <label onclick="likeFeed(${feed.id})" class="m-0 btn"><a ${(feed.is_liked_by.length > 0) ? 'style="color: #dc3545;"' : ''}><i class="fa fa-heart"></i></a>  Like</label>
                                         <span class="ms-2 counter">${feed.likes.length}</span>
                                     </li>
                                     <li class="list-inline-item ms-2">
@@ -408,6 +409,12 @@ const handleFollowShop = () => {
             })
         });
         const content = await rawResponse.json();
+        // console.log(content);
+        // console.log(userId.value);
+        // console.log(shopSlug.value);
+        // console.log(shopId.value);
+
+        // document.body.innerHTML = content
         // re-render the following count
         followersCount();
         // re-render the followButton
@@ -427,19 +434,24 @@ const handleFollowShop = () => {
             method: 'GET',
         });
         const content = await rawResponse.json();
+        // console.log(content);
         if (content) {
-            favoriteButton.classList.remove('text-primary');
-            favoriteButton.classList.add('text-warning');
+            favoriteButton.innerHTML = `<i class="fa fa-star"></i> Favourited`;
+            favoriteButton.classList.remove('font-primary');
+            favoriteButton.classList.add('font-warning');
         } else {
-            favoriteButton.classList.remove('text-warning');
-            favoriteButton.classList.add('text-primary');
+            favoriteButton.innerHTML = `<i class="fa fa-star"></i> Favourite`;
+            favoriteButton.classList.remove('font-warning');
+            favoriteButton.classList.add('font-primary');
         }
     })();
 }
+
 isFavoritedCheck();
 
 const handleFavoriteShop = () => {
     // send a post request to the server with the form data
+
     (async () => {
         const rawResponse = await fetch(`${baseUrl}/api/favoriteShop`, {
             method: 'POST',
@@ -453,7 +465,84 @@ const handleFavoriteShop = () => {
             })
         });
         const content = await rawResponse.json();
+        // console.log(content);
+
         // re-render the favoriteButton
         isFavoritedCheck();
     })();
 }
+
+
+$(document).on('submit','#geniusform',function(e){
+    e.preventDefault();
+
+    var fd = new FormData(this);
+
+    if ($('.attr-checkbox').length > 0) {
+       $('.attr-checkbox').each(function() {
+
+          // if checkbox checked then take the value of corresponsig price input (if price input exists)
+          if($(this).prop('checked') == true) {
+
+          if ($("#"+$(this).attr('id')+'_price').val().length > 0) {
+             // if price value is given
+             fd.append($("#"+$(this).attr('id')+'_price').data('name'), $("#"+$(this).attr('id')+'_price').val());
+          } else {
+             // if price value is not given then take 0
+             fd.append($("#"+$(this).attr('id')+'_price').data('name'), 0.00);
+          }
+
+          // $("#"+$(this).attr('id')+'_price').val(0.00);
+          }
+       });
+    }
+
+    var geniusform = $(this);
+    $('button.addProductSubmit-btn').prop('disabled',true);
+       $.ajax({
+       method:"POST",
+       url:$(this).prop('action'),
+       data:fd,
+       contentType: false,
+       cache: false,
+       processData: false,
+       success:function(data)
+       {
+          console.log(data);
+          if ((data.errors)) {
+          geniusform.parent().find('.alert-success').hide();
+          geniusform.parent().find('.alert-danger').show();
+          geniusform.parent().find('.alert-danger ul').html('');
+             for(var error in data.errors)
+             {
+                $('.alert-danger ul').append('<li>'+ data.errors[error] +'</li>')
+             }
+             geniusform.find('input , select , textarea').eq(1).focus();
+          }
+          else
+          {
+             geniusform.parent().find('.alert-danger').hide();
+             geniusform.parent().find('.alert-success').show();
+             geniusform.parent().find('.alert-success p').html(data);
+             geniusform.find('input , select , textarea').eq(1).focus();
+          }
+
+          $('button.addProductSubmit-btn').prop('disabled',false);
+
+
+          $(window).scrollTop(0);
+          // reset form
+          $('#geniusform')[0].reset();
+
+       },
+       error: function(error){
+          console.log(error);
+       }
+
+       });
+
+    });
+
+    $('#blog-image-upload').on('change', (e) => {
+       document.querySelector('#blog-image-preview').style.backgroundImage = `url('${URL.createObjectURL(e.target.files[0])}')`;
+    });
