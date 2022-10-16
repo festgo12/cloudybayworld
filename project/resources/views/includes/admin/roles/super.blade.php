@@ -118,7 +118,7 @@
     </li>
     <li>
         <a href="#blog" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-            <i class="fas fa-fw fa-newspaper"></i>{{ __('Blog') }}
+            <i class="fas fa-fw fa-newspaper"></i>{{ __('Blog Highlights') }}
         </a>
         <ul class="collapse list-unstyled" id="blog" data-parent="#accordion">
             <li>

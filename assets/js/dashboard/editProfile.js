@@ -1,7 +1,7 @@
 var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 // var baseUrl = getUrl.protocol + "//" + getUrl.host ;
-// var baseUrl = getUrl.origin;
+var baseUrl = getUrl.origin;
 
 // Get all the form input elements using a query selector
 const userBio = document.querySelector('#userBio');

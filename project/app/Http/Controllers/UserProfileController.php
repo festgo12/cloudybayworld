@@ -39,11 +39,16 @@ class UserProfileController extends Controller
         $user = Auth::user();
         $countries = DB::table('countries')->get();
         
-        return view('profile.editProfile', compact('countries'))->with('user', $user);
+        return view('profile.change-password', compact('countries'))->with('user', $user);
+        // return view('profile.editProfile', compact('countries'))->with('user', $user);
     }
 
     public function apiGetProfileByUsername($username){
         $user = User::where('username', $username)->first();
+        if(!$user->IsVendor()){
+            $user->is_vendor = 1;
+            $user->save();
+        }
         return ($user) ? $user : 0;
     }
 
@@ -125,16 +130,16 @@ class UserProfileController extends Controller
                
                 
 
-                $ext = 'yu'.$file->getClientOriginalName();
-                // $ext = $file->getClientOriginalExtension();
+
+                $path = $file->store('/attachments', 'uploads');
+                $name = $file->getClientOriginalName();
                 // store the image path, name and type on the DB
-
-                $avatarName = Str::uuid() . "." . $ext;
-                // $file->move( public_path() . '/assets/uploads/avatar/' , $avatarName);
-                // $path = $file->store('/avatar', $avatarName ,'uploads/');
-
-                $user->avatar = $avatarName;
-
+                $attachments = [
+                    'path' => $path,
+                    'name' => $name
+                ];
+                
+                $user->attachments = $attachments;
                 
 
                 
@@ -148,12 +153,13 @@ class UserProfileController extends Controller
                 $path = $file->store('/avatar/cover', 'uploads');
                 $name = $file->getClientOriginalName();
                 // store the image path, name and type on the DB
-                $attachments = [
-                    'path' => $path,
-                    'name' => $name
-                ];
+                // $attachments = [
+                //     'path' => $path,
+                //     'name' => $name
+                // ];
                 
-                $user->attachments = $attachments;
+                $user->coverImage = $path;
+                // $user->coverImage = $attachments;
             }
             
 

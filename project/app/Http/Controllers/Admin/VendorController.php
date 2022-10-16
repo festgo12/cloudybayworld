@@ -266,10 +266,10 @@ class VendorController extends Controller
         // $user->username = $request->username;
         $user->is_vendor = $request->is_vendor;
         
-        if($request->password){
-            $user->password = Hash::make($request->password) ;
+        // if($request->password){
+        //     $user->password = Hash::make($request->password) ;
 
-        }
+        // }
         $user->shop->shopName = $request->shopName;
         $user->shop->description = $request->description;
         $user->shop->founder = $request->founder;
@@ -332,7 +332,7 @@ class VendorController extends Controller
         Auth::guard('web')->logout();
         $data = User::findOrFail($id);
         Auth::guard('web')->login($data); 
-        return redirect()->route('home');
+        return redirect()->route('vendor-dashboard');
     }
     
     
@@ -343,14 +343,7 @@ class VendorController extends Controller
     {
         $user = User::findOrFail($id);
         $user->is_vendor = 0;
-            $user->is_vendor = 0;
-            $user->shop_name = null;
-            $user->shop_details= null;
-            $user->owner_name = null;
-            $user->shop_number = null;
-            $user->shop_address = null;
-            $user->reg_number = null;
-            $user->shop_message = null;
+            
 
         $user->update();
 

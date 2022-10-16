@@ -53,12 +53,16 @@ class MessageController extends Controller
      * @param int $id
      * @return void
      */
-    public function index( $id = null)
+    public function index( $username = null, $fakeSlug = null)
     {
         $routeName= FacadesRequest::route()->getName();
         $route = (in_array($routeName, ['user', config('chat.routes.prefix')]))
             ? 'user'
             : $routeName;
+
+            $user = User::where('username', $username)->first();
+            $id = $user->id;
+        // dd($route);
 
         // prepare id
         return view('chat.pages.app', [

@@ -31,7 +31,7 @@
                 <div class="left">
                     <h5 class="title">{{ __('Orders Pending!') }} </h5>
                     <span class="number">{{count($pending)}}</span>
-                    <a href="{{route('admin-order-pending')}}" class="link">{{ __('View All') }}</a>
+                    <a href="{{route('admin-order-pending')}}" class="link">{{ __('View All') }} </a>
                 </div>
                 <div class="right d-flex align-self-center">
                     <div class="icon">
@@ -99,7 +99,7 @@
         <div class="col-md-12 col-lg-6 col-xl-4">
             <div class="mycard bg6">
                 <div class="left">
-                    <h5 class="title">{{ __('Total Posts!') }}</h5>
+                    <h5 class="title">{{ __('Total Highlight Posts!') }}</h5>
                     <span class="number">{{count($blogs)}}</span>
                     <a href="{{ route('admin-blog-index') }}" class="link">{{ __('View All') }}</a>
                 </div>

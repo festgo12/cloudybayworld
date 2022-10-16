@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-6">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i data-feather="home"></i></a></li>
                         <li class="breadcrumb-item">Profile</li>
                         <li class="breadcrumb-item active"> Edit </li>
                     </ol>
@@ -36,7 +36,7 @@
                                 <div class="row mb-2">
                                     <div class="profile-title">
                                         <div class="media"> <img class="img-70 rounded-circle" alt=""
-                                                src="{{ ($user->attachments) ? './assets/uploads/avatar/'.$user->avatar : './assets/uploads/avatar/avatar.png' }}">
+                                                src="{{ ($user->attachments) ? './assets/uploads/'.$user->attachments['path']  : './assets/uploads/avatar/avatar.png' }}">
                                             <div class="media-body">
                                                 <h5 class="mb-1">{{ $user->firstname }} {{ $user->lastname }}</h5>
                                                 <p>DESIGNER</p>
@@ -54,10 +54,10 @@
                                     <input id="contactNo" value="{{ $user->contactNo }}" class="form-control"
                                         placeholder="+234 810-456-7890">
                                 </div>
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="form-label">Password</label>
                                     <input class="form-control" type="password" value="password">
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label class="form-label">Website</label>
                                     <input id="websiteUrl" value="{{ $user->websiteUrl }}" class="form-control" placeholder="http://Uplor .com">
@@ -92,14 +92,14 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="mb-3">
                                         <label class="form-label">Username</label>
-                                        <input id="username" value="{{ $user->username }}" class="form-control" type="text"
+                                        <input id="username" disabled value="{{ $user->username }}" class="form-control" type="text"
                                             placeholder="Username">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Email address</label>
-                                        <input id="email" value="{{ $user->email }}" class="form-control" type="email"
+                                        <input id="email" value="{{ $user->email }}" disabled class="form-control" type="email"
                                             placeholder="Email">
                                     </div>
                                 </div>

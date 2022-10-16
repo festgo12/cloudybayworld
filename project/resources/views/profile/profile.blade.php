@@ -19,7 +19,7 @@ Profile
                 </div>
                 <div class="col-6">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i data-feather="home"></i></a></li>
                         <li class="breadcrumb-item active"> {{ $user->username }}</li>
                     </ol>
                 </div>
@@ -33,11 +33,12 @@ Profile
                 <!-- user profile first-style start-->
                 <div class="col-sm-12">
                     <div class="card hovercard text-center">
+                        {{-- @dd($user->coverImage['name']) --}}
                         {{-- <div class="cardheader" style="background: url({{ asset('assets/images/other-images/bg-profile.png') }})"></div> --}}
-                        <div class="cardheader" style="background: url({{ ($user->attachments) ? asset('assets/uploads/'.$user->attachments['path']) :  asset('assets/images/other-images/default-cover.jpg') }})"></div>
+                        <div class="cardheader" style="background: url({{ ($user->coverImage) ? asset('assets/uploads/'.$user->coverImage) :  asset('assets/images/other-images/default-cover.jpg') }})"></div>
                         <div class="user-image">
                             <div class="avatar">
-                                <img id="profileAvatar" alt="" src="{{ ($user->avatar) ? asset('assets/uploads/avatar/'.$user->avatar) : asset('assets/uploads/avatar/avatar.png') }}">
+                                <img id="profileAvatar" alt="" src="{{ ($user->attachments) ? asset('assets/uploads/'.$user->attachments['path']) : asset('assets/uploads/avatar/avatar.png') }}">
                             </div>
                             @if($user->id == auth()->user()->id)
                             <div data-bs-toggle="modal" data-bs-target="#updateAvatarModal" class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>

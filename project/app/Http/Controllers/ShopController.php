@@ -104,6 +104,9 @@ class ShopController extends Controller
             $slug = bin2hex($bytes);
             $shop->slug = $slug;
 
+            //set status
+            $shop->status = 0;
+
             // check if an image was uploaded        
             if ($request->hasfile('avatarInput')) {
                 $file = $request->file('avatarInput');

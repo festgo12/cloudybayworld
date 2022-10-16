@@ -337,6 +337,7 @@ Home
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
+                            <div class="ribbon ribbon-success ribbon-right">50%</div>
                             <div class="product-img"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="">
                               <div class="product-hover">
                                 <ul>
@@ -443,7 +444,28 @@ Home
                       <ul class="nav main-menu" role="tablist">
                         
                         <li class="nav-item"><h4 class="main-title "> Products Trending</h4></li>
-                        <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Clothes</h6></a></li>
+
+
+                        {{-- @foreach($trending as $productt)  --}}
+                        @foreach($trending as $k => $prodcat)
+
+                        {{-- @php
+                         $cat = $prod->prodCat;
+                        @endphp --}}
+                          <li class="mt-4">
+                            <a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab"
+                                                      aria-controls="pills-created" aria-selected="true">
+                                                      <h6 class="title">{{ $k }} </h6>
+                            </a>
+                          </li>
+                          @foreach ($prodcat as $prod)
+                              
+                          {{-- <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="{{ route('product.details', $prod->prodSlug) }}" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> - {{mb_strlen($prod->prodName,'utf-8') > 60 ? mb_substr($prod->prodName,0,60,'utf-8').'...' : $prod->prodName}}</span></a></li> --}}
+                          <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> - {{mb_strlen($prod->prodName,'utf-8') > 60 ? mb_substr($prod->prodName,0,60,'utf-8').'...' : $prod->prodName}}</span></a></li>
+                          @endforeach
+                        @endforeach
+                        {{-- @endforeach --}}
+                        {{-- <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Clothes</h6></a></li>
                         <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> #agbada</span></a></li>
                         <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> chinease suit</span></a></li>
                         <li><a class="show" id="pills-upcoming-tab" data-bs-toggle="pill" href="#pills-upcoming" role="tab" aria-controls="pills-upcoming" aria-selected="false"><span class="title">skining jeans</span></a></li>
@@ -452,7 +474,7 @@ Home
                         <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #blueisland</span></a></li>
                         <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Shoes</h6></a></li>
                         <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> #ocante</span></a></li>
-                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #snickers</span></a></li>
+                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #snickers</span></a></li> --}}
 
                        
                         
@@ -684,64 +706,6 @@ Home
 
 
 
-/**
-	* On page load, fetch products from the server 
-	*/
-	// send a get request to the server to fetch list items
-
-// const products = ()=>{
-
-//   (async () => {
-// 		const res = await fetch('/api/user', {
-// 			method: 'GET',
-// 		});
-// 		const data = await res.json();
-// 		const status = res.status;
-// 		console.log(data);
-// 		// update shopping list
-// 		// var shopping_list = document.getElementById('shopping_list');
-// 		// var list_items = data;
-// 		// var items = '';
-// 		// await list_items.map(item => {
-// 		// 	items += `
-// 		// 		<div class="flex justify-between py-2">
-// 		// 		<div id="item-image-${item.id}" class="col-span-2 sm:col-span-1 xl:col-span-1 ${item.checked ? 'opacity-20': ''}">
-// 		// 		  <img
-// 		// 			alt="..."
-// 		// 			src="${item.category.img_path}"
-// 		// 			class="h-24 w-24 rounded  mx-auto"
-// 		// 		  />
-// 		// 		</div>
-// 		// 		<div id="item-dec-${item.id}" class="flex-1 p-4 col-span-2 sm:col-span-4 xl:col-span-4 ${item.checked ? 'opacity-20': ''}">
-// 		// 		  <h3 class="font-semibold text-black">${item.name}</h3>
-// 		// 		  <p>
-// 		// 			${item.description}
-// 		// 		  </p>
-// 		// 		  <p>₦${item.price}</p>
-// 		// 		</div>
-// 		// 		<div class="flex flex-row justify-center">
-// 		// 			<input onchange="markChecked(${item.id})" type="checkbox" class="self-center p-2" style="width:20%; height:auto; transform: scale(2.0);" ${item.checked ? 'checked': ''}>
-// 		// 			<i onclick="deleteItem(${item.id})" class="fa fa-trash text-red-500 text-3xl self-center p-2"></i>
-// 		// 		</div>
-// 		// 		</div>
-// 		// 	`;
-// 		// });
-		
-// 		// // if server retured no item show a different message
-// 		// if(list_items.length == 0){
-// 		// 	items = `
-// 		// 		<h3 class="text-center text-gray-600 p-4 text-lg">Your items will appear here</h3>
-//     //             <div class="flex justify-center">
-//     //                 <img className="self-center mx-auto" src="img/waiting-for-customer.svg" alt="illustration" />
-//     //             </div>
-// 		// 	`;
-// 		// }
-		
-// 		// shopping_list.innerHTML = items;
-// 	})();
-// }
-
-// products();
 
 
 

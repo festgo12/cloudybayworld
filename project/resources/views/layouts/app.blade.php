@@ -42,7 +42,7 @@
     
   </head>
   <body class="{{ (Auth::user()->dark_mode) ? 'dark-only' : ' ' }}">
-    <div class="loader-wrapper">
+    {{-- <div class="loader-wrapper">
       <div class="loader-index"><span></span></div>
       <svg>
         <defs></defs>
@@ -51,7 +51,7 @@
           <fecolormatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"> </fecolormatrix>
         </filter>
       </svg>
-    </div>
+    </div> --}}
     <!-- tap on top starts-->
     <div class="tap-top"><i data-feather="chevrons-up"></i></div>
     @if(Auth::user()->is_vendor)
@@ -116,7 +116,7 @@
                 </li>
                 <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
                 <li class="profile-nav onhover-dropdown p-0 me-0">
-                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->avatar) ? asset('assets/uploads/avatar').'/'.Auth::user()->avatar : asset('assets/uploads/avatar/avatar.png') }}" alt="">
+                  <div class="media profile-media"><img class="b-r-10" height="37" width="37" src="{{ (Auth::user()->attachments) ? asset('assets/uploads').'/'.Auth::user()->attachments['path'] : asset('assets/uploads/avatar/avatar.png') }}" alt="">
                     <div class="media-body authuser" data-id="{{ Auth::user()->id }}"><span>{{ Auth::user()->username }}</span>
                       <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                     </div>
@@ -180,7 +180,7 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"> </i><span>Profile</span></a></li>
 
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="package"></i><span class="">My Orders</span></a>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:;"><i data-feather="package"></i><span class="">My Orders</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="{{ route('product-wishlists') }}">Wishlist</a></li>
                       <li><a href="{{ route('order.history') }}">Orders</a></li>
@@ -189,6 +189,20 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('editProfile') }}"><i data-feather="settings"> </i><span>Account Setting</span></a></li>
 
+                  @if(Auth::user()->is_vendor)
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:;"><i data-feather="package"></i><span class="">My Shop</span></a>
+                    <ul class="sidebar-submenu">
+                      @if (Auth::user()->shop)
+                      <li><a href="{{ route('marketDetails', Auth::user()->shop->slug ) }}">View Shop</a></li>
+                      <li><a href="{{ route('vendor-dashboard') }}">Dashboard</a></li>
+                      
+                      @else
+                      
+                      <li><a href="{{ route('home') }}">Activation Pending</a></li>
+                      @endif
+                    </ul>
+                  </li>
+                  @endif
                  
 
                   <li class="sidebar-main-title m-t-50">
@@ -197,10 +211,12 @@
                       <p>Supports & info </p>
                     </div>
                   </li>
-                  
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="pricing.html"><span> Become a Seller </span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span> Customer Support </span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span>Knowledgebase</span></a></li>
+                  @if (!Auth::user()->is_vendor)
+                      
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('seller') }}"><span> Become a Seller </span></a></li>
+                  @endif
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#0"><span> Customer Support </span></a></li>
+                  {{-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span>Knowledgebase</span></a></li> --}}
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span>Terms & Condition</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span>What's New</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="#"><span>About  -  <code>version 1.0</code></span></a></li>
@@ -229,7 +245,7 @@
       </div>
      
       <script type="text/javascript">
-        // var mainurl = "{{url('/')}}";
+        var mainurl = "{{url('/')}}";
         var gs      = {!! json_encode(\App\Models\Generalsetting::first()) !!};
         </script>
 
@@ -245,7 +261,7 @@
       <script src="{{ asset('assets/js/scrollbar/custom.js') }}"></script>
       <!-- Sidebar jquery-->
       <script src="{{ asset('js/chat/pusher.min.js') }}"></script>
-      <script src="{{ asset('assets/js/config.js') }}"></script>
+      {{-- <script src="{{ asset('assets/js/config.js') }}"></script> --}}
       <!-- Plugins JS start-->
       <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
       <script src="{{ asset('assets/js/owlcarousel/owl.carousel.js') }}"></script>

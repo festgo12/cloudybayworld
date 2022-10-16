@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Follow;
@@ -9,6 +10,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ChMessage;
 use App\Models\ShopFollow;
+use App\Models\ProductClick;
 use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
 use Illuminate\Http\Request;
@@ -44,6 +46,25 @@ class HomeController extends Controller
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->take(5)->get();
 
+        $expDate = Carbon::now()->subDays(30);
+        $prodclks = ProductClick::whereDate('date', '>',$expDate)->get()->groupBy('product_id');
+
+        foreach($prodclks as $prodtt){
+            // $prodcount = []
+            $prodtt->prodcount =$prodtt->count('product_id');
+            foreach ($prodtt as $prod) {
+                $prodName = $prod->product->name;
+                $prodSlug = $prod->product->slug;
+                $prodCat = $prod->product->category->name;
+                
+            }
+            $prodtt->prodName =$prodName;
+            $prodtt->prodCat =$prodCat;
+        }
+
+        $trending = $prodclks->sortByDesc('prodcount')->groupBy('prodCat');
+        // dd($trending);
+
         // $user = User::where('id', 29)->first();
        
 
@@ -62,7 +83,7 @@ class HomeController extends Controller
       
         
 
-        return view('home', compact('products','cats', 'newProducts'));
+        return view('home', compact('products','cats', 'newProducts','trending'));
     }
 
 
@@ -74,6 +95,18 @@ class HomeController extends Controller
             return $mode;
         }
         return ;
+
+    }
+
+    public function seller()
+    {
+        $user = auth()->user();
+        // dd($user->shop, $user->is_vendor);
+        if($user->is_vendor && $user->shop){
+            return redirect()->back()->with('msg', 'You are Already Vendor ');
+        }
+        
+        return view('seller', compact('user')) ;
 
     }
 

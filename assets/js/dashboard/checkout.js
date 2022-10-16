@@ -1,5 +1,8 @@
 var getUrl = window.location;
 var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+var baseUrl = getUrl.origin;
+
+
 const placeOrderButton = document.querySelector('#placeOrderButton');
 const checkOutFrom = document.forms.checkOutFrom;
 const alertMessage = document.querySelector('#alertMessage');
