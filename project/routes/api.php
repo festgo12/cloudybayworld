@@ -43,6 +43,7 @@ Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeCo
 Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
 Route::post('/createShop', [App\Http\Controllers\ShopController::class, 'store']);
 Route::get('/getShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getShops']);
+Route::get('/getFavoriteShops/{categoryHash}/{userId}', [App\Http\Controllers\ShopController::class, 'getFavoriteShops']);
 Route::post('/followShop', [App\Http\Controllers\ShopController::class, 'followShop']);
 Route::get('/shopFollowers/{slug}', [App\Http\Controllers\ShopController::class, 'shopFollowers']);
 Route::get('/isFollowingShop/{slug}/{userId}', [App\Http\Controllers\ShopController::class, 'isFollowingShop']);
