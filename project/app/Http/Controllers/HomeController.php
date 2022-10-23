@@ -13,6 +13,8 @@ use App\Models\ShopFollow;
 use App\Models\ProductClick;
 use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use App\Models\Generalsetting;
 use Illuminate\Support\Facades\Auth;
@@ -37,21 +39,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (!($user= auth()->user())) {
-            
+        if (!($user = auth()->user())) {
+
             return view('landing');
         }
 
-        
+
         $products = Product::where('status', 1)->take(6)->get();
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->take(5)->get();
+
 
         $expDate = Carbon::now()->subDays(30);
         $prodclks = ProductClick::whereDate('date', '>',$expDate)->get()->groupBy('product_id');
 
         foreach($prodclks as $prodtt){
-            // $prodcount = []
+          
             $prodtt->prodcount =$prodtt->count('product_id');
             foreach ($prodtt as $prod) {
                 $prodName = $prod->product->name;
@@ -64,45 +67,37 @@ class HomeController extends Controller
         }
 
         $trending = $prodclks->sortByDesc('prodcount')->groupBy('prodCat');
-        // dd($trending);
+ 
 
-        // $user = User::where('id', 29)->first();
-       
+        $blogBonanzaCategories = BlogCategory::where('name', 'like', '%' . 'Bonanza' . '%')->get();
+        $bonanzaBlogList = Blog::whereIn('shop_id', $user->shopFollowing->pluck('id'))
+            ->whereIn('category_id', $blogBonanzaCategories->pluck('id'))
+            ->orderByDesc('id')
+            ->get();
 
-        // // $followers = Follow::where('following_user_id',29)->get()->pluck('user_id');
-        // $shopfollows = ShopFollow::where('shop_id',4)->get()->pluck('user_id');
-        // $users = User::whereIn('id', $shopfollows)->get();
 
-        // // $follows = Follow::where('following_user_id',$feed->feedable_id)->get();
 
-        // $user = auth()->user();
-        // $shop = Shop::where('id', 2)->get();
-        // $user = User::where('id', $shop->user_id)->first();
-        //         // $user = $shop->owner;
-        //  dd( $shop, $user);
+        return view('home', compact('products', 'cats', 'newProducts','trending', 'bonanzaBlogList'));
 
-      
-        
-
-        return view('home', compact('products','cats', 'newProducts','trending'));
     }
 
 
     public function darkmode($mode)
     {
         $user = auth()->user();
-        $user->dark_mode = $mode ;
-        if($user->save()){
+        $user->dark_mode = $mode;
+        if ($user->save()) {
             return $mode;
         }
-        return ;
+        return;
 
     }
+
 
     public function seller()
     {
         $user = auth()->user();
-        // dd($user->shop, $user->is_vendor);
+      
         if($user->is_vendor && $user->shop){
             return redirect()->back()->with('msg', 'You are Already Vendor ');
         }
@@ -111,15 +106,19 @@ class HomeController extends Controller
 
     }
 
-    public function min_msg(){
+ 
+
+    public function min_msg()
+    {
+
         $user = auth()->user();
 
-       
+
 
         $msgs = ChMessage::where('to_id', $user->id)->where('from_id', '!=', $user->id)->latest()->get()->unique('from_id')->take(3);
         $msgs->unread = 0;
         $unread = (new ChMessage)->countUnreadMessages();
-        foreach($msgs as $msg){
+        foreach ($msgs as $msg) {
             $msg->userName = $msg->user->firstname;
             $msg->userImage = $msg->user->avatar;
             $msg->time = $msg->created_at->diffForHumans();
@@ -131,37 +130,37 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-        // return $data;
+   
     }
 
-    public function noti(){
+    public function noti()
+    {
         $user = auth()->user();
-        
-        // $notifications =$user->unreadNotifications;
-        // $activities =$user->notifications;
-        
+
+       
+
         $notifications = $user->unreadNotifications;
         $notiCount = $user->unreadNotifications->count();
-        
-        foreach($notifications as $noti){
-            if(isset($noti->data['user_id'])){
+
+        foreach ($notifications as $noti) {
+            if (isset($noti->data['user_id'])) {
 
                 $puser = User::where('id', $noti->data['user_id'])->get();
-                $noti->puser = $puser; 
+                $noti->puser = $puser;
             }
-            
-            if(isset($noti->data->shop_id)){
+
+            if (isset($noti->data->shop_id)) {
 
                 $shop = Shop::where('id', $noti->data['shop_id'])->get();
-                // $puser = $shop->user;
-                $noti->$shop = $shop; 
+               
+                $noti->$shop = $shop;
             }
             $noti->userName = $user->firstname;
             $noti->userImage = $user->avatar;
             $noti->time = $noti->created_at->diffForHumans();
         }
 
-        
+
         $data = [
             'notis' => $notifications,
             'notiCount' => $notiCount,
@@ -169,12 +168,12 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-        // return $data;
+   
     }
 
     public function config(Request $request)
     {
-        
+
         $gs = Generalsetting::where('id', 1)->first()->tojson();
         $wsconfig = [
             'key' => config('chat.pusher.key'),
@@ -184,9 +183,9 @@ class HomeController extends Controller
 
         // dd($wsconfig, $gs);
 
-            return ['wsconfig' => $wsconfig, 'gs' => $gs];
-    
-        
+        return ['wsconfig' => $wsconfig, 'gs' => $gs];
+
+
     }
 
     public function markasread(Request $request)
@@ -195,9 +194,9 @@ class HomeController extends Controller
 
         $user->unreadNotifications->markAsRead();
 
-            return redirect()->back();
-    
-        
+        return redirect()->back();
+
+
     }
 
 

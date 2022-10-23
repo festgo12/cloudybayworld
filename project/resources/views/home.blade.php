@@ -167,7 +167,7 @@ Home
                 <div class="dropdown">
                   <div class="dropbtn2  d-flex  align-items-center m-t-10 "   data-bs-original-title="" title="">
                     <span class="cli-bg cli-bg6"><i class="icofont icofont-star"></i></span>
-                   <a href="favorite.html" class="f-ch text-dark">
+                   <a href="{{ route('market.favorites') }}" class="f-ch text-dark">
                      <div class="m-l-30 m-t-20">
                        <h5>Favorite</h5>
                        <p><strong>Favorite Star</strong></p>
@@ -647,6 +647,7 @@ Home
               </div>
             </div>
             <!-- Bonanza Offers And Gift Surprises -->
+            @if($bonanzaBlogList->count())
             <div class="mt-3">
               <div class="heading d-flex justify-content-between">
                 <h4>Bonanza Offers And Gift Surprises</h4>
@@ -660,13 +661,17 @@ Home
               </div>
               <div class="card-body">
                 <div class="owl-carousel owl-theme" id="carousel-3">
-                  <div class="item"><img src="assets/images/social-app/post-31.jpg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="assets/images/social-app/post-25.png" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
-                  <div class="item"><img src="assets/images/social-app/post-24.jpeg" alt=""><a href="#"><p class="mt-2">Enugu Shopping Mall</p></a></div>
+                    @foreach($bonanzaBlogList as $blog)
+                    <div class="item">
+                        <img src="./assets/uploads/blogs/{{$blog->photo}}" alt="">
+                        <a href="#"><p class="mt-2">{{$blog->title}}</p></a>
+                    </div>
+                    @endforeach
 
                 </div>
               </div>
             </div>
+            @endif
 
             <!-- Brand Newsfeed -->
             <div class="mt-3">
