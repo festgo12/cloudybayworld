@@ -302,6 +302,16 @@ class CheckoutController extends Controller
                 $vorder->price = $prod['price'];
                 $vorder->order_number = $order->order_number;             
                 $vorder->save();
+
+                // increment vendors wallet balance
+                $vendor = User::where('id', $prod['item']['user_id'])->first();
+                if(!$vendor->wallet()->count()){
+                    // create one if the doesn't
+                    $vendor->wallet()->create();
+                }
+                $vendor->wallet()->update(['balance' => ($vendor->wallet['balance'] + $prod['price'])]);
+                
+
             }
 
         }
@@ -318,7 +328,7 @@ class CheckoutController extends Controller
                
             }
         }
-
+ 
         Session::put('temporder_id',$order->id);
         Session::put('tempcart',$cart);
 

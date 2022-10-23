@@ -1,6 +1,4 @@
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-// var baseUrl = getUrl.origin;
+var baseUrl = document.querySelector('meta[name=base]').content;
 
 const tempAvatar = document.querySelector('#tempAvatar');
 // get the current user profile picture
@@ -39,6 +37,7 @@ const handleSelectImage = (event) => {
     // append the post files to the form data
     formData.append('avatarInput', file, `Avatar-${userId.value}`)
 }
+
 const handleSelectCover = (event) => {
     file = event.target.files[0];
     // clear avatarInput value
@@ -62,8 +61,7 @@ const handleSaveAvatar = (event) => {
         if(coverInput.value){
                 link = URL.createObjectURL(file);
             profileCover.style.background = URL.createObjectURL(file);
-            // profileCover.style.background = url(`${URL.createObjectURL(file)}`);
-            console.log(link);
+            // console.log(link);
 
         }
         // send a post request to the server with the form data
@@ -73,7 +71,8 @@ const handleSaveAvatar = (event) => {
                 body: formData
             });
             const content = await rawResponse.json();
-            console.log(content);
+            // console.log(content);
+            window.location.reload();
             // clear form data
             formData.delete('avatarInput')
             formData.delete('coverInput')

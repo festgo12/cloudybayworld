@@ -1,5 +1,4 @@
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+var baseUrl = document.querySelector('meta[name=base]').content;
 
 const userId = document.querySelector('#userId');
 // get the current user profile picture

@@ -16,7 +16,7 @@
           </div>
           <div class="col-6">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">                                       <i data-feather="home"></i></a></li>
+              <li class="breadcrumb-item"><a href="{{ route('home') }}">                                       <i data-feather="home"></i></a></li>
               <li class="breadcrumb-item active"> Market</li>
             </ol>
           </div>
@@ -69,6 +69,7 @@
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
+                            {{-- <h6><a href="{{ route('chat.username', [ $username = $shop->owner->username, $fakeSlug = Illuminate\Support\Str::random(40)]) }}">Chat</a></h6> --}}
                             <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
                           </center>
                         </div>
@@ -90,12 +91,13 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
-                          <h6>&nbsp;&nbsp;11K</h6><span>Followers</span>
-                        </div>
+                          <h6>&nbsp;&nbsp;<span id="followersCountEl">0</span></h6>
+                          <span>Followers</span>
+                       </div>
                       </div>
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
-                          <h6>&nbsp;200</h6><span>Following</span>
+                          <h6>&nbsp; {{ App\Models\Product::where('user_id', $shop->user_id)->get()->count() }}</h6><span>Products</span> 
                         </div>
                       </div>
                     </div>
@@ -103,17 +105,22 @@
                   <div class="col-sm-12 col-lg-4 order-sm-0 order-xl-1">
                     <div class="user-designation"></div>
                     <div class="title">{{ $shop->shopName }} </div>
-                    <div class="rating"><span><i class="fa fa-star font-warning"></i><i
+                    {{-- <div class="rating"><span><i class="fa fa-star font-warning"></i><i
                           class="fa fa-star font-warning"></i><i class="fa fa-star font-warning"></i><i
                           class="fa fa-star font-warning"></i><i
                           class="fa fa-star font-warning-o"></i></span><span >(206)</span>
-                    </div>
+                    </div> --}}
                     <div class="price d-flex">
                       <div class="text-muted me-2" style="text-align:center!important;">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red"><b>Closed </b></span> Opened 8:30am
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         @if(((date('H') >= (int)explode(":",$shop->startTime)[0])) && ((date('H') <= (int)explode(":",$shop->closeTime)[0])))
+                         <span style="color:green"><b>Opened </b></span>{{ $shop->startTime }}am
+                         @else
+                         <span style="color:red"><b>Closed </b></span>{{ $shop->closeTime }}am
+                         @endif
                       </div>
-                    </div>
+                   </div>
                   </div>
                   <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
                     <div class="row">
@@ -124,7 +131,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
-                          <h6>206</h6><span>Reviews</span>
+                          <h6>0</h6><span>Reviews</span>
                         </div>
                       </div>
                     </div>

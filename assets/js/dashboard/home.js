@@ -1,6 +1,6 @@
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-// var baseUrl = getUrl.origin;
+
+var baseUrl = document.querySelector('meta[name=base]').content;
+
 
 const getShopCategories = () => {
     // send a get request to the server

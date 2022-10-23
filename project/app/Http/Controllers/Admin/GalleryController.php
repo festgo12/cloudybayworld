@@ -22,7 +22,7 @@ class GalleryController extends Controller
         $data[0] = 0;
         $id = $_GET['id'];
         $prod = Product::findOrFail($id);
-        if(count($prod->galleries))
+        if(count($prod->galleries)) 
         {
             $data[0] = 1;
             $data[1] = $prod->galleries;

@@ -51,6 +51,7 @@ class SeoToolController extends Controller
     {
         $expDate = Carbon::now()->subDays($id);
         $productss = ProductClick::whereDate('date', '>',$expDate)->get()->groupBy('product_id');
+        
         $val = $id;
         return view('admin.seotool.popular',compact('val','productss'));
     }  

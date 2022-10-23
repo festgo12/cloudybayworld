@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Follow;
@@ -9,6 +10,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ChMessage;
 use App\Models\ShopFollow;
+use App\Models\ProductClick;
 use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
 use App\Models\Blog;
@@ -16,6 +18,7 @@ use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use App\Models\Generalsetting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -46,31 +49,36 @@ class HomeController extends Controller
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(9)->get();
         $cats = Category::where('is_featured', 1)->take(5)->get();
 
+
+        $expDate = Carbon::now()->subDays(30);
+        $prodclks = ProductClick::whereDate('date', '>',$expDate)->get()->groupBy('product_id');
+
+        foreach($prodclks as $prodtt){
+          
+            $prodtt->prodcount =$prodtt->count('product_id');
+            foreach ($prodtt as $prod) {
+                $prodName = $prod->product->name;
+                $prodSlug = $prod->product->slug;
+                $prodCat = $prod->product->category->name;
+                
+            }
+            $prodtt->prodName =$prodName;
+            $prodtt->prodCat =$prodCat;
+        }
+
+        $trending = $prodclks->sortByDesc('prodcount')->groupBy('prodCat');
+ 
+
         $blogBonanzaCategories = BlogCategory::where('name', 'like', '%' . 'Bonanza' . '%')->get();
         $bonanzaBlogList = Blog::whereIn('shop_id', $user->shopFollowing->pluck('id'))
             ->whereIn('category_id', $blogBonanzaCategories->pluck('id'))
             ->orderByDesc('id')
             ->get();
 
-        // $user = User::where('id', 29)->first();
 
 
-        // // $followers = Follow::where('following_user_id',29)->get()->pluck('user_id');
-        // $shopfollows = ShopFollow::where('shop_id',4)->get()->pluck('user_id');
-        // $users = User::whereIn('id', $shopfollows)->get();
+        return view('home', compact('products', 'cats', 'newProducts','trending', 'bonanzaBlogList'));
 
-        // // $follows = Follow::where('following_user_id',$feed->feedable_id)->get();
-
-        // $user = auth()->user();
-        // $shop = Shop::where('id', 2)->get();
-        // $user = User::where('id', $shop->user_id)->first();
-        //         // $user = $shop->owner;
-        //  dd( $shop, $user);
-
-
-
-
-        return view('home', compact('products', 'cats', 'newProducts', 'bonanzaBlogList'));
     }
 
 
@@ -85,8 +93,24 @@ class HomeController extends Controller
 
     }
 
+
+    public function seller()
+    {
+        $user = auth()->user();
+      
+        if($user->is_vendor && $user->shop){
+            return redirect()->back()->with('msg', 'You are Already Vendor ');
+        }
+        
+        return view('seller', compact('user')) ;
+
+    }
+
+ 
+
     public function min_msg()
     {
+
         $user = auth()->user();
 
 
@@ -106,15 +130,14 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-    // return $data;
+   
     }
 
     public function noti()
     {
         $user = auth()->user();
 
-        // $notifications =$user->unreadNotifications;
-        // $activities =$user->notifications;
+       
 
         $notifications = $user->unreadNotifications;
         $notiCount = $user->unreadNotifications->count();
@@ -129,7 +152,7 @@ class HomeController extends Controller
             if (isset($noti->data->shop_id)) {
 
                 $shop = Shop::where('id', $noti->data['shop_id'])->get();
-                // $puser = $shop->user;
+               
                 $noti->$shop = $shop;
             }
             $noti->userName = $user->firstname;
@@ -145,7 +168,7 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-    // return $data;
+   
     }
 
     public function config(Request $request)
@@ -175,4 +198,6 @@ class HomeController extends Controller
 
 
     }
+
+
 }

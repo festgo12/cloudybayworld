@@ -68,16 +68,7 @@
 														<input type="text" class="input-field" name="username" placeholder="{{ __("Vendor Username") }}" value="{{ $data->username }}" disabled="">
 													</div>
 												</div>
-												<div class="row">
-													<div class="col-lg-4">
-														<div class="left-area">
-																<h4 class="heading">{{ __("Vendor Password") }} *</h4>
-														</div>
-													</div>
-													<div class="col-lg-7">
-														<input type="text" class="input-field" name="password" placeholder="{{ __("Vendor Password") }}" value="" >
-													</div>
-												</div>
+												
 
 
 												<div class="row">
