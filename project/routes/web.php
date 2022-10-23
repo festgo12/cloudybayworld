@@ -60,6 +60,7 @@ Route::group(['middleware'=>'auth'],function(){
     //------------ Shop SECTION ------------
     Route::get('/createShop', [App\Http\Controllers\ShopController::class, 'createShop'])->name('createShop');
     Route::get('/markets', [App\Http\Controllers\ShopController::class, 'markets'])->name('markets');
+    Route::get('/markets-favorites', [App\Http\Controllers\ShopController::class, 'favorites'])->name('market.favorites');
     Route::get('/market/p/{shop}', [App\Http\Controllers\Product\CatalogController::class, 'marketProduct'])->name('market.product');
     Route::get('/market/{slug}', [App\Http\Controllers\ShopController::class, 'marketDetails'])->name('marketDetails');
     Route::get('/market/feeds/{slug}', [App\Http\Controllers\ShopController::class, 'marketfeeds']);    

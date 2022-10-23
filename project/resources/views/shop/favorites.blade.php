@@ -10,7 +10,7 @@
         <div class="col-6">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">                                       <i data-feather="home"></i></a></li>
-            <li class="breadcrumb-item">Market</li>
+            <li class="breadcrumb-item">Favourites</li>
             </ol>
         </div>
         </div>
@@ -71,7 +71,7 @@
                                     aria-labelledby="pills-created-tab">
                                 <div class="card mb-0">
                                     <div class="card-header d-flex">
-                                        <h6 class="mb-0"><b><i class="icofont icofont-ui-clip-board"></i> Markets</b></h6>
+                                        <h6 class="mb-0"><b><i class="icofont icofont-ui-clip-board"></i> Favourites</b></h6>
                                         {{-- <ul>
                                             <li><a class="grid-bookmark-view" href="javascript:void(0)"><i
                                                 data-feather="grid"></i></a></li>
@@ -142,6 +142,6 @@
     </div>  
     <!-- Container-fluid Ends-->
     <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
-    <script src="{{ asset('./assets/js/dashboard/markets.js') }}"></script>
+    <script src="{{ asset('./assets/js/dashboard/market.favorites.js') }}"></script>
 </div>
 @endsection
