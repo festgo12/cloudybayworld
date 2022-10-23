@@ -45,13 +45,16 @@ class WithdrawController extends Controller
             $amount = $request->amount;
             $amount = round(($amount / $curr->value),2);
             $fee = (($withdrawcharge->withdraw_charge / 100) * $amount) + $charge;
-            $finalamount = $amount + $fee;
-            if ($from->current_balance >= $finalamount){
 
-                $from->current_balance = $from->current_balance - $finalamount;
+            $finalamount = $amount + $fee;
+                
+            if ($from->wallet->balance >= $finalamount){
+
+                $from->wallet->balance = $from->wallet->balance - $finalamount;
                 $from->update();
 
                 $finalamount = number_format((float)$finalamount,2,'.','');
+
                 $newwithdraw = new Withdraw();
                 $newwithdraw['user_id'] = Auth::user()->id;
                 $newwithdraw['method'] = $request->methods;

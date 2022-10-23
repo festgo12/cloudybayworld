@@ -359,6 +359,93 @@ class VendorController extends Controller
             //--- Redirect Section Ends    
     }
 
+
+    
+        //*** JSON Request
+        public function withdrawdatatables()
+        {
+             $datas = Withdraw::where('type','=','vendor')->orderBy('id','desc')->get();
+             //--- Integrating This Collection Into Datatables
+             return Datatables::of($datas)
+                                ->addColumn('name', function(Withdraw $data) {
+                                    $name = $data->user->name;
+                                    return '<a href="' . route('admin-vendor-show',$data->user->id) . '" target="_blank">'. $name .'</a>';
+                                }) 
+                                ->addColumn('email', function(Withdraw $data) {
+                                    $email = $data->user->email;
+                                    return $email;
+                                }) 
+                                ->addColumn('phone', function(Withdraw $data) {
+                                    $phone = $data->user->phone;
+                                    return $phone;
+                                }) 
+                                ->editColumn('status', function(Withdraw $data) {
+                                    $status = ucfirst($data->status);
+                                    return $status;
+                                }) 
+                                ->editColumn('created_at', function(Withdraw $data) {
+                                    $created_at = $data->created_at->diffForHumans();
+                                    return $created_at;
+                                }) 
+                                ->editColumn('amount', function(Withdraw $data) {
+                                    $sign = Currency::where('is_default','=',1)->first();
+                                    $amount = $sign->sign.round($data->amount * $sign->value , 2);
+                                    return $amount;
+                                }) 
+                                ->addColumn('action', function(Withdraw $data) {
+                                    $action = '<div class="action-list"><a data-href="' . route('admin-vendor-withdraw-show',$data->id) . '" class="view details-width" data-toggle="modal" data-target="#modal1"> <i class="fas fa-eye"></i> Details</a>';
+                                    if($data->status == "pending") {
+                                    $action .= '<a data-href="' . route('admin-vendor-withdraw-accept',$data->id) . '" data-toggle="modal" data-target="#confirm-delete"> <i class="fas fa-check"></i> Accept</a><a data-href="' . route('admin-vendor-withdraw-reject',$data->id) . '" data-toggle="modal" data-target="#confirm-delete1"> <i class="fas fa-trash-alt"></i> Reject</a>';
+                                    }
+                                    $action .= '</div>';
+                                    return $action;
+                                }) 
+                                ->rawColumns(['name','action'])
+                                ->toJson(); //--- Returning Json Data To Client Side
+        }
+
+        //*** GET Request
+        public function withdraws()
+        {
+            return view('admin.vendor.withdraws');
+        }
+
+        //*** GET Request       
+        public function withdrawdetails($id)
+        {
+            $sign = Currency::where('is_default','=',1)->first();
+            $withdraw = Withdraw::findOrFail($id);
+            return view('admin.vendor.withdraw-details',compact('withdraw','sign'));
+        }
+
+        //*** GET Request   
+        public function accept($id)
+        {
+            $withdraw = Withdraw::findOrFail($id);
+            $data['status'] = "completed";
+            $withdraw->update($data);
+            //--- Redirect Section     
+            $msg = 'Withdraw Accepted Successfully.';
+            return response()->json($msg);      
+            //--- Redirect Section Ends   
+        }
+
+        //*** GET Request   
+        public function reject($id)
+        {
+            $withdraw = Withdraw::findOrFail($id);
+            $account = User::findOrFail($withdraw->user->id);
+            // $account->affilate_income = $account->affilate_income + $withdraw->amount + $withdraw->fee;
+            $account->update();
+            $data['status'] = "rejected";
+            $withdraw->update($data);
+            //--- Redirect Section     
+            $msg = 'Withdraw Rejected Successfully.';
+            return response()->json($msg);      
+            //--- Redirect Section Ends   
+        }
+
+
        
 
 }

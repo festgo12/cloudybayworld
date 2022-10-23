@@ -123,7 +123,8 @@
                   </div>
                   <ul class="profile-dropdown onhover-show-div">
                     <li><a href="{{ route('profile', Auth::user()->username )}}"><i data-feather="user"></i><span>Account </span></a></li>
-                    <li><a href="{{ route('editProfile') }}"><i data-feather="settings"></i><span>Settings</span></a></li>
+                    {{-- <li><a href="{{ route('editProfile') }}"><i data-feather="settings"></i><span>Settings</span></a></li> --}}
+                    <li><a href="{{ route('user.password') }}"><i data-feather="settings"></i><span>Password</span></a></li>
                     <li>
                         <a class="" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -178,7 +179,7 @@
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('wallet') }}"><i data-feather="book"> </i><span>Wallet</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Massaging</span></a></li>
 
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ 'profile/'.Auth::user()->username }}"><i data-feather="user"> </i><span>Profile</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('profile',Auth::user()->username ) }}"><i data-feather="user"> </i><span>Profile</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:;"><i data-feather="package"></i><span class="">My Orders</span></a>
                     <ul class="sidebar-submenu">

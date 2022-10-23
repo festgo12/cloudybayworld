@@ -31,11 +31,11 @@
                         <div class="text-center">
                            <div class="title">
                               <div class="">
-                                 <h1> <strong>₦{{$user->wallet['balance']}}</strong> </h1>
-                                 <!-- <h1>The Cloudbay Bootstrap Admin Theme Trusted By Many Developers World Wide.</h1> -->
+                                 <h1> <strong>{{ App\Models\Currency::convertPrice( $user->wallet['balance'] )}}</strong> </h1>
+                                
                                  <p class=" mt-3">this is your current balance.</p>
                                  <button class="btn mrl5 btn-lg btn-success default-view"  data-bs-toggle="modal" data-bs-target="#depositModal">Add Funds</button>
-                                 <button class="btn mrl5 btn-lg btn-primary btn-md-res"  href="#" >Withdraw       </button>
+                                 {{-- <button class="btn mrl5 btn-lg btn-primary btn-md-res"  href="#" >Withdraw       </button> --}}
                               </div>
                            </div>
                         </div>
@@ -67,7 +67,7 @@
                                  <td>{{$transaction->created_at->diffForHumans()}}</td>
                                  <td><span class="status-icon bg-success"></span> {{$transaction->description}}</td>
                                  <td class="{{($transaction->is_inflow) ? 'text-success' : 'text-danger'}}">
-                                    {{($transaction->is_inflow) ? '+' : '-'}}₦{{$transaction->amount}}
+                                    {{($transaction->is_inflow) ? '+' : '-'}}{{ App\Models\Currency::convertPrice( $transaction->amount )}}
                                  </td>
                               </tr>
                               @endforeach
@@ -104,7 +104,7 @@
                   @csrf
                   <input id="userEmail" type="hidden" name="userEmail" value="{{$user->email}}" />
                   <input id="fundingReference" type="hidden" name="fundingReference" value="{{$user->email}}" />
-                  <input id="depositInput" type="number" name="amount" min="1" class="form-control" placeholder="Enter Funding Amount">
+                  <input id="depositInput" type="number" name="amount" min="1" class="form-control" placeholder="Enter Funding Amount (NGN)">
                   <button id="depositProceedButton" class="btn btn-primary" type="submit">Proceed</button>
                </form>
             </div>

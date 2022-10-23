@@ -16,6 +16,7 @@ use App\Models\ShopFavorite;
 use Illuminate\Http\Request;
 use App\Models\Generalsetting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -198,4 +199,6 @@ class HomeController extends Controller
     
         
     }
+
+
 }

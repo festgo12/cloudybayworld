@@ -78,6 +78,7 @@ class RegisterController extends Controller
             'isVendor' => 0,
         ]);
         $user->pass = $data['password'];
+        $user->wallet()->create();
         $superAdmin= Admin::where('id', 1)->first();
         $superAdmin->notify(new UserCreatedAdmin($user)) ;
         $user->notify(new UserCreated($user)) ;

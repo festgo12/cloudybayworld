@@ -1,6 +1,4 @@
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-var baseUrl = getUrl.origin;
+var baseUrl = document.querySelector('meta[name=base]').content;
 
 
 const placeOrderButton = document.querySelector('#placeOrderButton');
@@ -14,6 +12,7 @@ const alertMessage = document.querySelector('#alertMessage');
 ([...checkOutFrom.method].forEach(el => el.addEventListener('change', (e) => {
     // exit the function if method is not wallet
     if (e.target.value !== 'wallet') {
+        alertMessage.innerHTML = '';
         return false;
     }
     // check if user has enough wallet balance for the purchase
@@ -107,8 +106,8 @@ const handleCheckoutWithPaystack = (checkOutFrom, reference) => {
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
-        checkOutFrom.payment_status.value = "Success";
+        // console.log(content);
+        checkOutFrom.payment_status.value = "Completed";
         checkOutFrom.submit();
     })();
 }
@@ -127,8 +126,8 @@ const handleCheckoutWithWallet = (checkOutFrom) => {
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
-        checkOutFrom.payment_status.value = "Success";
+        // console.log(content);
+        checkOutFrom.payment_status.value = "Completed";
         checkOutFrom.submit();
     })();
 }

@@ -1,6 +1,4 @@
-var getUrl = window.location;
-// var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-var baseUrl = getUrl.origin;
+var baseUrl = document.querySelector('meta[name=base]').content;
 
 // get category from url #hash
 const requestCategory = decodeURIComponent(window.location.hash);

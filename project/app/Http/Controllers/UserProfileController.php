@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\followProfile;
 use App\Notifications\UpdateProfile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
@@ -39,8 +41,7 @@ class UserProfileController extends Controller
         $user = Auth::user();
         $countries = DB::table('countries')->get();
         
-        return view('profile.change-password', compact('countries'))->with('user', $user);
-        // return view('profile.editProfile', compact('countries'))->with('user', $user);
+        return view('profile.editProfile', compact('countries'))->with('user', $user);
     }
 
     public function apiGetProfileByUsername($username){
@@ -152,14 +153,10 @@ class UserProfileController extends Controller
 
                 $path = $file->store('/avatar/cover', 'uploads');
                 $name = $file->getClientOriginalName();
-                // store the image path, name and type on the DB
-                // $attachments = [
-                //     'path' => $path,
-                //     'name' => $name
-                // ];
+               
                 
                 $user->coverImage = $path;
-                // $user->coverImage = $attachments;
+               
             }
             
 
@@ -224,4 +221,38 @@ class UserProfileController extends Controller
         $user = User::where('username', $username)->first();
         return $user->following->count();
     }
+
+
+    
+    public function passwordreset()
+    {
+        $user = Auth::user();
+        $msg = '';
+        return view('profile.change-password',compact('user','msg'));
+    }
+
+    public function changepass(Request $request)
+    {
+        $user = Auth::user();
+        
+        if ($request->cpass){
+            if (Hash::check($request->cpass, $user->password)){
+                if ($request->newpass == $request->renewpass){
+                    $input['password'] = Hash::make($request->newpass);
+                }else{
+                    return response()->json(array('errors' => [ 0 => 'Confirm password does not match.' ]));
+                }
+            }else{
+                return response()->json(array('errors' => [ 0 => 'Current password Does not match.' ]));
+            }
+        }
+        
+        $user->update($input);
+        $msg = 'Successfully change your passwprd';
+        
+        return redirect()->back()->with('msg' ,$msg);
+
+        
+    }
+
 }

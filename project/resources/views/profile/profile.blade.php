@@ -33,8 +33,6 @@ Profile
                 <!-- user profile first-style start-->
                 <div class="col-sm-12">
                     <div class="card hovercard text-center">
-                        {{-- @dd($user->coverImage['name']) --}}
-                        {{-- <div class="cardheader" style="background: url({{ asset('assets/images/other-images/bg-profile.png') }})"></div> --}}
                         <div class="cardheader" style="background: url({{ ($user->coverImage) ? asset('assets/uploads/'.$user->coverImage) :  asset('assets/images/other-images/default-cover.jpg') }})"></div>
                         <div class="user-image">
                             <div class="avatar">
@@ -56,7 +54,6 @@ Profile
                                         </div>
                                         <div class="col-md-6">
                                             <div class="ttl-info text-start">
-                                                {{-- <h6><i class="fa fa-calendar"></i> DOB</h6><del> &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</del> --}}
                                                 <h6><i class="fa fa-calendar"></i> DOB</h6><del> {{ $user->dateOfBirth }}</del>
                                             </div>
                                         </div>
@@ -118,12 +115,14 @@ Profile
                                 <input id="userId" type="hidden" name="userId" value="{{ auth()->user()->id }}" />
                                 <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
                                 <textarea id="postInput" placeholder="What's happening?"  class="form-control"></textarea>
-                                <div class="form-group">
-                                    <div>
-                                        <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
-                                    </div>
+                                <div class="form-group ">
+                                   
+                                        <label  class="fileInput-upload my-3"><i class="fa fa-image"></i> Post Media 
+                                            <input id="fileInput" hidden class="form-control form-control-sm" id="formFileSm" type="file" multiple>
+                                        </label>
+                                   
                                     <p id="errorMessage" class="text-center">Message</p>
-                                    <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
+                                    <button id="postButton" type="submit" class="btn btn-primary pull-right my-3">
                                         Post
                                     </button>
                                 </div>
@@ -180,16 +179,16 @@ Profile
             <!-- Modal body -->
             <div class="modal-body p-auto">
                 <div>
-
-                    <label  class="profileImage-upload">Cover image
+                    <center>
+                    <label  class="profileImage-upload"><i class="fa fa-image"></i> Cover image
                     <input id="coverInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
-                    </label>
+                    </label></center>
                 </div>
                 <div>
-
-                    <label  class="profileImage-upload mt-2">Profile Image
+                    <center>
+                    <label  class="profileImage-upload mt-2"><i class="fa fa-image"></i> Profile Image
                     <input id="avatarInput" hidden class="form-control form-control-sm" id="formFileSm" type="file">
-                    </label>
+                    </label></center>
                 </div>
                 <div class="avatar d-flex justify-content-center mt-2">
                     <img id="tempAvatar" style="display:none" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">

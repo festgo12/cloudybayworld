@@ -16,12 +16,12 @@ Explore Product
         <div class="row">
           <div class="col-6">
             <!-- <h3>Product</h3> -->
-            <div class="left-header col horizontal-wrapper ps-0">
+            {{-- <div class="left-header col horizontal-wrapper ps-0">
               <ul class="horizontal-menu">
                 <li class="mega-menu outside"><a class="nav-link" href="#!" data-bs-original-title="" title=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg><span>Category</span></a>
                   <div class="mega-menu-container nav-submenu menu-to-be-close header-mega" style="display: none;">
-                    <div class="container-fluid">
-                      <div class="row">
+                    <div class="container-fluid ">
+                      <div class="row cat-row ">
                         <div class="col-md-3 mega-box">
                           <div class="mobile-title d-none">
                             <h5>Mega menu</h5><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -85,6 +85,66 @@ Explore Product
                             </ul>
                           </div>
                         </div>
+                        <div class="col-md-3 mega-box">
+                          <div class="link-section">
+                            <div>
+                              <h6>Email templates</h6>
+                            </div>
+                            <ul>
+                              <li class="ps-0"><a href="basic-template.html" data-bs-original-title="" title="">Basic Email</a></li>
+                              <li class="ps-0"><a href="email-header.html" data-bs-original-title="" title="">Basic With Header</a></li>
+                              <li class="ps-0"><a href="template-email.html" data-bs-original-title="" title="">Ecomerce Template</a></li>
+                              <li class="ps-0"><a href="template-email-2.html" data-bs-original-title="" title="">Email Template 2</a></li>
+                              <li class="ps-0"><a href="ecommerce-templates.html" data-bs-original-title="" title="">Ecommerce Email</a></li>
+                              <li class="ps-0"><a href="email-order-success.html" data-bs-original-title="" title="">Order Success</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mega-box">
+                          <div class="link-section">
+                            <div>
+                              <h6>Email templates</h6>
+                            </div>
+                            <ul>
+                              <li class="ps-0"><a href="basic-template.html" data-bs-original-title="" title="">Basic Email</a></li>
+                              <li class="ps-0"><a href="email-header.html" data-bs-original-title="" title="">Basic With Header</a></li>
+                              <li class="ps-0"><a href="template-email.html" data-bs-original-title="" title="">Ecomerce Template</a></li>
+                              <li class="ps-0"><a href="template-email-2.html" data-bs-original-title="" title="">Email Template 2</a></li>
+                              <li class="ps-0"><a href="ecommerce-templates.html" data-bs-original-title="" title="">Ecommerce Email</a></li>
+                              <li class="ps-0"><a href="email-order-success.html" data-bs-original-title="" title="">Order Success</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mega-box">
+                          <div class="link-section">
+                            <div>
+                              <h6>Email templates</h6>
+                            </div>
+                            <ul>
+                              <li class="ps-0"><a href="basic-template.html" data-bs-original-title="" title="">Basic Email</a></li>
+                              <li class="ps-0"><a href="email-header.html" data-bs-original-title="" title="">Basic With Header</a></li>
+                              <li class="ps-0"><a href="template-email.html" data-bs-original-title="" title="">Ecomerce Template</a></li>
+                              <li class="ps-0"><a href="template-email-2.html" data-bs-original-title="" title="">Email Template 2</a></li>
+                              <li class="ps-0"><a href="ecommerce-templates.html" data-bs-original-title="" title="">Ecommerce Email</a></li>
+                              <li class="ps-0"><a href="email-order-success.html" data-bs-original-title="" title="">Order Success</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-md-3 mega-box">
+                          <div class="link-section">
+                            <div>
+                              <h6>Email templates</h6>
+                            </div>
+                            <ul>
+                              <li class="ps-0"><a href="basic-template.html" data-bs-original-title="" title="">Basic Email</a></li>
+                              <li class="ps-0"><a href="email-header.html" data-bs-original-title="" title="">Basic With Header</a></li>
+                              <li class="ps-0"><a href="template-email.html" data-bs-original-title="" title="">Ecomerce Template</a></li>
+                              <li class="ps-0"><a href="template-email-2.html" data-bs-original-title="" title="">Email Template 2</a></li>
+                              <li class="ps-0"><a href="ecommerce-templates.html" data-bs-original-title="" title="">Ecommerce Email</a></li>
+                              <li class="ps-0"><a href="email-order-success.html" data-bs-original-title="" title="">Order Success</a></li>
+                            </ul>
+                          </div>
+                        </div>
                         
                       </div>
                     </div>
@@ -92,7 +152,7 @@ Explore Product
                 </li>
                 
               </ul>
-            </div> 
+            </div>  --}}
           </div>
           <div class="col-6">
             <ol class="breadcrumb">
@@ -140,26 +200,34 @@ Explore Product
                     <div class="card-header">
                       <h6 class="mb-0 f-w-600">Filters<span class="pull-right"><i class="fa fa-chevron-down toggle-data"></i></span></h6>
                     </div>
-                    <div class="left-filter">
+                    <div id="filter-scroll" class="left-filter">
                       <div class="card-body filter-cards-view animate-chk">
                         <div class="product-filter">
                           <h6 class="f-w-600">Category</h6>
                           <div class="checkbox-animated mt-0">
-                            <label class="d-block" for="edo-ani5">
-                              <input class="radio_animated" id="edo-ani5" type="radio" data-original-title="" title="">Man Shirt
-                            </label>
-                            <label class="d-block" for="edo-ani6">
-                              <input class="radio_animated" id="edo-ani6" type="radio" data-original-title="" title="">Man Jeans
-                            </label>
-                            <label class="d-block" for="edo-ani7">
-                              <input class="radio_animated" id="edo-ani7" type="radio" data-original-title="" title="">Woman Top
-                            </label>
-                            <label class="d-block" for="edo-ani8">
-                              <input class="radio_animated" id="edo-ani8" type="radio" data-original-title="" title="">Woman Jeans
-                            </label>
-                            <label class="d-block" for="edo-ani9">
-                              <input class="radio_animated" id="edo-ani9" type="radio" data-original-title="" title="">Man T-shirt
-                            </label>
+
+                            @foreach($cats as $cat)
+                              <div class="cat "><a href="{{ route('product.index', [$cat->slug]) }}">{{ $cat->name }}</a></div>
+
+
+                              @if ($cat->slug == $slug )
+                                  
+                              @foreach($cat->subcats as $sub)
+                                <div class="p-l-15 subs"><i class="fa fa-angle-right"></i><a href="{{ route('product.index', [$cat->slug, $sub->slug ]) }}"> {{ $sub->name }} </a></div>
+
+                                @if ($sub->slug == $slug1 )
+
+                                  @foreach($sub->childs as $child)
+                                    <div class="p-l-25 child"><i class="fa fa-angle-double-right"></i><a href="{{ route('product.index', [$cat->slug, $sub->slug, $child->slug ]) }}"> {{ $child->name }} </a></div>
+
+                                  @endforeach
+                                @endif
+
+                              @endforeach
+                              @endif
+                            @endforeach
+
+                          
                           </div>
                         </div>
                         <div class="product-filter">

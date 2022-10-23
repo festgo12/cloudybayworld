@@ -64,6 +64,10 @@
             <li>
                 <a href="{{ route('admin-shopcat-index') }}"><span>{{ __('Shops Category') }}</span></a>
             </li>
+
+            <li>
+                <a href="{{ route('admin-vendor-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a>
+            </li>
             
            
 

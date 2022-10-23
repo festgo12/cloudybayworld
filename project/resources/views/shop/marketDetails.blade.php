@@ -67,7 +67,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="cardheader socialheader"></div>
+                  <div class="cardheader socialheader" style="background: url({{ $shop->coverImage ? asset('assets/uploads/'.$shop->coverImage):asset('assets/uploads/cover.jpg') }});"></div>
                   <div class="user-image">
                      <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
                      @if($shop->user_id == auth()->user()->id)
@@ -148,7 +148,7 @@
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Partners :</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">___</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->partners }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>No of branches :</span></div>
                                              <div class="col-6">
@@ -203,7 +203,7 @@
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Recommendation :</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">_____</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->recommendation }}</p>
                                              </div>
                                           </div>
                                        </div>
@@ -293,10 +293,10 @@
                                              <div class="col-6">
                                                 <p style="text-align:right; font-size: 16px;">____</p>
                                              </div>
-                                             <div class="col-6" style="padding:5px;"> <span>Date of Birth :</span></div>
+                                             {{-- <div class="col-6" style="padding:5px;"> <span>Date of Birth :</span></div>
                                              <div class="col-6">
                                                 <p style="text-align:right; font-size: 16px;">../ ../ ....</p>
-                                             </div>
+                                             </div> --}}
                                              <div class="col-6" style="padding:5px;"> <span>Address :</span></div>
                                              <div class="col-6">
                                                 <p style="text-align:right; font-size: 16px;">{{ $shop->owner->homeAddress }}</p>
@@ -307,7 +307,7 @@
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Country :</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">Nigeria</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->owner->country }}</p>
                                              </div>
                                           </div>
                                        </div>
@@ -335,27 +335,27 @@
                                           <div class="row details" style="padding:10px; font-size: 16px;">
                                              <div class="col-6" style="padding:5px;"><span>Degree:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">-------- </p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->degree }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Practicing Profession:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">--------</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->profession }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Skill:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">--------</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->skill }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Experience:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">--------</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->experience }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Achievements:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">--------</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->achievements }}</p>
                                              </div>
                                              <div class="col-6" style="padding:5px;"> <span>Fields of Interest:</span></div>
                                              <div class="col-6">
-                                                <p style="text-align:right; font-size: 16px;">--------</p>
+                                                <p style="text-align:right; font-size: 16px;">{{ $shop->fieldsOfInterest }}</p>
                                              </div>
                                           </div>
                                        </div>

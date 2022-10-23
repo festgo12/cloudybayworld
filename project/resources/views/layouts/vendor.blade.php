@@ -152,7 +152,9 @@
 
 							
 
-
+							<li>
+								<a href="{{ route('vendor-wt-index') }}" class=" wave-effect"><i class="fas fa-list"></i>Withdraws</a>
+							</li>
 							
 
 							<li>

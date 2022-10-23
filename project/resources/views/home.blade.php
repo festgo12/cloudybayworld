@@ -337,7 +337,7 @@ Home
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
-                            <div class="ribbon ribbon-success ribbon-right">50%</div>
+                            {{-- <div class="ribbon ribbon-success ribbon-right">50%</div> --}}
                             <div class="product-img"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="">
                               <div class="product-hover">
                                 <ul>

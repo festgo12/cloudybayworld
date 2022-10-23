@@ -51,6 +51,11 @@ Route::group(['middleware'=>'auth'],function(){
     //------------ User SECTION ------------
     Route::get('/profile/{username}', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');
     Route::get('/editProfile', [App\Http\Controllers\UserProfileController::class, 'editProfile'])->name('editProfile');
+    Route::get('/password', [App\Http\Controllers\UserProfileController::class, 'passwordreset'])->name('user.password');
+    Route::post('/password/update', [App\Http\Controllers\UserProfileController::class, 'changepass'])->name('user.password.update');
+
+    // Route::get('/password', 'App\Http\Controllers\Admin\DashboardController@passwordreset')->name('admin.password');
+  // Route::post('/password/update', 'App\Http\Controllers\Admin\DashboardController@changepass')->name('admin.password.update');
 
 
     //------------ Feeds SECTION ------------
@@ -218,8 +223,8 @@ Route::get('/search', [App\Http\Controllers\SearchController::class , 'search'])
     *
     * e.g. - The commented routes below :
     */
-    // Route::get('/{id}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
-    Route::get('/{username}/{fakeslug}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
+    Route::get('/{id}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
+    // Route::get('/{username}/{fakeslug}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
     // Route::get('/{username}/{fakeslug}', 'App\Http\Controllers\MessageController@index')->name('chat.username');
 
  });  
@@ -433,6 +438,13 @@ Route::prefix('admin')->group(function() {
   Route::get('/vendor/color', 'App\Http\Controllers\Admin\VendorController@color')->name('admin-vendor-color');
   Route::get('/vendors/status/{id1}/{id2}', 'App\Http\Controllers\Admin\VendorController@status')->name('admin-vendor-st');
   Route::get('/vendors/delete/{id}', 'App\Http\Controllers\Admin\VendorController@destroy')->name('admin-vendor-delete');
+
+  
+  Route::get('/vendors/withdraws/datatables', 'App\Http\Controllers\Admin\VendorController@withdrawdatatables')->name('admin-vendor-withdraw-datatables'); //JSON REQUEST
+  Route::get('/vendors/withdraws', 'App\Http\Controllers\Admin\VendorController@withdraws')->name('admin-vendor-withdraw-index');
+  Route::get('/vendors/withdraw/{id}/show', 'App\Http\Controllers\Admin\VendorController@withdrawdetails')->name('admin-vendor-withdraw-show');
+  Route::get('/vendors/withdraws/accept/{id}', 'App\Http\Controllers\Admin\VendorController@accept')->name('admin-vendor-withdraw-accept');
+  Route::get('/vendors/withdraws/reject/{id}', 'App\Http\Controllers\Admin\VendorController@reject')->name('admin-vendor-withdraw-reject');
 
   // shop Category
 
@@ -885,16 +897,7 @@ Route::prefix('vendor')->group(function() {
   Route::get('/dashboard', 'App\Http\Controllers\Vendor\VendorController@index')->name('vendor-dashboard');
 
 
-    // //IMPORT SECTION
-    // Route::get('/products/import/create', 'App\Http\Controllers\Vendor\ImportController@createImport')->name('vendor-import-create');
-    // Route::get('/products/import/edit/{id}', 'App\Http\Controllers\Vendor\ImportController@edit')->name('vendor-import-edit');
-    // Route::get('/products/import/csv', 'App\Http\Controllers\Vendor\ImportController@importCSV')->name('vendor-import-csv');
-    // Route::get('/products/import/datatables', 'App\Http\Controllers\Vendor\ImportController@datatables')->name('vendor-import-datatables');
-    // Route::get('/products/import/index', 'App\Http\Controllers\Vendor\ImportController@index')->name('vendor-import-index');
-    // Route::post('/products/import/store', 'App\Http\Controllers\Vendor\ImportController@store')->name('vendor-import-store');
-    // Route::post('/products/import/update/{id}', 'App\Http\Controllers\Vendor\ImportController@update')->name('vendor-import-update');
-    // Route::post('/products/import/csv/store', 'App\Http\Controllers\Vendor\ImportController@importStore')->name('vendor-import-csv-store');
-    // //IMPORT SECTION
+
 
 
   //------------ ADMIN ORDER SECTION ------------
@@ -935,8 +938,6 @@ Route::prefix('vendor')->group(function() {
   Route::get('/products/license/create', 'App\Http\Controllers\Vendor\ProductController@createLicense')->name('vendor-prod-license-create');
   Route::post('/products/store', 'App\Http\Controllers\Vendor\ProductController@store')->name('vendor-prod-store');
   Route::get('/getattributes', 'App\Http\Controllers\Vendor\ProductController@getAttributes')->name('vendor-prod-getattributes');
-  // Route::get('/products/import', 'App\Http\Controllers\Vendor\ProductController@import')->name('vendor-prod-import');
-  // Route::post('/products/import-submit', 'App\Http\Controllers\Vendor\ProductController@importSubmit')->name('vendor-prod-importsubmit');
 
   Route::get('/products/catalog/datatables', 'App\Http\Controllers\Vendor\ProductController@catalogdatatables')->name('admin-vendor-catalog-datatables');
   Route::get('/products/catalogs', 'App\Http\Controllers\Vendor\ProductController@catalogs')->name('admin-vendor-catalog-index');
@@ -983,10 +984,6 @@ Route::get('/shipping/delete/{id}', 'App\Http\Controllers\Vendor\ShippingControl
   //------------ ADMIN SHIPPING ENDS ------------
 
 
- 
-
-
-
   //------------ VENDOR NOTIFICATION SECTION ------------
 
   // Order Notification
@@ -999,13 +996,19 @@ Route::get('/shipping/delete/{id}', 'App\Http\Controllers\Vendor\ShippingControl
 
   //------------ VENDOR NOTIFICATION SECTION ENDS ------------
 
-  // Vendor Profile
-  Route::get('/profile', 'App\Http\Controllers\Vendor\VendorController@profile')->name('vendor-profile');
-  Route::post('/profile', 'App\Http\Controllers\Vendor\VendorController@profileupdate')->name('vendor-profile-update');
-  // Vendor Profile Ends
+  // Vendor Settings
+  Route::get('/Settings', 'App\Http\Controllers\Vendor\VendorController@profile')->name('vendor-profile');
+  Route::post('/Settings', 'App\Http\Controllers\Vendor\VendorController@profileupdate')->name('vendor-profile-update');
+  // Vendor Settings Ends
 
   // Vendor Shipping Cost
   Route::get('/shipping-cost', 'App\Http\Controllers\Vendor\VendorController@ship')->name('vendor-shop-ship');
+
+
+  Route::get('/withdraw/datatables', 'App\Http\Controllers\Vendor\WithdrawController@datatables')->name('vendor-wt-datatables');
+  Route::get('/withdraw', 'App\Http\Controllers\Vendor\WithdrawController@index')->name('vendor-wt-index');
+  Route::get('/withdraw/create', 'App\Http\Controllers\Vendor\WithdrawController@create')->name('vendor-wt-create');
+  Route::post('/withdraw/create', 'App\Http\Controllers\Vendor\WithdrawController@store')->name('vendor-wt-store');
 
  
 

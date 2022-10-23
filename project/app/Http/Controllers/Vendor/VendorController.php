@@ -45,9 +45,6 @@ class VendorController extends Controller
          $validator = Validator::make($request->all(), [
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            // 'email' => 'required|email',
-            // 'username' => 'required|string|min:4',
-            // 'username' => 'required|string|min:4|unique:users',
             'shopName' => 'required|string|min:6',
             'description' => 'required|string|min:10',
             'founder' => 'string',
@@ -55,7 +52,6 @@ class VendorController extends Controller
             'yearFounded' => 'integer|min:1700|max:' . date("Y"),
             'numberOfBranch' => 'integer',
             'location' => 'string',
-            // 'category_id' => 'required|integer',
             'majorProduct' => 'string',
             'minorProduct' => 'string',
             'targetCustomer' => 'string',
@@ -69,6 +65,7 @@ class VendorController extends Controller
             'startTime' => 'date_format:H:i',
             'closeTime' => 'date_format:H:i|after:startTime',
             'avatarInput' => 'image|max:2048',
+            'coverImage' => 'image|max:2048',
         ]);
         
     
@@ -94,6 +91,14 @@ class VendorController extends Controller
         $user->shop->yearFounded = $request->yearFounded;
         $user->shop->numberOfBranch = $request->numberOfBranch;
         $user->shop->location = $request->location;
+        $user->shop->degree = $request->degree;
+        $user->shop->profession = $request->profession;
+        $user->shop->skill = $request->skill;
+        $user->shop->experience = $request->experience;
+        $user->shop->achievements = $request->achievements;
+        $user->shop->fieldsOfInterest = $request->fieldsOfInterest;
+        $user->shop->partners = $request->partners;
+        $user->shop->recommendation = $request->recommendation;
         $user->shop->category_id = $request->category_id;
         $user->shop->majorProduct = $request->majorProduct;
         $user->shop->minorProduct = $request->minorProduct;
@@ -122,6 +127,19 @@ class VendorController extends Controller
             ];
 
             $user->shop->attachments = $attachments;
+        }
+
+        // check if an coverimage was uploaded        
+        if ($request->hasfile('coverImage')) {
+            $file = $request->file('coverImage');
+
+            
+            $path = $file->store('/avatar/cover', 'uploads');
+            $name = $file->getClientOriginalName();
+               
+                
+            $user->shop->coverImage = $path;
+               
         }
 
        

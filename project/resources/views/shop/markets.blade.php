@@ -31,7 +31,7 @@
                         <li class="nav-item"><span class="main-title"> Categories</span></li>
                         <li id="tagList"></li>
                     </ul>
-                    <hr />
+                    {{-- <hr />
                     <ul class="nav main-menu" role="tablist">
                         <li class="nav-item"><span class="main-title"> Tags</span></li>
                         <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab"
@@ -56,7 +56,7 @@
                             role="tab" aria-controls="pills-assigned" aria-selected="false"><span
                                 class="title">#Hot</span></a></li>
                         <li>
-                    </ul>
+                    </ul> --}}
                 </div>
                 </div>
             </div>

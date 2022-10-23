@@ -69,7 +69,8 @@
                       <div class="col-md-6">
                         <div class="ttl-info text-start">
                           <center>
-                            <h6><a href="{{ route('chat.username', [ $username = $shop->owner->username, $fakeSlug = Illuminate\Support\Str::random(40)]) }}">Chat</a></h6>
+                            {{-- <h6><a href="{{ route('chat.username', [ $username = $shop->owner->username, $fakeSlug = Illuminate\Support\Str::random(40)]) }}">Chat</a></h6> --}}
+                            <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
                           </center>
                         </div>
                       </div>

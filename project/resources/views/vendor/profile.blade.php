@@ -124,6 +124,23 @@
 													</div>
 												  </div>
 
+												<div class="row">
+													<div class="col-lg-4">
+													  <div class="left-area">
+														  <h4 class="heading">{{ __('Shop Cover Image') }} *</h4>
+													  </div>
+													</div>
+													<div class="col-lg-7">
+													  <div class="img-upload">
+														  <div id="image-preview" class="img-preview" style="background: url({{ $data->shop->coverImage ? asset('assets/uploads/'.$data->shop->coverImage):asset('assets/uploads/noimage.png') }});">
+															  <label for="image-upload" class="img-label" id="image-label"><i class="icofont-upload-alt"></i>{{ __('Upload Image') }}</label>
+															  <input type="file" name="coverImage" class="img-upload" value=" " id="image-upload">
+															</div>
+													  </div>
+						  
+													</div>
+												  </div>
+
 
 												<div class="row">
 													<div class="col-lg-4">
@@ -204,6 +221,95 @@
 														<input type="text" class="input-field" name="location" placeholder="{{ __("Shop location") }}" required="" value="{{ $data->shop->location }}">
 													</div>
 												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Degree") }} *</h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="degree" placeholder="{{ __("Degree") }}" required="" value="{{ $data->shop->degree }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Practicing Profession") }} </h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="profession" placeholder="{{ __("Practicing Profession") }}" required="" value="{{ $data->shop->profession }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Skill") }} </h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="skill" placeholder="{{ __("Skill") }}" required="" value="{{ $data->shop->skill }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Experience") }} </h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="experience" placeholder="{{ __("Experience") }}" required="" value="{{ $data->shop->experience }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Achievements") }} </h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="achievements" placeholder="{{ __("Achievements") }}" required="" value="{{ $data->shop->achievements }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Fields of Interest") }} </h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="fieldsOfInterest" placeholder="{{ __("Fields of Interest") }}" required="" value="{{ $data->shop->fieldsOfInterest }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Recommendation") }}</h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="recommendation" placeholder="{{ __("Recommendation") }}" required="" value="{{ $data->shop->recommendation }}">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<div class="left-area">
+																<h4 class="heading">{{ __("Partners") }}</h4>
+														</div>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" class="input-field" name="partners" placeholder="{{ __("Partners") }}" required="" value="{{ $data->shop->partners }}">
+													</div>
+												</div>
+
 												<div class="row">
 													<div class="col-lg-4">
 														<div class="left-area">

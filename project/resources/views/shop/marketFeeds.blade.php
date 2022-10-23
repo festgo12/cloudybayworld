@@ -61,7 +61,9 @@
                               <div class="col-md-6">
                                  <div class="ttl-info text-start">
                                     <center>
-                                       <h6><a href="{{ route('chat.user', [ $username = $shop->owner->username, $fakeSlug =Illuminate\Support\Str::random(40)]) }}">Chat</a></h6> 
+                                       {{-- <h6><a href="{{ route('chat.user', [ $username = $shop->owner->username, $fakeSlug =Illuminate\Support\Str::random(40)]) }}">Chat</a></h6>  --}}
+                                       <h6><a href="{{ route('chat.user', $shop->user_id) }}">Chat</a></h6>
+                                       {{-- <h6><a href="{{ route('chat.user', [ $username = $shop->owner->username, $fakeSlug =Illuminate\Support\Str::random(40)]) }}">Chat</a></h6>  --}}
                                     </center>
                                  </div>
                               </div>
@@ -169,9 +171,11 @@
                             <img class="d-none" id="realAvatar" alt="" src="{{ (auth()->user()->attachments) ? './assets/uploads/'.auth()->user()->attachments['path'] : './assets/images/avatar/default.jpg' }}">
                             <textarea id="postInput" placeholder="What's happening?"  class="form-control"></textarea>
                             <div class="form-group">
-                                <div>
-                                    <input id="fileInput" class="form-control form-control-sm" id="formFileSm" type="file" multiple>
-                                </div>
+                              
+                              <label  class="fileInput-upload my-3"><i class="fa fa-image"></i> Post Media 
+                                    <input id="fileInput" hidden class="form-control form-control-sm" id="formFileSm" type="file" multiple>
+                              </label>
+                                    
                                 <p id="errorMessage" class="text-center">Message</p>
                                 <button id="postButton" type="submit" class="btn btn-primary pull-right my-2">
                                     Post
