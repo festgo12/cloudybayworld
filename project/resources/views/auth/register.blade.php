@@ -91,6 +91,35 @@
                     @enderror
                   </div>
                   <div class="form-group">
+                    
+                    <div class="row g-2">
+                      <div class="col-6">
+                        <label class="col-form-label pt-0">Gender </label>
+                        <select id="countryId" name="gender" class="form-control btn-square">
+                                            
+                          <option value="">--Select--</option>
+                          
+                          
+                        </select>
+                        @error('gender')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                      <div class="col-6">
+                        <label class="col-form-label pt-0">Date Of Birth</label>
+                        <input class="form-control @error('dateOfBirth') is-invalid @enderror" name="dateOfBirth" type="date" value="{{ old('dateOfBirth') }}" required="" autocomplete="dateOfBirth" placeholder="Date Of Birth">
+
+                        @error('dateOfBirth')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="col-form-label">Password</label>
                     <div class="form-input position-relative">
                       <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" required="" placeholder="*********">
@@ -117,10 +146,10 @@
                     </div>
                     <button class="btn btn-info btn-block w-100" type="submit">Create Account</button>
                   </div>
-                  <h6 class="text-muted mt-4 or">Or signup with</h6>
+                  {{-- <h6 class="text-muted mt-4 or">Or signup with</h6>
                   <div class="social mt-4">
                     <div class="btn-showcase"><a class="btn btn-light" href="https://www.linkedin.com/login" target="_blank"><i class="txt-linkedin" data-feather="linkedin"></i> LinkedIn </a><a class="btn btn-light" href="https://twitter.com/login?lang=en" target="_blank"><i class="txt-twitter" data-feather="twitter"></i>twitter</a><a class="btn btn-light" href="https://www.facebook.com/" target="_blank"><i class="txt-fb" data-feather="facebook"></i>facebook</a></div>
-                  </div>
+                  </div> --}}
                   <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="{{ route('login') }}">Sign in</a></p>
                 </form>
               </div>
