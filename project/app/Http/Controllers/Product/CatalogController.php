@@ -54,9 +54,7 @@ class CatalogController extends Controller
         $search = $request->search;
         $minprice = round((intval($minprice )/ $curr->value),2);
         $maxprice = round((intval($maxprice) / $curr->value),2);
-        // dd($minprice,$request->min,$maxprice, $search);
-        // $minprice = round(($minprice),2);
-        // $maxprice = round(($maxprice),2);
+       
 
         if (!empty($slug)) {
           $cat = Category::where('slug', $slug)->firstOrFail();
@@ -181,6 +179,30 @@ class CatalogController extends Controller
 
         $newProducts = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(3)->get();
         $newProducts2 = Product::where('status', 1)->orWhere('latest', 1)->latest()->take(3)->get();
+
+        $cats = Category::where('status', 1)->get() ;
+
+        foreach($cats as $cat){
+
+          $cat->subcats = $cat->subs ;
+          
+          foreach($cat->subcats as $subs){
+            $subs->childs = $subs->childs ;
+
+          }
+        }
+
+        $subcats = '' ;
+        $childcats = '' ;
+        $category = $cat;
+        if($category){
+         $subcats = Subcategory::where('status', 1)->where('category_id', $category->id)->get() ;
+
+        }
+        if($subcat){
+          $childcats = Childcategory::where('status', 1)->where('subcategory_id', $subcat->id)->get() ;
+
+        }
         
         $data['prods'] = $prods;
 
@@ -191,9 +213,9 @@ class CatalogController extends Controller
           // dd($data);
           return $data;
         }
-        //  dd($data, $prods);
+        //  dd($cats, $subcats, $childcats);
         
-        return view('product.index', compact('data','newProducts', 'newProducts2'));
+        return view('product.index', compact('data','newProducts', 'newProducts2', 'cats', 'category', 'subcats','subcat', 'childcats', 'slug','slug1'));
       }
 
  // ------------------ Shop Product SECTION --------------------

@@ -64,6 +64,10 @@
             <li>
                 <a href="{{ route('admin-shopcat-index') }}"><span>{{ __('Shops Category') }}</span></a>
             </li>
+
+            <li>
+                <a href="{{ route('admin-vendor-withdraw-index') }}"><span>{{ __('Withdraws') }}</span></a>
+            </li>
             
            
 
@@ -118,7 +122,7 @@
     </li>
     <li>
         <a href="#blog" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
-            <i class="fas fa-fw fa-newspaper"></i>{{ __('Blog') }}
+            <i class="fas fa-fw fa-newspaper"></i>{{ __('Blog Highlights') }}
         </a>
         <ul class="collapse list-unstyled" id="blog" data-parent="#accordion">
             <li>

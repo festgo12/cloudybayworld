@@ -17,7 +17,7 @@ Checkout
         </div>
         <div class="col-6">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}"><i data-feather="home"></i></a></li>
             <li class="breadcrumb-item active">Checkout</li>
           </ol>
         </div>
@@ -207,7 +207,7 @@ Checkout
                   <div class="animate-chk">
                     <div class="row">
                       <div class="col">
-                        <input type="hidden" name="walletBalance" value="{{ Auth::user()->wallet['balance'] }}">
+                        <input type="hidden" name="walletBalance" value="{{round(Auth::user()->wallet['balance'] * $curr->value,2)}}">
                         <input type="hidden" name="totalPrice" value="{{round($totalPrice * $curr->value,2)}}">
                         <input type="hidden" name="payment_status" value="Pending">
                         <label class="d-block" for="wallet">

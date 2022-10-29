@@ -208,13 +208,13 @@
 
 		@yield('scripts')
 
-{{-- @if($gs->is_admin_loader == 0)
+@if($gs->is_admin_loader == 0)
 <style>
 	div#geniustable_processing {
 		display: none !important;
 	}
 </style>
-@endif --}}
+@endif
 
 	</body>
 

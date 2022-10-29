@@ -16,7 +16,6 @@
     <meta name="messenger-color" content="{{ $messengerColor }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="url" content="{{ url('').'/'.config('chat.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
-
     {{-- scripts --}}
     <script
       {{-- src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}

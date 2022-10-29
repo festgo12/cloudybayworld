@@ -799,7 +799,7 @@ channel.bind("client-messaging", function (data) {
                             
                             let imageurl = item.userImage ? `${mainurl}/assets/uploads/avatar/${item.userImage}`: `${mainurl}/assets/uploads/avatar/avatar.png`;
                             content += ` <li><a class="msg-link" href="#">
-                            <div class="media" style="display: block;">
+                            <div class="media" >
                             <img class="img-fluid rounded-circle me-3" src="${imageurl}" alt="" >
                                 <div class="status-circle  ${(item.user.active_status) ? 'online': ' '}"></div>
                                 <div class="media-body"><span>${item.userName}</span>

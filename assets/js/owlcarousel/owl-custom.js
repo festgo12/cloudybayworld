@@ -1,124 +1,136 @@
 var owl_carousel_custom = {
-    init: function() {
+    init: function () {
         $('#owl-carousel-1').owlCarousel({
-            loop:SVGComponentTransferFunctionElement,
-            margin:10,
-            nav:false,
-            responsive:{
-                0:{
-                    items:1
+            loop: SVGComponentTransferFunctionElement,
+            margin: 10,
+            nav: false,
+            responsive: {
+                0: {
+                    items: 1
                 },
-                600:{
-                    items:2
+                600: {
+                    items: 2
                 },
-                1000:{
-                    items:3
+                1000: {
+                    items: 3
                 }
             }
         }),
-        $('#carousel-profile').owlCarousel({
-            loop:false,
-            margin:5,
-            items:7,
-            nav:false,
-            dots: false,
-            responsive:{
-                0:{
-                    items:2
-                },
-                400:{
-                    items:3
-                },
-                600:{
-                    items:5
-                },
-                1000:{
-                    items:6
+            $('#carousel-profile').owlCarousel({
+                loop: false,
+                // stagePadding: 50,
+                margin: -3,
+                items: 7,
+                nav: false,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    400: {
+                        items: 3
+                    },
+                    550: {
+                        items: 4
+                    },
+                    600: {
+                        items: 5
+                    },
+                    850: {
+                        items: 5
+                    },
+                    1000: {
+                        items: 7
+                    },
+                    1200: {
+                        items: 8
+                    },
                 }
-            }
-        }),
-          $('#owl-carousel-2').owlCarousel({
-            loop:true,
-            margin:10,
-            items:5,
-            nav:false,
-            responsive : {
-                576 : {
-                    items:1
-                },
-                768 : {
-                    items:2
-                },
-                992 : {
-                    items:3
+            }),
+            $('#owl-carousel-2').owlCarousel({
+                loop: true,
+                margin: 10,
+                items: 5,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    992: {
+                        items: 3
+                    }
                 }
-            }
-        }), $('#owl-carousel-3').owlCarousel({
-            center: true,
-            items:5,
-            loop:true,
-            margin:10,
-            nav: false,
-            responsive:{
-                576 : {
-                    items:1
-                },
-                768 : {
-                    items:2
-                },
-                992 : {
-                    items:3
+            }), $('#owl-carousel-3').owlCarousel({
+                center: true,
+                items: 5,
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    992: {
+                        items: 3
+                    }
                 }
-            }
-        }),$('#owl-carousel-4').owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            merge:true,
-            nav: false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
+            }),
+            $('#owl-carousel-4').owlCarousel({
+                items: 5,
+                loop: true,
+                margin: 10,
+                merge: true,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
+                    }
                 }
-            }
-        }),$('#owl-carousel-5').owlCarousel({
-            margin:10,
-            loop:true,
-            autoWidth:true,
-            items:5,
-            nav: false
-        }),
+            }),
+            $('#owl-carousel-5').owlCarousel({
+                margin: 10,
+                loop: true,
+                autoWidth: true,
+                items: 5,
+                nav: false
+            }),
             $('#owl-carousel-6').owlCarousel({
-                items:5,
-                loop:false,
-                center:true,
-                margin:10,
-                URLhashListener:true,
-                autoplayHoverPause:true,
+                items: 5,
+                loop: false,
+                center: true,
+                margin: 10,
+                URLhashListener: true,
+                autoplayHoverPause: true,
                 startPosition: 'URLHash',
                 nav: false,
-                responsive:{
-                    576 : {
-                        items:1,
-                        mergeFit:true
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
                     },
-                    768 : {
-                        items:2,
-                        mergeFit:true
+                    768: {
+                        items: 2,
+                        mergeFit: true
                     },
-                    992 : {
-                        items:3,
-                        mergeFit:true
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
                     }
                 }
@@ -126,337 +138,372 @@ var owl_carousel_custom = {
             }),
             $('#owl-carousel-7').owlCarousel({
                 stagePadding: 50,
-                loop:true,
-                margin:10,
-                nav:false,
-                responsive:{
-                    576 : {
-                        items:1,
-                        mergeFit:true
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
                     },
-                    768 : {
-                        items:2,
-                        mergeFit:true
+                    768: {
+                        items: 2,
+                        mergeFit: true
                     },
-                    992 : {
-                        items:3,
-                        mergeFit:true
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
                     }
                 }
             }),
             $('#owl-carousel-8').owlCarousel({
-            stagePadding: 50,
-            loop:true,
-            margin:10,
-            nav:false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
+                stagePadding: 50,
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
+                    }
                 }
-            }
-        }),$('#owl-carousel-9').owlCarousel({
-            rtl:true,
-            loop:true,
-            margin:10,
-            nav:false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
+            }), $('#owl-carousel-9').owlCarousel({
+                rtl: true,
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
+                    }
                 }
-            }
-        }), $('#owl-carousel-10').owlCarousel({
-            items:5,
-            lazyLoad:true,
-            loop:true,
-            margin:5,
-            nav: false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
+            }), $('#owl-carousel-10').owlCarousel({
+                items: 5,
+                lazyLoad: true,
+                loop: true,
+                margin: 5,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
+                    }
                 }
-            }
-        }), $('#owl-carousel-12').owlCarousel({
-            animateOut: 'slideOutDown',
-            animateIn: 'flipInX',
-            items:5,
-            margin:30,
-            stagePadding:30,
-            smartSpeed:450,
-            nav: false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
+            }), $('#owl-carousel-12').owlCarousel({
+                animateOut: 'slideOutDown',
+                animateIn: 'flipInX',
+                items: 5,
+                margin: 30,
+                stagePadding: 30,
+                smartSpeed: 450,
+                nav: false,
+                responsive: {
+                    576: {
+                        items: 1,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
 
+                    }
                 }
-            }
-        });
+            });
         var owl = $('#owl-carousel-13');
         owl.owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
+            items: 5,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
             nav: false,
-            responsive:{
-                576 : {
-                    items:1,
-                    mergeFit:true
+            responsive: {
+                576: {
+                    items: 1,
+                    mergeFit: true
                 },
-                768 : {
-                    items:2,
-                    mergeFit:true
+                768: {
+                    items: 2,
+                    mergeFit: true
                 },
-                992 : {
-                    items:3,
-                    mergeFit:true
+                992: {
+                    items: 3,
+                    mergeFit: true
 
                 }
             }
         }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
+            $('.play').on('click', function () {
+                owl.trigger('play.owl.autoplay', [1000])
+            }), $('.stop').on('click', function () {
+                owl.trigger('stop.owl.autoplay')
+            }),
 
-        
-        $('#carousel-1').owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            dots: false,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
-            nav: false,
-            responsive:{
-                0 : {
-                    items:2,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
 
+            $('#carousel-1').owlCarousel({
+                items: 5,
+                loop: true,
+                margin: 10,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
+
+                    }
                 }
-            }
+            }),
+            $('.play').on('click', function () {
+                owl.trigger('play.owl.autoplay', [1000])
+            }), $('.stop').on('click', function () {
+                owl.trigger('stop.owl.autoplay')
+            }),
+
+            $('#carousel-2').owlCarousel({
+                items: 5,
+                loop: true,
+                margin: 10,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
+
+                    }
+                }
+            }),
+            $('.play').on('click', function () {
+                owl.trigger('play.owl.autoplay', [1000])
+            }), $('.stop').on('click', function () {
+                owl.trigger('stop.owl.autoplay')
+            }),
+
+            $('#carousel-3').owlCarousel({
+                items: 5,
+                loop: true,
+                margin: 10,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
+
+                    }
+                }
+            }),
+            $('.play').on('click', function () {
+                owl.trigger('play.owl.autoplay', [1000])
+            }), $('.stop').on('click', function () {
+                owl.trigger('stop.owl.autoplay')
+            }),
+
+            $('#carousel-4').owlCarousel({
+                items: 5,
+                loop: true,
+                margin: 10,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    768: {
+                        items: 2,
+                        mergeFit: true
+                    },
+                    992: {
+                        items: 3,
+                        mergeFit: true
+
+                    }
+                }
+            }),
+            $('.play').on('click', function () {
+                owl.trigger('play.owl.autoplay', [1000])
+            }), $('.stop').on('click', function () {
+                owl.trigger('stop.owl.autoplay')
+            });
+
+        // var storyOwl = $('.carousel-story');
+        // storyOwl.owlCarousel({
+        //     items: 1,
+        //     loop: false,
+        //     margin: 10,
+        //     dots: false,
+        //     autoplay: true,
+        //     autoplayTimeout: 3000,
+        //     autoplayHoverPause: false,
+        //     nav: false,
+        //     responsive: {
+        //         0: {
+        //             items: 1,
+        //             mergeFit: true
+        //         },
+        //         768: {
+        //             items: 1,
+        //             mergeFit: true
+        //         },
+        //         992: {
+        //             items: 1,
+        //             mergeFit: true
+
+        //         }
+        //     }
+        // });
+        // storyOwl.on('changed.owl.carousel', function (event) {
+        //     console.log(event.target);
+        // });
+        $('.play').on('click', function () {
+            owl.trigger('play.owl.autoplay', [1000])
+        }), $('.stop').on('click', function () {
+            owl.trigger('stop.owl.autoplay')
         }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
-        
-        $('#carousel-2').owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            dots: false,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
-            nav: false,
-            responsive:{
-                0 : {
-                    items:2,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
 
-                }
+    $('#carousel-high').owlCarousel({
+        items: 5,
+        loop: true,
+        margin: 20,
+        autoplay: true,
+        // autoWidth:true,
+        // autoHeight:true,
+        autoplayTimeout: 6000,
+        autoplayHoverPause: true,
+        nav: false,
+        responsive: {
+            0: {
+                items: 1,
+                // mergeFit:true
+            },
+            768: {
+                items: 2,
+                // mergeFit:true
+            },
+            992: {
+                items: 2,
+                // mergeFit:true
+
             }
-        }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
+        }
+    }),
+    $('.play').on('click', function () {
+        owl.trigger('play.owl.autoplay', [1000])
+    }), $('.stop').on('click', function () {
+        owl.trigger('stop.owl.autoplay')
+    }),
 
-        $('#carousel-3').owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            dots: false,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
-            nav: false,
-            responsive:{
-                0 : {
-                    items:2,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
 
-                }
-            }
-        }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
 
-        $('#carousel-4').owlCarousel({
-            items:5,
-            loop:true,
-            margin:10,
-            dots: false,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
-            nav: false,
-            responsive:{
-                0 : {
-                    items:2,
-                    mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    mergeFit:true
-                },
-                992 : {
-                    items:3,
-                    mergeFit:true
-
-                }
-            }
-        }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
-
-        $('#carousel-high').owlCarousel({
-            items:5,
-            loop:true,
-            margin:20,
-            autoplay:true,
-            // autoWidth:true,
-            // autoHeight:true,
-            autoplayTimeout:6000,
-            autoplayHoverPause:true,
-            nav: false,
-            responsive:{
-                0 : {
-                    items:1,
-                    // mergeFit:true
-                },
-                768 : {
-                    items:2,
-                    // mergeFit:true
-                },
-                992 : {
-                    items:2,
-                    // mergeFit:true
-
-                }
-            }
-        }),
-            $('.play').on('click',function(){
-                owl.trigger('play.owl.autoplay',[1000])
-            }), $('.stop').on('click',function(){
-            owl.trigger('stop.owl.autoplay')
-        }), 
-        
-        
-        
-        $('#owl-carousel-14').owlCarousel({
-            items:1,
-            margin:10,
-            autoHeight:true,
-            nav: false
-        });
-        var owl = $('#owl-carousel-15');
-        owl.owlCarousel({
-            loop:true,
-            nav:false,
-            margin:10,
-            responsive:{
-                0:{
-                    items:1
-                },
-                600:{
-                    items:3
-                },
-                960:{
-                    items:5
-                },
-                1200:{
-                    items:5
-                }
-            }
-        }), owl.on('mousewheel', '.owl-stage', function (e) {
-            if (e.deltaY>0) {
-                owl.trigger('next.owl');
-            } else {
-                owl.trigger('prev.owl');
-            }
-            e.preventDefault();
-        });
+    $('#owl-carousel-14').owlCarousel({
+        items: 1,
+        margin: 10,
+        autoHeight: true,
+        nav: false
+    });
+var owl = $('#owl-carousel-15');
+owl.owlCarousel({
+    loop: true,
+    nav: false,
+    margin: 10,
+    responsive: {
+        0: {
+            items: 1
+        },
+        600: {
+            items: 3
+        },
+        960: {
+            items: 5
+        },
+        1200: {
+            items: 5
+        }
     }
+}), owl.on('mousewheel', '.owl-stage', function (e) {
+    if (e.deltaY > 0) {
+        owl.trigger('next.owl');
+    } else {
+        owl.trigger('prev.owl');
+    }
+    e.preventDefault();
+});
+}
 };
 
-(function($) {
+(function ($) {
     "use strict";
     owl_carousel_custom.init();
 })(jQuery);

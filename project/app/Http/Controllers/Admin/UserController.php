@@ -21,7 +21,8 @@ class UserController extends Controller
         //*** JSON Request
         public function datatables()
         {
-             $datas = User::where('is_vendor', 0)->orderBy('id')->get();
+            //  $datas = User::where('is_vendor', 0)->orderBy('id')->get();
+             $datas = User::orderBy('id')->get();
              //--- Integrating This Collection Into Datatables
              return Datatables::of($datas)
                                 ->addColumn('action', function(User $data) {

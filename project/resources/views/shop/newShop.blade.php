@@ -1,137 +1,201 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Create New Shop</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-</head>
-<body class="p-4">
-    
-    <form class="container" name="createShopForm">
-        <div class="avatar d-flex justify-content-center mt-2">
-            <img id="tempAvatar" style="display:block" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">
-        </div>
-        <input id="avatarInput" class="mb-4 form-control form-control-sm" id="formFileSm" type="file">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="shopName">Shop Name</label>
-                <input type="text" class="form-control" name="shopName" placeholder="Shop Name">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="shopOwner">Owner</label>
-                <input type="text" class="form-control" name="shopOwner" placeholder="Owner Username">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input type="text" class="form-control" name="description" placeholder="Description">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="founder">Founder/ cofounder</label>
-                <input type="text" class="form-control" name="founder" placeholder="Founder/ cofounder">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="businessType">Business Type</label>
-                <input type="text" class="form-control" name="businessType" placeholder="Business Type">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="yearFounded">Year founded</label>
-                <input type="number" class="form-control" name="yearFounded" placeholder="Year founded">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="numberOfBranch">No of branches</label>
-                <input type="number" class="form-control" name="numberOfBranch" placeholder="No of branches">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="location">Business Locations</label>
-            <input type="text" class="form-control" name="location" placeholder="Locations">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="productCategory">Product category</label>
-                <select type="text" class="form-control" id="productCategory" name="productCategory" placeholder="Product category">
-                    <option disabled selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="majorProduct">Major Products</label>
-                <input type="text" class="form-control" name="majorProduct" placeholder="Major Products">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="minorProduct">Minor Products</label>
-                <input type="text" class="form-control" name="minorProduct" placeholder="Minor Products">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="targetCustomer">Target Customers</label>
-                <input type="text" class="form-control" name="targetCustomer" placeholder="Target Customers">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="contactNo">Contact No.</label>
-                <input type="text" class="form-control" name="contactNo" placeholder="Contact No.">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="contactEmail">Contact Email Address</label>
-                <input type="email" class="form-control" name="contactEmail" placeholder="Contact Email Address">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="websiteLink">Website</label>
-                <input type="url" class="form-control" name="websiteLink" placeholder="Website">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="facebookLink">Facebook</label>
-                <input type="url" class="form-control" name="facebookLink" placeholder="Facebook">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="twitterLink">Twitter</label>
-                <input type="url" class="form-control" name="twitterLink" placeholder="Twitter">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="linkedinLink">Linkedln</label>
-                <input type="url" class="form-control" name="linkedinLink" placeholder="Linkedln">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="timeOfOperation">Hours of Operation</label>
-                <select name="timeOfOperation" class="form-control">
-                    <option disabled selected>Choose...</option>
-                    <option value="Weekly">Weekly</option>
-                </select>
-            </div>
-            <div class="form-group col-md-3">
-                <label for="startTime">Open Time</label>
-                <input type="time" class="form-control" name="startTime">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="closeTime">Close Time</label>
-                <input type="time" class="form-control" name="closeTime">
-            </div>
-        </div>
-        <p id="errorMessage" class="text-center">Message</p>
-        <button id="saveButton" type="submit" class="btn btn-primary">Create</button>
-    </form>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<base href="../">
+@extends('layouts.app')
+
+@section('title')
+Create Shop
+@endsection
+
+@section('style')
+@endsection
+
+@section('content')
+ 
+
+<div class="page-body">
+    <div class="container-fluid">
+      <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>
+                   Shop Setup</h3>
+              </div>
+          <div class="col-6">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ route('home') }}">                                       <i data-feather="home"></i></a></li>
+              <li class="breadcrumb-item active">Shop Setup</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body">
+              
+
+               <form class="container" name="createShopForm">
+                    <div class="avatar d-flex justify-content-center mt-2 mb-3">
+                        <img id="tempAvatar" style="display:block" height="200" width="200" alt="" src="./assets/images/avatar/default.jpg">
+                    </div>
+                    <center class="mb-3">
+                        <label>
+                            <span class="btn btn-primary">Upload Image <span class="text-danger">*</span></span> 
+                            <input id="avatarInput" hidden class="mb-4 form-control btn form-control-sm" id="formFileSm" type="file">
+                        </label>
+                    </center>
+                    
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="shopName">Shop Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shopName" placeholder="Shop Name">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="shopOwner">Owner <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shopOwner" value="{{ Auth::user()->username }}" disabled placeholder="Owner Username">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="description">Description <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="description" placeholder="Description">
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="founder">Founder/ Cofounder <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="founder" placeholder="Founder/ cofounder">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="businessType">Business Type <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="businessType" placeholder="Business Type">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="yearFounded">Year Founded <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="yearFounded" placeholder="Year founded">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="numberOfBranch">No of Branches <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="numberOfBranch" placeholder="No of branches">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="location">Business Locations <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="location" placeholder="Locations">
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="productCategory">Product Category <span class="text-danger">*</span></label>
+                            <select type="text" class="form-control" id="productCategory" name="productCategory" placeholder="Product category">
+                                <option disabled selected>Choose...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="majorProduct">Major Products <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="majorProduct" placeholder="Major Products">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="minorProduct">Minor Products <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="minorProduct" placeholder="Minor Products">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="targetCustomer">Target Customers <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="targetCustomer" placeholder="Target Customers">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="contactNo">Contact Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="contactNo" placeholder="Contact No.">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="contactEmail">Contact Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="contactEmail" placeholder="Contact Email Address">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="websiteLink">Website <span class="text-danger">*</span></label>
+                            <input type="url" class="form-control" name="websiteLink" placeholder="Website">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="facebookLink">Facebook <span class="text-danger">*</span></label>
+                            <input type="url" class="form-control" name="facebookLink" placeholder="Facebook">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3" >
+                        <div class="form-group col-md-6">
+                            <label for="twitterLink">Twitter <span class="text-danger">*</span></label>
+                            <input type="url" class="form-control" name="twitterLink" placeholder="Twitter">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="linkedinLink">Linkedln <span class="text-danger">*</span></label>
+                            <input type="url" class="form-control" name="linkedinLink" placeholder="Linkedln">
+                        </div>
+                    </div>
+                    <div class="form-row row mb-3">
+                        <div class="form-group col-md-6">
+                            <label for="timeOfOperation">Hours of Operation <span class="text-danger">*</span></label>
+                            <select name="timeOfOperation" class="form-control">
+                                <option disabled selected>Choose...</option>
+                                <option value="Weekly">Weekly</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="startTime">Open Time <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" name="startTime">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="closeTime">Close Time <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" name="closeTime">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            
+                          <div class="text-end ">
+                            <p id="errorMessage" class="text-center">Message</p>
+                            
+                            @if (Auth::user()->shop == null)
+                            
+                            <button id="saveButton" type="submit" class="btn btn-primary mt-3">Create Shop</button>
+                            @else
+                            <p id="" class="text-center">Already Create a Shop</p>
+                            
+                            @endif
+                            
+                            </div>
+                        </div>
+                      </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+</div>
+</div>
+@endsection
+
+@section('script')
+
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> --}}
     <script>
-        var getUrl = window.location;
-        var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+        // var getUrl = window.location;
+        // var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+        var baseUrl = mainurl;
         const tempAvatar = document.querySelector('#tempAvatar');
         const avatarInput = document.querySelector('#avatarInput');
         const saveButton = document.querySelector('#saveButton');
@@ -208,7 +272,7 @@
                             errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
                         }else{
                             errorMessage.innerHTML = `<strong class="text-success">${content.message}</strong>`;
-                            if(confirm(content.message)){window.location.reload()}
+                            if(confirm(content.message)){window.location.reload(mainurl)}
                         }
                     })();
                 }else{
@@ -243,5 +307,5 @@
         }
         getShopCategories();
     </script>
-</body>
-</html>
+
+@endsection

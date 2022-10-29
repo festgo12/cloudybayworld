@@ -46,10 +46,16 @@ Route::group(['middleware'=>'auth'],function(){
   Route::get('/noti', [App\Http\Controllers\HomeController::class, 'noti'])->name('noti');
   Route::get('/config', [App\Http\Controllers\HomeController::class, 'config'])->name('config');
   Route::get('/noti-markAll', [App\Http\Controllers\HomeController::class, 'markasread'])->name('markasread');
+  Route::get('/become-a-seller', [App\Http\Controllers\HomeController::class, 'seller'])->name('seller');
     
     //------------ User SECTION ------------
     Route::get('/profile/{username}', [App\Http\Controllers\UserProfileController::class, 'profile'])->name('profile');
     Route::get('/editProfile', [App\Http\Controllers\UserProfileController::class, 'editProfile'])->name('editProfile');
+    Route::get('/password', [App\Http\Controllers\UserProfileController::class, 'passwordreset'])->name('user.password');
+    Route::post('/password/update', [App\Http\Controllers\UserProfileController::class, 'changepass'])->name('user.password.update');
+
+    // Route::get('/password', 'App\Http\Controllers\Admin\DashboardController@passwordreset')->name('admin.password');
+  // Route::post('/password/update', 'App\Http\Controllers\Admin\DashboardController@changepass')->name('admin.password.update');
 
 
     //------------ Feeds SECTION ------------
@@ -60,6 +66,7 @@ Route::group(['middleware'=>'auth'],function(){
     //------------ Shop SECTION ------------
     Route::get('/createShop', [App\Http\Controllers\ShopController::class, 'createShop'])->name('createShop');
     Route::get('/markets', [App\Http\Controllers\ShopController::class, 'markets'])->name('markets');
+    Route::get('/markets-favorites', [App\Http\Controllers\ShopController::class, 'favorites'])->name('market.favorites');
     Route::get('/market/p/{shop}', [App\Http\Controllers\Product\CatalogController::class, 'marketProduct'])->name('market.product');
     Route::get('/market/{slug}', [App\Http\Controllers\ShopController::class, 'marketDetails'])->name('marketDetails');
     Route::get('/market/feeds/{slug}', [App\Http\Controllers\ShopController::class, 'marketfeeds']);    
@@ -219,6 +226,8 @@ Route::get('/search', [App\Http\Controllers\SearchController::class , 'search'])
     * e.g. - The commented routes below :
     */
     Route::get('/{id}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
+    // Route::get('/{username}/{fakeslug}', 'App\Http\Controllers\MessageController@index')->name('chat.user');
+    // Route::get('/{username}/{fakeslug}', 'App\Http\Controllers\MessageController@index')->name('chat.username');
 
  });  
 
@@ -431,6 +440,13 @@ Route::prefix('admin')->group(function() {
   Route::get('/vendor/color', 'App\Http\Controllers\Admin\VendorController@color')->name('admin-vendor-color');
   Route::get('/vendors/status/{id1}/{id2}', 'App\Http\Controllers\Admin\VendorController@status')->name('admin-vendor-st');
   Route::get('/vendors/delete/{id}', 'App\Http\Controllers\Admin\VendorController@destroy')->name('admin-vendor-delete');
+
+  
+  Route::get('/vendors/withdraws/datatables', 'App\Http\Controllers\Admin\VendorController@withdrawdatatables')->name('admin-vendor-withdraw-datatables'); //JSON REQUEST
+  Route::get('/vendors/withdraws', 'App\Http\Controllers\Admin\VendorController@withdraws')->name('admin-vendor-withdraw-index');
+  Route::get('/vendors/withdraw/{id}/show', 'App\Http\Controllers\Admin\VendorController@withdrawdetails')->name('admin-vendor-withdraw-show');
+  Route::get('/vendors/withdraws/accept/{id}', 'App\Http\Controllers\Admin\VendorController@accept')->name('admin-vendor-withdraw-accept');
+  Route::get('/vendors/withdraws/reject/{id}', 'App\Http\Controllers\Admin\VendorController@reject')->name('admin-vendor-withdraw-reject');
 
   // shop Category
 
@@ -872,4 +888,135 @@ Route::group(['middleware'=>'permissions:super'],function(){
 // ************************************ ADMIN SECTION ENDS**********************************************
 
     
+// ************************************ VENDOR SECTION **********************************************
 
+
+Route::prefix('vendor')->group(function() {
+
+
+  Route::group(['middleware'=>'vendor'],function(){
+  // Vendor Dashboard
+  Route::get('/dashboard', 'App\Http\Controllers\Vendor\VendorController@index')->name('vendor-dashboard');
+
+
+
+
+
+  //------------ ADMIN ORDER SECTION ------------
+  Route::get('/orders', 'App\Http\Controllers\Vendor\OrderController@index')->name('vendor-order-index');
+  Route::get('/order/{id}/show', 'App\Http\Controllers\Vendor\OrderController@show')->name('vendor-order-show');
+  Route::get('/order/{id}/invoice', 'App\Http\Controllers\Vendor\OrderController@invoice')->name('vendor-order-invoice');
+  Route::get('/order/{id}/print', 'App\Http\Controllers\Vendor\OrderController@printpage')->name('vendor-order-print');
+  Route::get('/order/{id1}/status/{status}', 'App\Http\Controllers\Vendor\OrderController@status')->name('vendor-order-status');
+  Route::post('/order/email/', 'App\Http\Controllers\Vendor\OrderController@emailsub')->name('vendor-order-emailsub');
+  Route::post('/order/{slug}/license', 'App\Http\Controllers\Vendor\OrderController@license')->name('vendor-order-license');
+
+  //------------ ADMIN CATEGORY SECTION ENDS------------
+
+
+  //------------ VENDOR SUBCATEGORY SECTION ------------
+
+  Route::get('/load/subcategories/{id}/', 'App\Http\Controllers\Vendor\VendorController@subcatload')->name('vendor-subcat-load'); //JSON REQUEST
+
+  //------------ VENDOR SUBCATEGORY SECTION ENDS------------
+
+  //------------ VENDOR CHILDCATEGORY SECTION ------------
+
+  Route::get('/load/childcategories/{id}/', 'App\Http\Controllers\Vendor\VendorController@childcatload')->name('vendor-childcat-load'); //JSON REQUEST
+
+  //------------ VENDOR CHILDCATEGORY SECTION ENDS------------
+
+  //------------ VENDOR PRODUCT SECTION ------------
+
+  Route::get('/products/datatables', 'App\Http\Controllers\Vendor\ProductController@datatables')->name('vendor-prod-datatables'); //JSON REQUEST
+  Route::get('/products', 'App\Http\Controllers\Vendor\ProductController@index')->name('vendor-prod-index');
+
+  Route::post('/products/upload/update/{id}', 'App\Http\Controllers\Vendor\ProductController@uploadUpdate')->name('vendor-prod-upload-update');
+
+  // CREATE SECTION
+  Route::get('/products/types', 'App\Http\Controllers\Vendor\ProductController@types')->name('vendor-prod-types');
+  Route::get('/products/physical/create', 'App\Http\Controllers\Vendor\ProductController@createPhysical')->name('vendor-prod-physical-create');
+  Route::get('/products/digital/create', 'App\Http\Controllers\Vendor\ProductController@createDigital')->name('vendor-prod-digital-create');
+  Route::get('/products/license/create', 'App\Http\Controllers\Vendor\ProductController@createLicense')->name('vendor-prod-license-create');
+  Route::post('/products/store', 'App\Http\Controllers\Vendor\ProductController@store')->name('vendor-prod-store');
+  Route::get('/getattributes', 'App\Http\Controllers\Vendor\ProductController@getAttributes')->name('vendor-prod-getattributes');
+
+  Route::get('/products/catalog/datatables', 'App\Http\Controllers\Vendor\ProductController@catalogdatatables')->name('admin-vendor-catalog-datatables');
+  Route::get('/products/catalogs', 'App\Http\Controllers\Vendor\ProductController@catalogs')->name('admin-vendor-catalog-index');
+
+  // CREATE SECTION
+
+  // EDIT SECTION
+  Route::get('/products/edit/{id}', 'App\Http\Controllers\Vendor\ProductController@edit')->name('vendor-prod-edit');
+  Route::post('/products/edit/{id}', 'App\Http\Controllers\Vendor\ProductController@update')->name('vendor-prod-update');
+
+  Route::get('/products/catalog/{id}', 'App\Http\Controllers\Vendor\ProductController@catalogedit')->name('vendor-prod-catalog-edit');
+  Route::post('/products/catalog/{id}', 'App\Http\Controllers\Vendor\ProductController@catalogupdate')->name('vendor-prod-catalog-update');
+
+  // EDIT SECTION ENDS
+
+  // STATUS SECTION
+  Route::get('/products/status/{id1}/{id2}', 'App\Http\Controllers\Vendor\ProductController@status')->name('vendor-prod-status');
+  // STATUS SECTION ENDS
+
+  // DELETE SECTION
+  Route::get('/products/delete/{id}', 'App\Http\Controllers\Vendor\ProductController@destroy')->name('vendor-prod-delete');
+  // DELETE SECTION ENDS
+
+  //------------ VENDOR PRODUCT SECTION ENDS------------
+
+  //------------ VENDOR GALLERY SECTION ------------
+
+  Route::get('/gallery/show', 'App\Http\Controllers\Vendor\GalleryController@show')->name('vendor-gallery-show');
+  Route::post('/gallery/store', 'App\Http\Controllers\Vendor\GalleryController@store')->name('vendor-gallery-store');
+  Route::get('/gallery/delete', 'App\Http\Controllers\Vendor\GalleryController@destroy')->name('vendor-gallery-delete');
+
+  //------------ VENDOR GALLERY SECTION ENDS------------
+
+  //------------ ADMIN SHIPPING ------------
+
+Route::get('/shipping/datatables', 'App\Http\Controllers\Vendor\ShippingController@datatables')->name('vendor-shipping-datatables');
+Route::get('/shipping', 'App\Http\Controllers\Vendor\ShippingController@index')->name('vendor-shipping-index');
+Route::get('/shipping/create', 'App\Http\Controllers\Vendor\ShippingController@create')->name('vendor-shipping-create');
+Route::post('/shipping/create', 'App\Http\Controllers\Vendor\ShippingController@store')->name('vendor-shipping-store');
+Route::get('/shipping/edit/{id}', 'App\Http\Controllers\Vendor\ShippingController@edit')->name('vendor-shipping-edit');
+Route::post('/shipping/edit/{id}', 'App\Http\Controllers\Vendor\ShippingController@update')->name('vendor-shipping-update');
+Route::get('/shipping/delete/{id}', 'App\Http\Controllers\Vendor\ShippingController@destroy')->name('vendor-shipping-delete');
+
+  //------------ ADMIN SHIPPING ENDS ------------
+
+
+  //------------ VENDOR NOTIFICATION SECTION ------------
+
+  // Order Notification
+  Route::get('/order/notf/show/{id}', 'App\Http\Controllers\Vendor\NotificationController@order_notf_show')->name('vendor-order-notf-show');
+  Route::get('/order/notf/count/{id}','App\Http\Controllers\Vendor\NotificationController@order_notf_count')->name('vendor-order-notf-count');
+  Route::get('/order/notf/clear/{id}','App\Http\Controllers\Vendor\NotificationController@order_notf_clear')->name('vendor-order-notf-clear');
+  // Order Notification Ends
+
+  // Product Notification Ends
+
+  //------------ VENDOR NOTIFICATION SECTION ENDS ------------
+
+  // Vendor Settings
+  Route::get('/Settings', 'App\Http\Controllers\Vendor\VendorController@profile')->name('vendor-profile');
+  Route::post('/Settings', 'App\Http\Controllers\Vendor\VendorController@profileupdate')->name('vendor-profile-update');
+  // Vendor Settings Ends
+
+  // Vendor Shipping Cost
+  Route::get('/shipping-cost', 'App\Http\Controllers\Vendor\VendorController@ship')->name('vendor-shop-ship');
+
+
+  Route::get('/withdraw/datatables', 'App\Http\Controllers\Vendor\WithdrawController@datatables')->name('vendor-wt-datatables');
+  Route::get('/withdraw', 'App\Http\Controllers\Vendor\WithdrawController@index')->name('vendor-wt-index');
+  Route::get('/withdraw/create', 'App\Http\Controllers\Vendor\WithdrawController@create')->name('vendor-wt-create');
+  Route::post('/withdraw/create', 'App\Http\Controllers\Vendor\WithdrawController@store')->name('vendor-wt-store');
+
+ 
+
+  });
+
+});
+
+
+// ************************************ VENDOR SECTION ENDS**********************************************

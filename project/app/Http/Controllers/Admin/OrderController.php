@@ -81,6 +81,10 @@ class OrderController extends Controller
         
 
         $input = $request->all();
+
+        
+
+
         if ($data->status == "completed"){
 
         // Then Save Without Changing it.
@@ -100,14 +104,21 @@ class OrderController extends Controller
                 
 
                 foreach($cart->items as $prod){
-                        $id = $prod['item']['user_id'];
-                        $vendor = User::findOrFail($id);
-                        $vendor->update();
+                       
+
+
+                        // add to vendor balance
+                        if($request->payment_status == "Completed"){
+                            $vendor = User::where('id', $prod['item']['user_id'])->first();
+                            if(!$vendor->wallet()->count()){
+                                // create one if the doesn't
+                                $vendor->wallet()->create();
+                            }
+                            $vendor->wallet()->update(['balance' => ($vendor->wallet['balance'] + $prod['price'])]);
+                        }
+
+                        
                 }
-                
-    
-    
-                
 
 
 
@@ -127,6 +138,31 @@ class OrderController extends Controller
                         $product = Product::findOrFail($prod['item']['id']);
                         $product->stock = $product->stock + $prod['qty'];
                         $product->update();               
+                    }
+                }
+
+                if($data->status == "completed"){
+
+
+                    foreach($cart->items as $prod){
+                        
+
+                        // substr from vendor balance
+                        
+                            $input['payment_status'] == "Pending";
+
+                            $vendor = User::where('id', $prod['item']['user_id'])->first();
+                            if(!$vendor->wallet()->count()){
+                                // create one if the doesn't
+                                $vendor->wallet()->create();
+                            }
+                            $vendor->wallet()->update(['balance' => ($vendor->wallet['balance'] - $prod['price'])]);
+                            
+                            
+
+                        // }
+
+                      
                     }
                 }
 
@@ -160,6 +196,8 @@ class OrderController extends Controller
             }
 
             $data->update($input);
+
+            
 
             if($request->track_text)
             {

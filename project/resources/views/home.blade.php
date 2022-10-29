@@ -167,7 +167,7 @@ Home
                 <div class="dropdown">
                   <div class="dropbtn2  d-flex  align-items-center m-t-10 "   data-bs-original-title="" title="">
                     <span class="cli-bg cli-bg6"><i class="icofont icofont-star"></i></span>
-                   <a href="favorite.html" class="f-ch text-dark">
+                   <a href="{{ route('market.favorites') }}" class="f-ch text-dark">
                      <div class="m-l-30 m-t-20">
                        <h5>Favorite</h5>
                        <p><strong>Favorite Star</strong></p>
@@ -183,43 +183,35 @@ Home
 
         </div>
 
-         <!-- Updates Starts -->
-      <div class="updates ">
-        <h4>Updates</h4>
-        <div class="profile-container">
-              <div class="owl-carousel owl-theme" id="carousel-profile">
-               
-                <div class="item profile d-inline-block">
-                  <a href="#"><img src="assets/images/avatar/11.jpg" alt="" srcset=""></a>
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/16.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/4.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/7.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile p-late d-inline-block">
-                  <img src="assets/images/avatar/8.jpg" alt="" srcset="">
-                </div>
-                <div class="item profile d-inline-block">
-                  <img src="assets/images/avatar/3.jpg" alt="" srcset="">
-                </div>
+        <!-- Updates Starts -->
+        <div class="updates ">
+
+              <h4>Updates</h4>
+              <div class="profile-container">
+                    <div class="owl-carousel owl-theme" id="carousel-profile">
+
+                      <!-- <div  class="item profile p-late d-inline-block myBtn">
+                        <img  src="./assets/images/avatar/16.jpg" alt="" srcset="">
+                      </div> -->
+                      @foreach($shopsForStories as $shop)
+                        @if(count($shop->blogs))
+                          <div 
+                            class="item profile d-inline-block {{(array_diff($shop->blogs->pluck('id')->toArray(), $storyViews->pluck('blog_id')->toArray())) ? 'p-late' : ''}}" 
+                            onclick="openStories(this, 'storyModal-{{$shop->id}}', 'story-{{$shop->id}}', '{{ auth()->user()->id }}')">
+                            <img  src="assets/uploads/{{ $shop->attachments['path'] }}" alt="" srcset="">
+                          </div>
+                        @endif
+                      @endforeach
+                      
+                    </div>
+                <hr>
 
               </div>
-        </div>
 
-        <div class="profile-bar {{ (Auth::user()->dark_mode) ? 'bar-dark' : ' ' }}">     
-          <hr>
 
-        </div>
-      </div>
-      <!-- Updates Ends -->
+
+            </div>
+        <!-- Updates Ends -->
 
 
           <div class="col-xl-12 xl-100 box-col-12">
@@ -322,6 +314,7 @@ Home
                       <div class="col-xl-3 col-sm-6 xl-4">
                         <div class="card">
                           <div class="product-box">
+                            {{-- <div class="ribbon ribbon-success ribbon-right">50%</div> --}}
                             <div class="product-img"><img class="img-fluid" src="{{ asset('assets/uploads/products').'/'.$prod->image }}" alt="">
                               <div class="product-hover">
                                 <ul>
@@ -428,7 +421,28 @@ Home
                       <ul class="nav main-menu" role="tablist">
                         
                         <li class="nav-item"><h4 class="main-title "> Products Trending</h4></li>
-                        <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Clothes</h6></a></li>
+
+
+                        {{-- @foreach($trending as $productt)  --}}
+                        @foreach($trending as $k => $prodcat)
+
+                        {{-- @php
+                         $cat = $prod->prodCat;
+                        @endphp --}}
+                          <li class="mt-4">
+                            <a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab"
+                                                      aria-controls="pills-created" aria-selected="true">
+                                                      <h6 class="title">{{ $k }} </h6>
+                            </a>
+                          </li>
+                          @foreach ($prodcat as $prod)
+                              
+                          {{-- <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="{{ route('product.details', $prod->prodSlug) }}" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> - {{mb_strlen($prod->prodName,'utf-8') > 60 ? mb_substr($prod->prodName,0,60,'utf-8').'...' : $prod->prodName}}</span></a></li> --}}
+                          <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> - {{mb_strlen($prod->prodName,'utf-8') > 60 ? mb_substr($prod->prodName,0,60,'utf-8').'...' : $prod->prodName}}</span></a></li>
+                          @endforeach
+                        @endforeach
+                        {{-- @endforeach --}}
+                        {{-- <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Clothes</h6></a></li>
                         <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> #agbada</span></a></li>
                         <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> chinease suit</span></a></li>
                         <li><a class="show" id="pills-upcoming-tab" data-bs-toggle="pill" href="#pills-upcoming" role="tab" aria-controls="pills-upcoming" aria-selected="false"><span class="title">skining jeans</span></a></li>
@@ -437,7 +451,7 @@ Home
                         <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #blueisland</span></a></li>
                         <li class="mt-4"><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><h6 class="title"> Shoes</h6></a></li>
                         <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask" role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title"> #ocante</span></a></li>
-                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #snickers</span></a></li>
+                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed" role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title"> #snickers</span></a></li> --}}
 
                        
                         
@@ -661,6 +675,41 @@ Home
       </div>
     </div>
     <!-- Container-fluid Ends-->
+     <!-- The  StoryModal -->
+     @foreach($shopsForStories as $shop)
+        @if(count($shop->blogs))
+        <div id="storyModal-{{$shop->id}}" class="story-modal">
+
+          <!-- Story Modal content -->
+          <div class="story-modal-content">
+            <div class="story-modal-header">
+              <span class="close" onclick="closeStories('storyModal-{{$shop->id}}')">&times;</span>
+            </div>
+            <div class="">
+                <div class="owl-carousel story owl-theme carousel-story" id="story-{{$shop->id}}">
+                    @foreach($shop->blogs as $blog)
+                    <div class="story-card" style="background-image: url('assets/uploads/blogs/{{$blog->photo}}');">
+                        <div class="progress_bar_wrap">
+                            <div blogid="{{$blog->id}}" class="progress_bar {{count($blog->isViewedBy->where('user_id', auth()->user()->id)) ? 'viewed' : ''}}"></div>
+                        </div>
+                        <div class="card_controls">
+                            <div class="profile">
+                                <img src="assets/uploads/{{ $shop->attachments['path'] }}" alt="" class="profile_img" />
+                                <span class="yours text-white">{{$shop->shopName}}</span>
+                                <small class="time text-white">{{\App\Http\Controllers\HomeController::get_time_ago($blog->created_at->timestamp)}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+          </div>
+
+          </div>
+          @endif
+      @endforeach
+      <!-- The  StoryModal End -->
     <script src="{{ asset('./assets/js/dashboard/home.js') }}"></script>
   </div>
 @endsection
@@ -671,72 +720,7 @@ Home
   // let products = {!! $products->toJson() !!};
   // let products = {!! json_encode($products) !!};
   // console.log(products);
-
-
-
-/**
-	* On page load, fetch products from the server 
-	*/
-	// send a get request to the server to fetch list items
-
-// const products = ()=>{
-
-//   (async () => {
-// 		const res = await fetch('/api/user', {
-// 			method: 'GET',
-// 		});
-// 		const data = await res.json();
-// 		const status = res.status;
-// 		console.log(data);
-// 		// update shopping list
-// 		// var shopping_list = document.getElementById('shopping_list');
-// 		// var list_items = data;
-// 		// var items = '';
-// 		// await list_items.map(item => {
-// 		// 	items += `
-// 		// 		<div class="flex justify-between py-2">
-// 		// 		<div id="item-image-${item.id}" class="col-span-2 sm:col-span-1 xl:col-span-1 ${item.checked ? 'opacity-20': ''}">
-// 		// 		  <img
-// 		// 			alt="..."
-// 		// 			src="${item.category.img_path}"
-// 		// 			class="h-24 w-24 rounded  mx-auto"
-// 		// 		  />
-// 		// 		</div>
-// 		// 		<div id="item-dec-${item.id}" class="flex-1 p-4 col-span-2 sm:col-span-4 xl:col-span-4 ${item.checked ? 'opacity-20': ''}">
-// 		// 		  <h3 class="font-semibold text-black">${item.name}</h3>
-// 		// 		  <p>
-// 		// 			${item.description}
-// 		// 		  </p>
-// 		// 		  <p>₦${item.price}</p>
-// 		// 		</div>
-// 		// 		<div class="flex flex-row justify-center">
-// 		// 			<input onchange="markChecked(${item.id})" type="checkbox" class="self-center p-2" style="width:20%; height:auto; transform: scale(2.0);" ${item.checked ? 'checked': ''}>
-// 		// 			<i onclick="deleteItem(${item.id})" class="fa fa-trash text-red-500 text-3xl self-center p-2"></i>
-// 		// 		</div>
-// 		// 		</div>
-// 		// 	`;
-// 		// });
-		
-// 		// // if server retured no item show a different message
-// 		// if(list_items.length == 0){
-// 		// 	items = `
-// 		// 		<h3 class="text-center text-gray-600 p-4 text-lg">Your items will appear here</h3>
-//     //             <div class="flex justify-center">
-//     //                 <img className="self-center mx-auto" src="img/waiting-for-customer.svg" alt="illustration" />
-//     //             </div>
-// 		// 	`;
-// 		// }
-		
-// 		// shopping_list.innerHTML = items;
-// 	})();
-// }
-
-// products();
-
-
-
-
-
-
 </script>
+<script src="{{ asset('assets/js/owlcarousel/owl.carousel.js') }}"></script>
+<script src="{{ asset('./assets/js/dashboard/stories.js') }}"></script>
 @endsection

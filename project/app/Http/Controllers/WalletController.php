@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\PaymentHistory;
-use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Currency;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Models\PaymentHistory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class WalletController extends Controller
 {
@@ -23,6 +25,19 @@ class WalletController extends Controller
     public function fundWallet(Request $request){
         $user = Auth::user();
         $amount = $request->post('amount');
+
+        // currency convertion
+        if (Session::has('currency')) 
+        {
+          $curr = Currency::find(Session::get('currency'));
+        }
+        else
+        {
+            $curr = Currency::where('is_default','=',1)->first();
+        }
+
+        $amount = round($amount  / $curr->value, 2);
+
         $reference = $request->post('fundingReference');
 
         // verify payment using private keys
@@ -100,6 +115,18 @@ class WalletController extends Controller
 
         $user = User::find($request->post('user_id'));
         $amount = $request->post('amount');
+
+         // currency convertion
+         if (Session::has('currency')) 
+         {
+           $curr = Currency::find(Session::get('currency'));
+         }
+         else
+         {
+             $curr = Currency::where('is_default','=',1)->first();
+         }
+ 
+         $amount = round($amount  / $curr->value, 2);
 
         // update user balance (deduct)
         $user->wallet()->update(['balance' => ($user->wallet['balance'] - $amount)]);

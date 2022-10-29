@@ -26,6 +26,11 @@ class ShopController extends Controller
         return view('shop.markets');
     }
 
+    public function favorites()
+    {
+        return view('shop.favorites');
+    }
+
     public function marketDetails($slug)
     {
         $shop = Shop::where('slug', $slug)->first();
@@ -110,6 +115,9 @@ class ShopController extends Controller
             $slug = bin2hex($bytes);
             $shop->slug = $slug;
 
+            //set status
+            $shop->status = 0;
+
             // check if an image was uploaded        
             if ($request->hasfile('avatarInput')) {
                 $file = $request->file('avatarInput');
@@ -138,6 +146,23 @@ class ShopController extends Controller
         $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
         // shop object
         $shops = Shop::whereIn('category_id', $categories->pluck('id'))
+            ->with([
+            'favorites' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }
+        ])
+            ->get();
+
+        return $shops;
+    }
+
+    public function getFavoriteShops($categoryHash, $userId)
+    {
+        $user = User::find($userId);
+        $categories = ShopCategory::where('category_name', 'like', '%' . $categoryHash . '%')->get();
+        // shop object
+        $shops = Shop::whereIn('category_id', $categories->pluck('id'))
+            ->whereIn('id', $user->shopFavorites()->pluck('shop_id'))
             ->with([
             'favorites' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
