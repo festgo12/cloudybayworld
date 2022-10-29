@@ -15,6 +15,7 @@ use App\Models\ShopCategory;
 use App\Models\ShopFavorite;
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Models\StoryView;
 use Illuminate\Http\Request;
 use App\Models\Generalsetting;
 use Illuminate\Support\Facades\Auth;
@@ -51,23 +52,23 @@ class HomeController extends Controller
 
 
         $expDate = Carbon::now()->subDays(30);
-        $prodclks = ProductClick::whereDate('date', '>',$expDate)->get()->groupBy('product_id');
+        $prodclks = ProductClick::whereDate('date', '>', $expDate)->get()->groupBy('product_id');
 
-        foreach($prodclks as $prodtt){
-          
-            $prodtt->prodcount =$prodtt->count('product_id');
+        foreach ($prodclks as $prodtt) {
+
+            $prodtt->prodcount = $prodtt->count('product_id');
             foreach ($prodtt as $prod) {
                 $prodName = $prod->product->name;
                 $prodSlug = $prod->product->slug;
                 $prodCat = $prod->product->category->name;
-                
+
             }
-            $prodtt->prodName =$prodName;
-            $prodtt->prodCat =$prodCat;
+            $prodtt->prodName = $prodName;
+            $prodtt->prodCat = $prodCat;
         }
 
         $trending = $prodclks->sortByDesc('prodcount')->groupBy('prodCat');
- 
+
 
         $blogBonanzaCategories = BlogCategory::where('name', 'like', '%' . 'Bonanza' . '%')->get();
         $bonanzaBlogList = Blog::whereIn('shop_id', $user->shopFollowing->pluck('id'))
@@ -75,10 +76,38 @@ class HomeController extends Controller
             ->orderByDesc('id')
             ->get();
 
+        // get all shops followed by current user
+        $shopsForStories = Shop::whereIn('id', $user->shopFollowing->pluck('id'))->get();
+        // get current user views
+        $storyViews = StoryView::where('user_id', $user->id)->get();
+
+        return view('home', compact('products', 'cats', 'newProducts', 'trending', 'bonanzaBlogList', 'shopsForStories', 'storyViews'));
+
+    }
 
 
-        return view('home', compact('products', 'cats', 'newProducts','trending', 'bonanzaBlogList'));
+    public function get_time_ago($time)    {
+        $time_difference = time() - $time;
 
+        if ($time_difference < 1) {
+            return '1s';
+        }
+        $condition = array(12 * 30 * 24 * 60 * 60 => 'y',
+            30 * 24 * 60 * 60 => 'm',
+            24 * 60 * 60 => 'day',
+            60 * 60 => 'hr',
+            60 => 'min',
+            1 => 's'
+        );
+
+        foreach ($condition as $secs => $str) {
+            $d = $time_difference / $secs;
+
+            if ($d >= 1) {
+                $t = round($d);
+                return $t . '' . $str . ($t > 1 ? 's' : '');
+            }
+        }    
     }
 
 
@@ -97,16 +126,16 @@ class HomeController extends Controller
     public function seller()
     {
         $user = auth()->user();
-      
-        if($user->is_vendor && $user->shop){
+
+        if ($user->is_vendor && $user->shop) {
             return redirect()->back()->with('msg', 'You are Already Vendor ');
         }
-        
-        return view('seller', compact('user')) ;
+
+        return view('seller', compact('user'));
 
     }
 
- 
+
 
     public function min_msg()
     {
@@ -130,14 +159,14 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-   
+
     }
 
     public function noti()
     {
         $user = auth()->user();
 
-       
+
 
         $notifications = $user->unreadNotifications;
         $notiCount = $user->unreadNotifications->count();
@@ -152,7 +181,7 @@ class HomeController extends Controller
             if (isset($noti->data->shop_id)) {
 
                 $shop = Shop::where('id', $noti->data['shop_id'])->get();
-               
+
                 $noti->$shop = $shop;
             }
             $noti->userName = $user->firstname;
@@ -168,7 +197,7 @@ class HomeController extends Controller
 
         // dd($data);
         return response()->json($data);
-   
+
     }
 
     public function config(Request $request)

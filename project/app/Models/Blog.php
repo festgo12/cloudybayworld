@@ -33,4 +33,31 @@ class Blog extends Model
 		});
     }  
 
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
+
+    public function storyViews()
+    {
+        return $this->hasMany(StoryView::class);
+    }
+
+    public function veiw($userId)
+    {
+        $attributes = ['user_id' => $userId];
+
+        if (! $this->storyViews()->where($attributes)->exists()) {
+            $view = $this->storyViews()->create($attributes);
+            return $view;
+        }else{
+            return $this->storyViews()->where($attributes);
+        }
+    }
+
+    public function isViewedBy()
+    {
+        return $this->hasMany(StoryView::class, 'blog_id');
+    }
+
 }
