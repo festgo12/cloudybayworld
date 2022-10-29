@@ -222,4 +222,9 @@ class FeedsController extends Controller
         $feed = Feed::find($request->post('feedId'));
         return $feed->like($request->post('userId'));
     }
+
+    public function markStoryAsviewed(Request $request){
+        $blog = Blog::find($request->post('blogId'));
+        return $blog->veiw($request->post('userId'));
+    }
 }

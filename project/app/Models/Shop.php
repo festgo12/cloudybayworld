@@ -39,4 +39,9 @@ class Shop extends Model
     {
         return $this->hasMany(ShopFavorite::class, 'shop_id');
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class, 'shop_id');
+    }
 }

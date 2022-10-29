@@ -38,6 +38,7 @@ Route::get('/shop-feeds/{userId}/{slug}', [App\Http\Controllers\FeedsController:
 Route::post('/feed-like', [App\Http\Controllers\FeedsController::class, 'likeFeed']);
 Route::get('/comment/{feedId}', [App\Http\Controllers\CommentController::class, 'getComment']);
 Route::post('/comment', [App\Http\Controllers\CommentController::class, 'storeComment']);
+Route::post('/markStoryAsviewed', [App\Http\Controllers\FeedsController::class, 'markStoryAsviewed']);
 
 //------------ Shop SECTION ------------
 Route::get('/shopCategories', [App\Http\Controllers\ShopController::class, 'categories']);
