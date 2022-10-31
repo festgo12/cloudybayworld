@@ -1,6 +1,6 @@
 /*! -----------------------------------------------------------------------------------
 
-    Template URI: cloudbay.com.ng
+    Template URI: cloudbay.world
     Description: cloudbay theme
   
 
@@ -42962,6 +42962,21 @@ div.email-app-sidebar.left-bookmark.task-sidebar::-webkit-scrollbar {
     display: none;
 }
 
+
+.cat-row{
+    display: block;
+    overflow-x: scroll;
+    width: 300px;
+
+}
+
+.filter-section #filter-scroll{
+    max-height: 900px;
+    overflow-y : scroll;
+    scroll-behavior: smooth;
+}
+
+
 .story {
     display: grid;
     grid-auto-flow: column;
@@ -43069,4 +43084,4 @@ div.email-app-sidebar.left-bookmark.task-sidebar::-webkit-scrollbar {
     color: white;
   }
 
-  /* .story-modal-body {padding: 2px 16px;} */
+ 

@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('title')
-Create Shop
+Create New Shop
 @endsection
 
 @section('style')

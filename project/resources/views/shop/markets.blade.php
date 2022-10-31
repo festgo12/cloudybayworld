@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title')
+Shop List 
+@endsection
 @section('content')
 <div class="page-body">
     <div class="container-fluid">

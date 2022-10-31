@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Home
+Become a Seller
 @endsection
 
 @section('content')
