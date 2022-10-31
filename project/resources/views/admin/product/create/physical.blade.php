@@ -504,6 +504,7 @@
 						<div class="product-description">
 							<div class="body-area">
 
+								@if( $shop )
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="left-area">
@@ -521,6 +522,10 @@
 										<input type="hidden" name="user_id" value="{{ $shop->user_id }}">
 									</div>
 								</div>
+								@else
+									<input type="hidden" name="user_id" value="0">
+
+								@endif
 
 									<div class="row">
 										<div class="col-lg-12">

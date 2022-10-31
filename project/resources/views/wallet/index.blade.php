@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+My Wallet
+@endsection
 @section('content')
 <div class="page-body">
    <div class="container-fluid">

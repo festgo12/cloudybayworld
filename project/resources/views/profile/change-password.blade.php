@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+Change Password 
+@endsection
 @section('content')
 <div class="page-body">
     <div class="container-fluid">

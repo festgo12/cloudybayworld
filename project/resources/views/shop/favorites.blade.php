@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title')
+Favorites
+@endsection
 @section('content')
 <div class="page-body">
     <div class="container-fluid">
@@ -9,7 +12,7 @@
         </div>
         <div class="col-6">
             <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">                                       <i data-feather="home"></i></a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}"><i data-feather="home"></i></a></li>
             <li class="breadcrumb-item">Favourites</li>
             </ol>
         </div>
@@ -31,7 +34,7 @@
                         <li class="nav-item"><span class="main-title"> Categories</span></li>
                         <li id="tagList"></li>
                     </ul>
-                    <hr />
+                    {{-- <hr />
                     <ul class="nav main-menu" role="tablist">
                         <li class="nav-item"><span class="main-title"> Tags</span></li>
                         <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab"
@@ -40,23 +43,8 @@
                         <li><a class="show" id="pills-todaytask-tab" data-bs-toggle="pill" href="#pills-todaytask"
                             role="tab" aria-controls="pills-todaytask" aria-selected="false"><span class="title">
                                 #Chinease suits</span></a></li>
-                        <li><a class="show" id="pills-delayed-tab" data-bs-toggle="pill" href="#pills-delayed"
-                            role="tab" aria-controls="pills-delayed" aria-selected="false"><span class="title">
-                                #Oakland</span></a></li>
-                        <li><a class="show" id="pills-upcoming-tab" data-bs-toggle="pill" href="#pills-upcoming"
-                            role="tab" aria-controls="pills-upcoming" aria-selected="false"><span
-                                class="title">#Ocante</span></a></li>
-                        <li><a class="show" id="pills-weekly-tab" data-bs-toggle="pill" href="#pills-weekly"
-                            role="tab" aria-controls="pills-weekly" aria-selected="false"><span
-                                class="title">#Blueisland</span></a></li>
-                        <li><a class="show" id="pills-monthly-tab" data-bs-toggle="pill" href="#pills-monthly"
-                            role="tab" aria-controls="pills-monthly" aria-selected="false"><span
-                                class="title">#Snickers</span></a></li>
-                        <li><a class="show" id="pills-assigned-tab" data-bs-toggle="pill" href="#pills-assigned"
-                            role="tab" aria-controls="pills-assigned" aria-selected="false"><span
-                                class="title">#Hot</span></a></li>
-                        <li>
-                    </ul>
+                        
+                    </ul> --}}
                 </div>
                 </div>
             </div>

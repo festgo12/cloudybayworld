@@ -25,21 +25,21 @@ const getMarketList = (hash) => {
                                 <div class="media">
                                     <div class="row">
                                     <div class="col-md-4">
-                                        <a href="market_view.html">
+                                        <a href="market/${market.slug}">
                                         <img class="align-self-center img-fluid img-60"
-                                            src="./assets/uploads/${market.attachments['path']}" alt="#"
-                                            style="width:100%!important; max-height:200px;"></a>
+                                            src="./assets/uploads/${market.attachments['path']}" alt="#" 
+                                            style="width:100%!important; height:200px;" ></a>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="product-name">
                                         <h5><a href="market/${market.slug}"><b>${market.shopName}</b></a></h5>
                                         </div>
-                                        <div class="rating"><span><i class="fa fa-star font-warning"></i><i
+                                        <!-- <div class="rating"><span><i class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-dark"></i></span><span
-                                            style="color:black">(0)</span></div>
+                                            style="color:black">(0)</span></div> -->
                                         <div class="price d-flex">
                                         <div class="text-muted me-2">
                                             ${

@@ -1,5 +1,8 @@
 <base href="../">
 @extends('layouts.app')
+@section('title')
+About Shop
+@endsection
 @section('content')
 <div class="page-body">
    <div class="container-fluid">
@@ -70,9 +73,9 @@
                   <div class="cardheader socialheader" style="background: url({{ $shop->coverImage ? asset('assets/uploads/'.$shop->coverImage):asset('assets/uploads/cover.jpg') }});"></div>
                   <div class="user-image">
                      <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
-                     @if($shop->user_id == auth()->user()->id)
+                     {{-- @if($shop->user_id == auth()->user()->id)
                      <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
-                     @endif
+                     @endif --}}
                   </div>
                   <div class="info market-tabs p-0">
                      <ul class="nav nav-tabs border-tab tabs-scoial" id="top-tab" role="tablist">

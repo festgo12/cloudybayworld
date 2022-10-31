@@ -530,7 +530,10 @@ select:focus {
           .header .right-eliment .list li .dropdown-menu .dropdownmenu-wrapper {
             padding: 7px 25px 20px;
             text-align: left;
-            }
+            max-height: 900px;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+          }
             .header .right-eliment .list li .dropdown-menu .dropdownmenu-wrapper a, .header .right-eliment .list li .dropdown-menu .dropdownmenu-wrapper p, .header .right-eliment .list li .dropdown-menu .dropdownmenu-wrapper span {
               color: #143250; }
             .header .right-eliment .list li .dropdown-menu .dropdownmenu-wrapper ul {
