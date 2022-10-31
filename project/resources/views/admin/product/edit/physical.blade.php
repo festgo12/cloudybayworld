@@ -808,7 +808,7 @@
 										<div class="product-description">
 											<div class="body-area">
 
-												@if( $shop )
+												@if( $shops )
 												<div class="row">
 													<div class="col-lg-12">
 														<div class="left-area">

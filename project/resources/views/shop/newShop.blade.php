@@ -193,9 +193,8 @@ Create New Shop
     {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> --}}
     <script>
-        // var getUrl = window.location;
-        // var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-        var baseUrl = mainurl;
+        var baseUrl = document.querySelector('meta[name=base]').content;
+
         const tempAvatar = document.querySelector('#tempAvatar');
         const avatarInput = document.querySelector('#avatarInput');
         const saveButton = document.querySelector('#saveButton');
