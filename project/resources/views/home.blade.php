@@ -185,55 +185,32 @@ Home
 
         <!-- Updates Starts -->
         <div class="updates ">
-          <h4>Updates</h4>
-          <!-- <div class="profile-container"> -->
-            <div class="scroller">
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
-              <div class="scroller-item">
-                <img src="./assets/images/avatar/16.jpg" alt="" draggable="false" srcset="">
-              </div>
 
-              <div class="profile-bar">     
+              <h4>Updates</h4>
+              <div class="profile-container">
+                    <div class="owl-carousel owl-theme" id="carousel-profile">
+
+                      <!-- <div  class="item profile p-late d-inline-block myBtn">
+                        <img  src="./assets/images/avatar/16.jpg" alt="" srcset="">
+                      </div> -->
+                      @foreach($shopsForStories as $shop)
+                        @if(count($shop->blogs))
+                          <div 
+                            class="item profile d-inline-block {{(array_diff($shop->blogs->pluck('id')->toArray(), $storyViews->pluck('blog_id')->toArray())) ? 'p-late' : ''}}" 
+                            onclick="openStories(this, 'storyModal-{{$shop->id}}', 'story-{{$shop->id}}', '{{ auth()->user()->id }}')">
+                            <img  src="assets/uploads/{{ $shop->attachments['path'] }}" alt="" srcset="">
+                          </div>
+                        @endif
+                      @endforeach
+                      
+                    </div>
                 <hr>
 
               </div>
-               
-          </div> 
 
-          
-        </div>
+
+
+            </div>
         <!-- Updates Ends -->
 
 
@@ -699,6 +676,41 @@ Home
       </div>
     </div>
     <!-- Container-fluid Ends-->
+     <!-- The  StoryModal -->
+     @foreach($shopsForStories as $shop)
+        @if(count($shop->blogs))
+        <div id="storyModal-{{$shop->id}}" class="story-modal">
+
+          <!-- Story Modal content -->
+          <div class="story-modal-content">
+            <div class="story-modal-header">
+              <span class="close" onclick="closeStories('storyModal-{{$shop->id}}')">&times;</span>
+            </div>
+            <div class="">
+                <div class="owl-carousel story owl-theme carousel-story" id="story-{{$shop->id}}">
+                    @foreach($shop->blogs as $blog)
+                    <div class="story-card" style="background-image: url('assets/uploads/blogs/{{$blog->photo}}');">
+                        <div class="progress_bar_wrap">
+                            <div blogid="{{$blog->id}}" class="progress_bar {{count($blog->isViewedBy->where('user_id', auth()->user()->id)) ? 'viewed' : ''}}"></div>
+                        </div>
+                        <div class="card_controls">
+                            <div class="profile">
+                                <img src="assets/uploads/{{ $shop->attachments['path'] }}" alt="" class="profile_img" />
+                                <span class="yours text-white">{{$shop->shopName}}</span>
+                                <small class="time text-white">{{\App\Http\Controllers\HomeController::get_time_ago($blog->created_at->timestamp)}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+          </div>
+
+          </div>
+          @endif
+      @endforeach
+      <!-- The  StoryModal End -->
     <script src="{{ asset('./assets/js/dashboard/home.js') }}"></script>
   </div>
 @endsection
@@ -709,14 +721,7 @@ Home
   // let products = {!! $products->toJson() !!};
   // let products = {!! json_encode($products) !!};
   // console.log(products);
-
-
-
-
-
-
-
-
-
 </script>
+<script src="{{ asset('assets/js/owlcarousel/owl.carousel.js') }}"></script>
+<script src="{{ asset('./assets/js/dashboard/stories.js') }}"></script>
 @endsection
