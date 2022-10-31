@@ -82,7 +82,7 @@
                   </div>
                   <div class="form-group">
                     <label class="col-form-label">Email Address</label>
-                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required="" autocomplete="email" placeholder="Test@gmail.com">
+                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required="" autocomplete="email" placeholder="user@gmail.com">
 
                     @error('email')
                         <span class="invalid-feedback" role="alert">

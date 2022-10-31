@@ -134,6 +134,12 @@ class ShopController extends Controller
             }
 
             $shop->save();
+
+            $shopOwner = User::where('id', $shop->user_id)->first();
+            $shopOwner->is_vendor = 1;
+            $shopOwner->save();
+
+            
             // set response message to success
             $response['message'] = "Shop created successfully";
         }

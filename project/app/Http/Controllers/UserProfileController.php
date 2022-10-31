@@ -46,10 +46,7 @@ class UserProfileController extends Controller
 
     public function apiGetProfileByUsername($username){
         $user = User::where('username', $username)->first();
-        if(!$user->IsVendor()){
-            $user->is_vendor = 1;
-            $user->save();
-        }
+        
         return ($user) ? $user : 0;
     }
 

@@ -48,7 +48,7 @@
                   <p>Enter your email & password to login</p>
                   <div class="form-group">
                     <label class="col-form-label">Email Address</label>
-                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" required="" placeholder="Test@gmail.com" value="{{ old('email') }}" autocomplete="email" autofocus>
+                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" required="" placeholder="user@gmail.com" value="{{ old('email') }}" autocomplete="email" autofocus>
 
                     @error('email')
                           <span class="invalid-feedback" role="alert">
