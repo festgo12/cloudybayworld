@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title')
+Search 
+@endsection
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-page.css') }}">
     <!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/search-autocomplete.css') }}"> -->

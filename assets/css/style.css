@@ -42961,3 +42961,21 @@ div.email-app-sidebar.left-bookmark.task-sidebar {
 div.email-app-sidebar.left-bookmark.task-sidebar::-webkit-scrollbar {
     display: none;
 }
+
+.cat-row{
+    display: block;
+    overflow-x: scroll;
+    width: 300px;
+
+}
+
+.filter-section #filter-scroll{
+    max-height: 900px;
+    overflow-y : scroll;
+    scroll-behavior: smooth;
+}
+
+/* .form-group .fileInput-upload {
+    margin-top: 20px;
+    cursor: pointer;
+} */

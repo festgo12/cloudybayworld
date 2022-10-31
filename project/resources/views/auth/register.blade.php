@@ -90,7 +90,7 @@
                         </span>
                     @enderror
                   </div>
-                  <div class="form-group">
+                  {{-- <div class="form-group">
                     
                     <div class="row g-2">
                       <div class="col-6">
@@ -118,7 +118,7 @@
                         @enderror
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
                   <div class="form-group">
                     <label class="col-form-label">Password</label>
                     <div class="form-input position-relative">

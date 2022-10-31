@@ -1,6 +1,9 @@
 <base href="../../">
 @extends('layouts.app')
 
+@section('title')
+Shop Products
+@endsection
 
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/select2.css') }}">
@@ -81,9 +84,9 @@
               <div class="cardheader socialheader"></div>
               <div class="user-image">
                 <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
-                @if($shop->user_id == auth()->user()->id)
+                {{-- @if($shop->user_id == auth()->user()->id)
                      <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
-                     @endif
+                     @endif --}}
               </div>
               <div class="info">
                 <div class="row">

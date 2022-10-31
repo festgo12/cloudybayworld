@@ -49,7 +49,7 @@
          <div class="cardheader socialheader"></div>
          <div class="user-image">
             <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
-            <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+            {{-- <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div> --}}
          </div>
          <div class="info market-tabs p-0">
             <ul class="nav nav-tabs border-tab tabs-scoial" id="top-tab" role="tablist">

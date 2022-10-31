@@ -600,7 +600,7 @@ Home
               </div>
             </div>
             
-            <!-- Local News Trending -->
+            {{-- <!-- Local News Trending -->
             <div class="mt-3">
               <div class="heading d-flex justify-content-between">
                 <h4>Local News Trending</h4>
@@ -645,7 +645,8 @@ Home
 
                 </div>
               </div>
-            </div>
+            </div> --}}
+            
             <!-- Bonanza Offers And Gift Surprises -->
             @if($bonanzaBlogList->count())
             <div class="mt-3">
@@ -673,7 +674,7 @@ Home
             </div>
             @endif
 
-            <!-- Brand Newsfeed -->
+            {{-- <!-- Brand Newsfeed -->
             <div class="mt-3">
               <div class="heading d-flex justify-content-between">
                 <h4>Brand Newsfeed</h4>
@@ -693,7 +694,7 @@ Home
 
                 </div>
               </div>
-            </div>
+            </div> --}}
 
       </div>
     </div>
