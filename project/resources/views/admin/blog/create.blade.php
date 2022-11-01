@@ -49,21 +49,25 @@
                           </div>
                         </div>
 
-                        <div class="row">
-                          <div class="col-lg-4">
-                            <div class="left-area">
-                                <h4 class="heading">{{ __('Shop') }}*</h4>
+                        
+                          <div class="row">
+                            <div class="col-lg-4">
+                              <div class="left-area">
+                                  <h4 class="heading">{{ __('Shop') }}*</h4>
+                              </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <select  name="shop_id"  >
+                                    <option value="">{{ __('Select Shop') }}</option>
+                                    @if( $shops )
+                                      @foreach($shops as $shop)
+                                        <option value="{{ $shop->id }}">{{ $shop->shopName }}</option>
+                                      @endforeach
+                                      @endif
+                                  </select>
                             </div>
                           </div>
-                          <div class="col-lg-7">
-                              <select  name="shop_id" required="">
-                                  <option value="">{{ __('Select Shop') }}</option>
-                                    @foreach($shops as $shop)
-                                      <option value="{{ $shop->id }}">{{ $shop->shopName }}</option>
-                                    @endforeach
-                                </select>
-                          </div>
-                        </div>
+                       
 
                         <div class="row">
                           <div class="col-lg-4">

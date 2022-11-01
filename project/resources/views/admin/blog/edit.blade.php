@@ -55,7 +55,7 @@
                             </div>
                           </div>
                           <div class="col-lg-7">
-                              <select name="shop_id" required="">
+                              <select name="shop_id"  >
                                 @if ($select_shop)
                                     
                                   <option value="{{ $data->shop_id }}">{{ $select_shop->shopName }}</option>
@@ -63,9 +63,13 @@
                                     
                                   <option value="">Select Shop</option>
                                 @endif
+
+                                @if( $shops )
                                     @foreach($shops as $shop)
                                       <option value="{{ $shop->id }}" {{ $data->shop_id == $shop->id ? 'selected' :'' }}>{{ $shop->shopName }}</option>
                                     @endforeach
+                                @endif
+
                                 </select>
                           </div>
                         </div>

@@ -287,7 +287,7 @@
 										</div>
 									</div>
 									<div class="col-lg-12">
-										<select id="cat" name="shop_id" required="">
+										<select id="cat" name="shop_id"  >
 											
 											<option value="{{ $data->shop_id }}">{{$data->shop->shopName}}</option>
 											@foreach($shops as $shop)
@@ -295,11 +295,10 @@
 												value="{{ $shop->id }}">{{$shop->shopName}}</option>
 											@endforeach
 										</select>
-										<input type="hidden" name="user_id" value="{{ $shop->user_id }}">
+										
 									</div>
 								</div>
-								@else
-									<input type="hidden" name="user_id" value="0">
+								
 							@endif
 		
 									<div class="row">
