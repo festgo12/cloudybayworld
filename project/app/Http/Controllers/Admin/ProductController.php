@@ -537,6 +537,14 @@ class ProductController extends Controller
 
         // Set SLug
         $prod = Product::find($data->id);
+
+        $prod->shop_id = $request->shop_id;
+        $shop = Shop::where('id', $request->shop_id)->first();
+        if($shop){
+            $prod->user_id = $shop->user_id;
+
+        }
+        
         if($prod->type != 'Physical'){
             $prod->slug = Str::slug($data->name,'-').'-'.strtolower(Str::random(3).$data->id.Str::random(3));
         }
@@ -882,6 +890,11 @@ class ProductController extends Controller
         // Set SLug
         $prod->slug = Str::slug($data->name,'-').'-'.strtolower($data->sku);
         $prod->shop_id = $request->shop_id;
+        $shop = Shop::where('id', $request->shop_id)->first();
+        if($shop){
+            $prod->user_id = $shop->user_id;
+
+        }
          
         $prod->update();
 
