@@ -46,7 +46,7 @@
                </div>
             </div>
          </div>
-         <div class="cardheader socialheader"></div>
+         <div class="cardheader socialheader" style="background: url({{ $shop->coverImage ? asset('assets/uploads/'.$shop->coverImage):asset('assets/uploads/cover.jpg') }});"></div>
          <div class="user-image">
             <div class="avatar"><img alt="" src="assets/uploads/{{ $shop->attachments['path'] }}"></div>
             {{-- <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div> --}}

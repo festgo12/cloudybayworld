@@ -32,7 +32,7 @@ const getMarketList = (hash) => {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="product-name">
-                                        <h5><a href="market/${market.slug}"><b>${market.shopName}</b></a></h5>
+                                        <h5><a href="market/${market.slug}"><b>${market.shopName.length > 15 ? market.shopName.substring(0,14) + "..."  : market.shopName }</b></a></h5>
                                         </div>
                                         <!-- <div class="rating"><span><i class="fa fa-star font-warning"></i><i
                                             class="fa fa-star font-warning"></i><i
@@ -51,7 +51,7 @@ const getMarketList = (hash) => {
                                         </div>
                                         </div>
                                         <div class="avaiabilty">
-                                        <div>${market.description}</div>
+                                        <div>${market.description.length > 25 ? market.description.substring(0,24) + "..." : market.description }</div>
                                         </div>
                                     </div>
                                     <div class="col-md-2">

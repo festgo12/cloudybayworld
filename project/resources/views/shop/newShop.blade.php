@@ -265,14 +265,17 @@ Create New Shop
                             body: formData
                         });
                         const content = await rawResponse.json();
-                        console.log(content);
+                        // console.log(content);
+
                         errorMessage.style.display = 'block';
+
                         if(content.error){
                             errorMessage.innerHTML = `<strong class="text-danger">${content.message}</strong>`;
                         }else{
                             errorMessage.innerHTML = `<strong class="text-success">${content.message}</strong>`;
                             if(confirm(content.message)){window.location.reload(mainurl)}
                         }
+                        
                     })();
                 }else{
                     alert("Invalid Username!");

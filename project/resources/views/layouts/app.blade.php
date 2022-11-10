@@ -177,7 +177,7 @@
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('home') }}"><i data-feather="home"> </i><span>Home</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('feeds') }}"><i data-feather="list"> </i><span>Feeds</span></a></li>
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('wallet') }}"><i data-feather="book"> </i><span>Wallet</span></a></li>
-                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Massaging</span></a></li>
+                  <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('chat') }}"><i data-feather="message-circle" > </i><span id="message-sidebar" class="">Messaging</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="{{ route('profile',Auth::user()->username ) }}"><i data-feather="user"> </i><span>Profile</span></a></li>
 
@@ -233,7 +233,7 @@
 
 
           <!-- footer start-->
-          <footer class="footer">
+          {{-- <footer class="footer">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12 footer-copyright text-center">
@@ -243,7 +243,7 @@
             </div>
           </footer>
         </div>
-      </div>
+      </div> --}}
      
       <script type="text/javascript">
         var mainurl = "{{url('/')}}";

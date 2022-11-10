@@ -418,7 +418,7 @@ $(document).ready(function () {
                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-${item.id}"><i class="icofont icofont-eye"></i></button>
                             </li>
                             <li>
-                                <button class="btn" type="button"><i class="icofont icofont-food-cart"></i></button>
+                                <a class="btn" href="#" type="button"><i class="icofont icofont-food-cart"></i></a>
                             </li>
                             </ul>
                         </div>
@@ -468,7 +468,7 @@ $(document).ready(function () {
                                 <i class="fa ${ (item['rating'] >= 4) ? ' fa-star' : 'fa-star-o'}"></i>
                                 <i class="fa ${ (item['rating'] >= 5) ? ' fa-star' : 'fa-star-o'}"></i>
                               </div>
-                        <a href="{{URL::to('/item')}}/${item.slug}"><h4>${item.name}</h4></a>
+                        <a href="{{URL::to('/item')}}/${item.slug}"><h4>${ item.name.length > 25 ? item.name.substring(0,24) + "..." : item.name}</h4></a>
                         
                         <div class="product-price">${item.showprice}
                             <del>${item.showprevprice}    </del>
