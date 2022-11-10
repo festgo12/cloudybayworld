@@ -418,7 +418,7 @@ $(document).ready(function () {
                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-${item.id}"><i class="icofont icofont-eye"></i></button>
                             </li>
                             <li>
-                                <button class="btn" type="button"><i class="icofont icofont-food-cart"></i></button>
+                                <a class="btn" href="#" type="button"><i class="icofont icofont-food-cart"></i></a>
                             </li>
                             </ul>
                         </div>
