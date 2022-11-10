@@ -91,9 +91,12 @@
 														@endphp
 
 														<select name="category_id" class="form-control" >
-															@if($data->shop->category_id)
+															
+															@if( $data->shop->category_id)
+																@if( App\Models\ShopCategory::where('id', $data->shop->category_id)->first() )
 
-																<option value="{{ $data->shop->category_id }}">{{ $data->shop->category->category_name }}</option>
+																	<option value="{{ $data->shop->category_id }}">{{ $data->shop->category->category_name }}</option>
+																@endif
 															@else
 															<option value=" ">Choose...</option>
 															@endif
